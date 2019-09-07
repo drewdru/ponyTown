@@ -1,0 +1,161 @@
+﻿div(*ngIf="isSuperadmin")
+	button.btn.btn-sm.btn-default((click)="notifyOfUpdate()")
+		| Notify of update
+	button.btn.btn-sm.btn-default.ml-1((click)="shutdownServers()")
+		| Shutdown servers
+	button.btn.btn-sm.btn-default.ml-1((click)="resetUpdating()")
+		| Reset updating
+
+h3.mt-4 Servers
+
+.server-box(*ngFor="let s of loginServers")
+	.row.form-group
+		.col-md-4
+			strong Login server
+		.col-md-2.pb-1
+			.badge.badge-none(*ngIf="s.dead") dead
+			.badge.badge-success(*ngIf="!s.dead && !s.isPageOffline") online
+			.badge.badge-danger(*ngIf="!s.dead && s.isPageOffline") offline
+			.badge.badge-warning.ml-1(*ngIf="s.updating") updating
+		.col-md-6
+			button.btn.btn-sm.btn-success((click)="updateLoginSettings({ isPageOffline: false })")
+				| Switch online
+			button.btn.btn-sm.btn-danger.ml-1((click)="updateLoginSettings({ isPageOffline: true })")
+				| Switch offline
+			button.btn.btn-sm.btn-default.ml-1((click)="fetchRequestStats()" title="Show request stats from last hour")
+				| Stats
+	.row.form-group
+		.col-md-3
+		.col-md-9
+			.text-left(style="column-width: 280px;")
+				div(*ngFor="let o of loginOptions")
+					on-off-switch([on]="s[o.id]" (toggle)="updateLoginSetting(o.id, $event)" [label]="o.label")
+
+	.row.form-group(*ngIf="requestStats")
+		.col-md-12
+			table.table.table-striped.table-hover.table-sm
+				thead
+					tr
+						th path
+						th all
+						th count
+						th avg
+						th
+							button.float-right.btn.btn-default.btn-xs((click)="resetRequestStats()") close
+							| total
+				tbody
+					tr(*ngFor="let s of requestStats")
+						td.limit-length {{s.path}}
+						td {{s.totalCount}}
+						td {{s.count}}
+						td {{s.average}}
+						td {{s.total}}
+
+	.row.form-group(*ngIf="userCounts")
+		.col-md-12
+			table.table.table-striped.table-hover.table-sm
+				thead
+					tr
+						th date
+						th unique users
+				tbody
+					tr(*ngFor="let u of userCounts")
+						td {{u.date | date:'MMM d'}}
+						td {{u.count}}
+
+.server-box(*ngFor="let s of servers")
+	.row.form-group
+		.col-md-2
+			strong {{s.name}}
+		.col-md-2
+			div
+				strong.mr-1 {{s.online}}
+				span.text-muted users
+				span.text-muted.ml-2(title="Users in queue | on main map") ({{s.queued}} | {{s.onMain}})
+				strong.mr-1.ml-2 {{s.maps}}
+				span.text-muted maps
+		.col-md-2.pb-1
+			.badge.badge-none(*ngIf="s.dead") dead
+			.badge.badge-danger(*ngIf="!s.dead && s.settings.isServerOffline") offline
+			.badge.badge-success(*ngIf="!s.dead && !s.settings.isServerOffline") online
+			.badge.badge-forbidden.ml-1(*ngIf="s.require") {{s.require}}
+			.badge.badge-warning.ml-1(*ngIf="s.shutdown") shutdown
+		.col-md-6
+			.d-flex
+				button.btn.btn-sm.btn-success((click)="updateServerSettings(s, { isServerOffline: false })" [disabled]="s.dead")
+					| Switch online
+				button.btn.btn-sm.btn-danger.ml-1((click)="updateServerSettings(s, { isServerOffline: true })" [disabled]="s.dead")
+					| Switch offline
+				button.btn.btn-sm.btn-danger.ml-1((click)="kickAll(s)" [disabled]="s.dead")
+					| Kick all
+				.dropdown.ml-1.d-flex(dropdown)
+					button.dropdown-toggle.btn.btn-sm.btn-default(dropdownToggle [disabled]="s.dead")
+						fa-icon([icon]="cogIcon" [fixedWidth]="true")
+					.dropdown-menu(*dropdownMenu)
+						button.dropdown-item.btn.btn-sm.btn-default((click)="fetchStats(s)")
+							| Stats: Socket transfer rates from last hour
+						button.dropdown-item.btn.btn-sm.btn-default((click)="fetchCountryStats(s)")
+							| Stats: Online users per country
+						button.dropdown-item.btn.btn-sm.btn-default((click)="fetchSupportStats(s)")
+							| Stats: Support
+						button.dropdown-item.btn.btn-sm.btn-default((click)="fetchMapStats(s)")
+							| Stats: Maps
+						button.dropdown-item.btn.btn-sm.btn-default((click)="notifyOfUpdate(s.id)")
+							| Notify of update
+						button.dropdown-item.btn.btn-sm.btn-default((click)="shutdownServers(s.id)")
+							| Shutdown server
+						button.dropdown-item.btn.btn-sm.btn-default((click)="resetUpdating(s.id)")
+							| Reset updating
+				button.btn.btn-sm.btn-default.ml-1(
+					(click)="showSettings[s.id] = !showSettings[s.id]" [class.active]="showSettings[s.id]"
+					[disabled]="s.dead" title="Settings")
+					fa-icon([icon]="optionsIcon")
+
+	.row.form-group(*ngIf="s.settings && !s.dead")
+		.col-md-3.pb-1
+			.badge.badge-none.mr-1(*ngFor="let f of s.flags | keys")
+				| {{f}}
+		.col-md-9(*ngIf="showSettings[s.id]")
+			.text-left(style="column-width: 280px;")
+				div(*ngFor="let o of options")
+					on-off-switch(
+						[on]="s.settings[o.id]" (toggle)="updateServerSetting(s, o.id, $event)" [disabled]="s.dead" [label]="o.label")
+
+	.row.form-group(*ngIf="getStats(s); let stats")
+		.col-12
+			table.table.table-striped.table-hover.table-sm
+				thead
+					tr
+						th id
+						th name
+						th type
+						th count (bin)
+						th count (str)
+						th average
+						th 
+							button.float-right.btn.btn-default.btn-xs((click)="resetStats(s)") close
+							| total
+				tbody
+					tr(*ngFor="let a of stats.actions")
+						th {{a.id}}
+						th {{a.name}}
+						td([ngClass]="a.type === 'recv' ? 'text-danger' : 'text-success'") {{a.type}}
+						td {{a.countBin | number}}
+						td {{a.countStr | number}}
+						td {{a.average}}
+						td {{a.total}}
+
+	.row.form-group(*ngIf="getStatsTable(s); let stats")
+		.col-12
+			table.table.table-striped.table-hover.table-sm
+				thead
+					tr
+						th(*ngFor="let cell of stats[0]") {{cell}}
+						th 
+							button.float-right.btn.btn-default.btn-xs((click)="resetStatsTable(s)") close
+							| 
+				tbody
+					tr(*ngFor="let row of stats | slice:1")
+						th {{row[0]}}
+						td(*ngFor="let cell of row | slice:1") {{cell}}
+						td 

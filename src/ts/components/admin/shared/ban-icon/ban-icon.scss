@@ -1,0 +1,26 @@
+.icon-button {
+	position: relative;
+	
+	&:hover {
+		filter: drop-shadow(0 0 2px #000);
+	}
+}
+
+.ban-icon-timer {
+	position: absolute;
+	right: -2px;
+	bottom: -2px;
+	font-size: 10px;
+}
+
+i.ban-icon-timer {
+	text-shadow: 0 0 1px #000;
+}
+
+fa-icon.ban-icon-timer {
+	filter: drop-shadow(0 0 1px #000);
+}
+	
+i, fa-icon {
+	font-size: 13px;
+}

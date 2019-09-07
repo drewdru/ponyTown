@@ -1,0 +1,2 @@
+.bitmap-box-row(*ngFor="let row of rows")
+	.bitmap-box-cell(*ngFor="let cell of row" [style.background]="colorAt(cell)" (mousedown)="draw(cell)")

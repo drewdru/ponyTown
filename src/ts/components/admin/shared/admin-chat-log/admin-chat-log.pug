@@ -1,0 +1,38 @@
+﻿div(*ngIf="open || !canClose")
+	.d-flex.justify-content-between.align-items-center
+		h3
+			| {{title}}
+			span.text-muted.ml-1
+				| ({{date ? date.label : 'none'}})
+			span.text-muted.ml-1(*ngIf="loading")
+				fa-icon([icon]="spinnerIcon" [spin]="true")
+		.form-inline
+			ng-content
+			form.d-inline-block((submit)="searchChat(searchInput.value)")
+				input.form-control.form-control-sm.ml-1(#searchInput type="search" placeholder="search")
+				button.btn.btn-sm.btn-default.ml-1(type="submit" title="Search whole chat for phrase")
+					fa-icon([icon]="searchIcon" [fixedWidth]="true" size="lg")
+			button.btn.btn-sm.btn-default.ml-1((click)="openLog()" title="Open log in plain text format")
+				fa-icon([icon]="fileIcon" [fixedWidth]="true" size="lg")
+			button.btn.btn-sm.ml-1(
+				[(ngModel)]="autoRefresh" btnCheckbox [btnHighlight]="autoRefresh" title="Auto-refresh every 10 seconds")
+				fa-icon.mr-1([icon]="syncIcon" [fixedWidth]="true" size="lg")
+				| auto
+			.btn-group.btn-group-sm.ml-1
+				button.btn.btn-sm.btn-default((click)="prev()" title="Load previous day")
+					fa-icon([icon]="chevronLeftIcon" [fixedWidth]="true" size="lg")
+				button.btn.btn-sm.btn-default((click)="next()" title="Load next day")
+					fa-icon([icon]="chevronRightIcon" [fixedWidth]="true" size="lg")
+			.btn-group.btn-group-sm.dropup.ml-1(dropdown)
+				button.btn.btn-sm.btn-default((click)="showDate(today)")
+					| Load todays chat
+				button.btn.btn-default.dropdown-toggle(dropdownToggle)
+				.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+					a.dropdown-item(*ngFor="let d of dates" (click)="showDate(d)")
+						| {{d.label}}
+			button.btn.btn-sm.btn-default.ml-1(*ngIf="canClose" (click)="close()")
+				fa-icon([icon]="closeIcon" [fixedWidth]="true")
+	.mb-1(*ngIf="accounts.length")
+		a.badge.badge-none.mr-1(*ngFor="let a of accounts; let i = index" (click)="removeAccount(i)" title="Remove")
+			| [{{i + 1}}] {{a.name}}
+	.well.pre.chatlog

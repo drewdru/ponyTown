@@ -1,0 +1,40 @@
+@import '../../../../styles/partials/variables';
+
+action-button {
+	margin-right: 6px;
+	margin-bottom: 6px;
+}
+
+.fixed-height-tabset {
+	display: grid;
+	
+	> div {
+		grid-row: 1 / 2;
+		grid-column: 1 / 2;
+	}
+}
+
+.sub-tabset {
+	font-size: 13px;
+
+	@media screen and (max-width: 420px) {
+		.nav-link {
+			margin-right: 0.1rem;
+			padding-left: 0.5rem;
+			padding-right: 0.5rem;
+		}
+	}
+}
+
+.action-columns {
+	display: flex;
+	flex-wrap: wrap;
+	
+	> div {
+		width: 50%;
+	}
+}
+
+.inactive-tab {
+	visibility: hidden;
+}

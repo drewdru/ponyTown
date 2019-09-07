@@ -1,0 +1,38 @@
+@import '../../../../styles/partials/variables';
+
+.pony-mod-account {
+	position: absolute;
+	left: 2px;
+	bottom: -22px;
+	font-weight: bold;
+	white-space: nowrap;
+	color: white;
+	text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	&:hover {
+		max-width: none;
+	}
+}
+
+.pony-mod-age {
+	position: absolute;
+	left: -25px;
+	width: 20px;
+	text-align: center;
+	font-weight: bold;
+	color: $primary;
+	text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.pony-mod-note-editor {
+	color: #333;
+	background: none;
+	margin: -9px -14px;
+	width: 250px;
+	max-width: 250px;
+	max-height: 140px;
+	font-size: smaller;
+}

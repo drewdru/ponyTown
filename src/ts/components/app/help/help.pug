@@ -1,0 +1,288 @@
+h1(focusTitle) Help
+
+.row.text-large
+	.col-md-7
+	
+		section
+			h2 Contact
+			p For all inquiries please send an email to #[b {{contactEmail}}]
+
+		section
+			h2 Controls
+
+			ul.spaced-list
+				li
+					b movement
+					.pl-2.mb-1.
+						Use
+						#[kbd-key(title="up arrow key"): fa-icon([icon]="upIcon")]
+						#[kbd-key(title="left arrow key"): fa-icon([icon]="leftIcon")]
+						#[kbd-key(title="down arrow key"): fa-icon([icon]="downIcon")]
+						#[kbd-key(title="right arrow key"): fa-icon([icon]="rightIcon")]
+						,
+						#[kbd-key(title="W key") W]
+						#[kbd-key(title="A key") A]
+						#[kbd-key(title="S key") S]
+						#[kbd-key(title="D key") D]
+						,
+						#[kbd-key.gamepad.gamepad-stick(title="Gamepad left stick") L#[.t]#[.l]#[.r]#[.b]]
+						or #[b touch and drag] to move.
+						#[br]
+						Hold #[kbd-key(title="shift key") shift] to walk slowly.
+				li
+					b chat
+					.pl-2.mb-1.
+						Use #[kbd-key(title="enter key") enter]
+						or #[kbd-key.gamepad.gamepad-blue(title="Gamepad X button") X]
+						to open chat box and send a message.
+						#[br]
+						Use #[kbd-key(title="escape key") esc]
+						or #[kbd-key.gamepad.gamepad-blue(title="Gamepad X button") X]
+						to cancel the message.
+				li.
+					hold #[kbd-key(title="shift key") shift] to be able to click on ground and items behind other players
+				li.
+					#[b boop] - 
+					#[kbd-key(title="B key") B] ,
+					#[kbd-key.gamepad.gamepad-red(title="Gamepad B button") B] ,
+					#[b two finger tap]
+					or #[code /boop] command
+				li.
+					#[b interact] or #[b use item] - #[kbd-key(title="E key") E] or
+					#[kbd-key.gamepad.gamepad-green(title="Gamepad A button") A]
+				li.
+					#[b land]  or #[b sit down] or #[b lie down] - 
+					#[kbd-key(title="X key") X] ,
+					#[kbd-key.gamepad.gamepad-dpad(title="Gamepad dpad down button") #[.dpad-down]]
+					or #[code /stand] and #[code /sit] and #[code /lie] commands
+				li.
+					#[b sit up] or #[b stand up] or #[b fly up] - 
+					#[kbd-key(title="C key") C] ,
+					#[kbd-key.gamepad.gamepad-dpad(title="Gamepad dpad up button") #[.dpad-up]]
+					or #[code /sit] and #[code /stand] and #[code /fly] commands
+				li.
+					#[b turn head] - 
+					#[kbd-key(title="H key") H]
+					or #[kbd-key.gamepad.gamepad-stick(title="Gamepad right stick") R#[.t]#[.l]#[.r]#[.b]]
+					or #[code /turn] command
+				li.
+					#[b zoom in / out] -
+					#[kbd-key(title="P key") P] and #[kbd-key(title="O key") O]
+					or #[kbd-key.gamepad.gamepad-yellow(title="Gamepad Y button") Y]
+				li.
+					#[b hide all text] -
+					#[kbd-key(title="F2 key") F2]
+				li.
+					#[b hide public chat] -
+					#[kbd-key(title="F3 key") F3]
+				li.
+					#[b see through objects] -
+					#[kbd-key(title="F4 key") F4]
+				li
+					| #[b fullscreen] - 
+					span(*ngIf="!mac")
+						| #[kbd-key(title="F11 key") F11]
+					span(*ngIf="mac")
+						| #[kbd-key(title="Control key") ctrl] + #[kbd-key(title="command key") ⌘] + #[kbd-key(title="F key") F]
+
+		section
+			h2 Expressions
+			p To change your pony face expression in game:
+
+			ul.spaced-list
+				li type any emote in the chat <code>:)</code>
+				li end your message with an emote <code>Hey there :D</code>
+				li change expression <b>without saying</b> anything, by writing the emote as a chat command <code>/:D</code>
+				li make the expression permanent using <code>/e :(</code> command and use <code>/e</code> to get your default expression back
+				li use both horizontal and vertical emotes: <code>&gt;:(</code> <code>D:</code> <code>O_o</code> <code>^c^</code> <code>6.9</code>
+				li use emotes with blushies like <code>O//O</code> or <code>O//v//O</code>
+
+		section
+			h2 Chat commands
+			p Following chat commands are available in the game chat:
+
+			ul.spaced-list
+				li <code>/help</code>, <code>/h</code> or <code>/?</code> - list all available commands
+				li
+					| <code>/roll</code>, <code>/rand</code> or <code>/random</code> - roll a random number between 1 and 100
+					ul.spaced-list
+						li use <code>/roll 10</code> to roll a number between 1 and 10
+						li use <code>/roll 5-10</code> to roll a number between 5 and 10
+				li <code>/say</code> or <code>/s</code> - say in public chat (can be used to switch from party chat)
+				li <code>/party</code> or <code>/p</code> - say in party chat
+				li <code>/think</code> or <code>/t</code> - say in thinking bubble
+				li <code>/whisper &lt;name&gt;</code> or <code>/w &lt;name&gt;</code> - whisper to player (you can also click on player name in chatlog)
+				li <code>/reply</code> or <code>/r</code> - reply to last incoming whisper
+				li <code>/e</code> - set a permanent expression like this <code>/e :)</code>
+				li <code>/unstuck</code> - resets position to spawn point and leaves the game
+				li <code>/leave</code> - leaves the game
+				li <code>/turn</code> - turn head around
+				li <code>/magic</code> - toggle magic light
+				li <code>/drop</code> - drop held item
+				li <code>/droptoy</code> - drop held toy
+				li <code>/open</code> - open gift
+				li <code>/toys</code> - show number of collected toys
+				li <code>/boop</code> or <code>/)</code> - do a boop. Can also be used with expression: <code>/) XD</code>
+				li <code>/lie</code> - lie down or sit up
+				li <code>/sit</code> - sit down or stand up
+				li <code>/stand</code> - stand up or land
+				li <code>/fly</code> - fly up or land
+				li <code>/sleep</code> or <code>/zzz</code> - fall asleep. Can also be used with some expressions: <code>/zzz :)</code>
+				li <code>/love</code> or <code>/&lt;3</code> - show floating hearts. Can also be used with expressions: <code>/love :)</code>
+				li <code>/cry</code> - start crying. Can also be used with expressions: <code>/cry :D</code>
+				li <code>/blush</code> - start blushing. Can also be used with expressions: <code>/blush :D</code>
+				li.
+					Following expression commands are available:
+					<code>/smile</code> <code>/happy</code>
+					<code>/frown</code>
+					<code>/angry</code>
+					<code>/sad</code>
+					<code>/thinking</code>
+					<code>/yawn</code>
+					<code>/laugh</code> <code>/haha</code> <code>/хаха</code> <code>/jaja</code> <code>/lol</code>
+					<code>/sneeze</code> <code>/achoo</code>
+				li
+					strong House saving
+					ul
+						li <code>/savehouse</code> - saves current house setup (single save state for entire account)
+						li <code>/loadhouse</code> - loads saved house setup (need to be alone in the house or a party leader)
+						li <code>/resethouse</code> - resets house setup to original state (need to be alone in the house or a party leader)
+						li <code>/lockhouse</code> - prevents other people from changing the house (need to be alone in the house or a party leader)
+						li <code>/unlockhouse</code> - enables editing by other people (need to be alone in the house or a party leader)
+						li <code>/removetoolbox</code> - removes toolbox from the house (need to be alone in the house or a party leader)
+						li <code>/restoretoolbox</code> - restores toolbox to the house (need to be alone in the house or a party leader)
+
+		section
+			h4 Supporter-only commands
+
+			ul.spaced-list
+				li <code>/ss</code> - supporter colored text
+				li <code>/s1</code> - tier 1 supporter colored text (for use by higher tier supporters)
+				li <code>/s2</code> - tier 2 supporter colored text (for use by higher tier supporters)
+				li <code>/s3</code> - tier 3 supporter colored text (for use by higher tier supporters)
+
+		section
+			h2 Chat emojis
+			p.
+				You can use emojis in chat by typing their name surrounded by colons #[samp :apple:]
+				or by using unicode characters assigned to them. Available emotes:
+
+			.emotes
+				ul
+					li(*ngFor="let e of emotes")
+						span.emote-sample.mr-2
+							emote-box([emote]="e")
+						| :{{e}}:
+
+	.col-md-5
+		section
+			h2 Common issues
+
+			section
+				h4 Keys stuck when using iPad keyboard
+				p.text-fading.
+					Due to a bug on iOS system some keys will get stuck occasionally,
+					when the key gets stuck just press it again to unstuck it.
+				p.text-fading.
+					We recommend you use arrow keys for movement as those keys do not get stuck.
+
+			section
+				h4 Other players can't see my messages
+				p.text-fading.
+					This happens when you get temporarily muted for breaking the rules.
+					This typically takes from a few hours to a few days depending on severity and frequency of the violation.
+				p.text-fading.
+					Avoid breaking the rules to prevent this from happening in the future.
+
+			section
+				h4 Page not loading or stuck updating
+				p.text-fading.
+					Try reloading and clearing your browser data.
+					If that doesn't help you should check if any of the extensions are causing the issue,
+					you can check that by using incognito mode of your browser.
+
+			section
+				h4 Mobile keyboard is covering the chat box when the game is installed on mobile device
+				p.text-fading.
+					Try re-installing the game.
+
+			section
+				h4 Screen black or blinking after joining the game
+				p.text-fading.
+					This is usually caused by outdated graphics drivers or browser.
+					Check if your browser is #[a(href="https://updatemybrowser.org/") up to date] and check
+					if there are new updates for your graphics card or device.
+				p.text-fading.
+					If your browser is already up to date, try installing different browser.
+					We recommend using #[a(href="https://www.google.com/chrome/") Chrome]
+					or #[a(href="https://www.mozilla.org/en-US/firefox/new/") Firefox].
+				p.text-fading.
+					Some older devices don't support necessary functions and will never work with the game.
+
+			section
+				h4 Graphical glitches, disappearing objects
+				p.text-fading.
+					This can be caused by outdated drivers or not enough graphics memory,
+					see previous points for possible solutions.
+
+			section
+				h4 Cannot connect to the game
+				p.text-fading.
+					This can be caused by outdated browser or network issues.
+					Try updating your browser or installing a different one, see previous points for more info.
+				p.text-fading.
+					Connection issue might also be a result of our DDOS protection service,
+					reloading the page and trying again should solve the issue in that case.
+
+			section
+				h4 Game slow or stuttering
+				p.text-fading.
+					This can be caused by outdated browser or some browser extensions.
+				p.text-fading.
+					Adblock extension on #[b Chrome] browser is known to cause stuttering in the game,
+					make sure to disable it to avoid any issues. Other similar extensions may also cause
+					slowdowns and stuttering in the game.
+				p.text-fading.
+					Firefox is known to have issues with stuttering, we recommend
+					using #[b Chrome] or #[b Edge] browsers for best performance.
+
+			section
+				h4 Why can't I create multiple accounts
+				p.text-fading.
+					This restriction is in-place to protect you and the game itself from other players in the game.
+				p.text-fading.
+					Allowing multiple accounts for single person invalidates ignore and hide systems that 
+					allow you to ignore and hide other players that are harassing or bothering you in any way.
+					It also invalidates mute and ban system that is in-place to protect you from players breaking
+					the game rules to bother or harass others.
+				p.text-fading.
+					Allowing use of multiple accounts at the same time would dramatically increase load on the
+					server and potentially make the game unplayable and laggy for everyone else. Increased amount
+					of player characters in the game would also reduce rendering performance on slower computers,
+					especially on mobile devices to the point when a lot of players wouldn't be able to play the
+					game anymore.
+				p.text-fading.
+					Use of multiple accounts also invalidates any limits (like character limit) that we put on the accounts.
+					The limits are in-place to prevent large amount of players that we have at the moment from
+					exhausting our limited server resources.
+
+			section
+				h4 Why can't I modify the game with hacks or scripts
+				p.text-fading.
+					This restriction is in-place to protect you and the game itself from other players in the game.
+				p.text-fading.
+					Almost all third-party scripts used in-game were used to harass other players. Even when the
+					creator of the script did not intend it to be used in that way, the limited knowledge of the
+					game and security issues can lead to unintentionally creating a script that's harmful to other
+					players in the game.
+				p.text-fading.
+					Even in the case where the script doesn't seem to impact other players, it often causes performance
+					issues for the server or other players. That forces us to work on putting more limits on player
+					interactions and takes development time away from adding new features to the game.
+				p.text-fading.
+					Adding more limits on player interactions also makes the game less responsive and more limiting
+					for everyone, not only the players using scripts. This is especially bad for players on bad
+					internet connections where network issues can be misinterpreted as use of scripts or spam.
+
+.text-center.text-muted.mt-3
+	.tinyface

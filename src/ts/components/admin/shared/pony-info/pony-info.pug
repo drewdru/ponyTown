@@ -1,0 +1,12 @@
+﻿ng-template(#tooltip)
+	.character-tooltip(style="position: relative")
+		character-preview([pony]="pony?.ponyInfo" [passive]="true")
+		.character-tooltip-indicator(*ngIf="isBadCM") &bull;
+		.character-tooltip-date
+			from-now([time]="pony?.lastUsed")
+			span.ml-1(*ngIf="pony?.deleted") [deleted]
+
+span.cursor-pointer.badge(
+	[ngClass]="labelClass" [class.deleted]="pony?.deleted" [class.badge-highlight]="highlight" (click)="click()"
+	[tooltip]="tooltip" (onShown)="onShown()" containerClass="tooltip-pony")
+	| {{pony?.name || '...'}}

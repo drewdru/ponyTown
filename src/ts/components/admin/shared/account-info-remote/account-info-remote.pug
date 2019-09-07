@@ -1,0 +1,5 @@
+account-info(
+	*ngIf="!basic" [account]="account" [extendedAuths]="extendedAuths" [popoverPlacement]="popoverPlacement"
+	[showDuplicates]="showDuplicates")
+span(*ngIf="basic")
+	| {{account?.name || '[none]'}} [{{account?._id | slice:-3}}]

@@ -1,0 +1,81 @@
+{
+	"rules": {
+		"ban": [
+			true,
+			"name",
+			"length",
+			"focus"
+		],
+		"class-name": true,
+		"forin": true,
+		"indent": [
+			true,
+			"tabs"
+		],
+		"label-position": true,
+		"no-arg": true,
+		"no-console": [
+			true,
+			"debug",
+			"info",
+			"time",
+			"timeEnd",
+			"trace"
+		],
+		"adjacent-overload-signatures": true,
+		"no-internal-module": true,
+		"no-namespace": true,
+		"no-construct": true,
+		"no-consecutive-blank-lines": [
+			true,
+			2
+		],
+		"no-debugger": true,
+		"no-duplicate-variable": true,
+		"no-eval": true,
+		"no-trailing-whitespace": true,
+		"linebreak-style": [
+			true,
+			"CRLF"
+		],
+		"max-line-length": [
+			true,
+			130
+		],
+		"one-line": [
+			true,
+			"check-open-brace",
+			"check-catch",
+			"check-whitespace"
+		],
+		"radix": true,
+		"semicolon": [
+			true,
+			"always"
+		],
+		"triple-equals": [
+			true,
+			"allow-null-check"
+		],
+		"variable-name": false,
+		"whitespace": [
+			true,
+			"check-branch",
+			"check-decl",
+			"check-operator",
+			"check-module",
+			"check-separator",
+			"check-type"
+		],
+		"eofline": true,
+		"quotemark": [
+			true,
+			"single",
+			"avoid-escape"
+		],
+		"array-type": [
+			true,
+			"array"
+		]
+	}
+}

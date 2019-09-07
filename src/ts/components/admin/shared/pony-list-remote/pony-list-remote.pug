@@ -1,0 +1,17 @@
+div([class.pony-list-expanded]="expanded" [class.pony-list-deletable]="deletable")
+	span.text-muted(*ngIf="loading") ...
+	span.pony-list-item.mr-1(*ngFor="let p of ponies | slice:0:limitTo")
+		pony-info-remote(#info [ponyId]="p" [highlight]="highlight(info.pony)")
+		a.ml-1.icon-button.cursor-pointer((click)="remove(p)" title="delete character")
+			fa-icon.text-muted([icon]="trashIcon" [fixedWidth]="true")
+		.btn-group.dropdown(dropdown *ngIf="duplicates")
+			a.ml-1.icon-button.cursor-pointer(dropdownToggle title="Assign to another account")
+				fa-icon.text-muted([icon]="assignIcon" [fixedWidth]="true")
+			.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+				button.dropdown-item(*ngFor="let d of duplicates" (click)="assignTo(p, d.account)")
+					span.text-muted assign to
+					account-info-remote.ml-1([accountId]="d.account" [basic]="true")
+a.text-muted.mr-1(*ngIf="!full && ponies.length > limit" (click)="toggleFull()")
+	small ({{ponies.length - limit}} more)
+a.text-muted(*ngIf="full && ponies.length > limit" (click)="toggleFull()")
+	small (less)

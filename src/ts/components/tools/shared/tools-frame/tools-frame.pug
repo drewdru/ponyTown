@@ -1,0 +1,13 @@
+﻿ng-template(#selectFrame)
+	.frame-select-container
+		a.frame-select(*ngFor="let s of sprites; index as i" [class.active]="frame === i"
+		               (mousedown)="select(i)" (mouseenter)="enter(i)" (mouseleave)="leave()")
+			sprite-box([sprite]="s" [fill]="pony.coatFill" [outline]="pony.coatOutline" [size]="70" [x]="x" [y]="y"
+								 [circle]="circle" [reverseExtra]="reverseExtra")
+			.frame-select-number {{i}}
+
+a.frame-select([popover]="selectFrame" [placement]="placement" [isOpen]="popoverIsOpen" triggers=""
+               (click)="togglePopover()" (mousedown)="$event.stopPropagation()" containerClass="popover-frames")
+	sprite-box([sprite]="sprite" [fill]="pony.coatFill" [outline]="pony.coatOutline" [size]="70" [x]="x" [y]="y"
+	           [circle]="circle" [reverseExtra]="reverseExtra")
+	.frame-select-number {{frame}}

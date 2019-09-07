@@ -1,0 +1,65 @@
+﻿ng-template(#searchTooltip)
+	.text-left.help-tooltip
+		div: em search by:
+		div exact:&lt;name&gt; #[em - exact pony name]
+		div orphan #[em - list orphaned ponies]
+
+.form-horizontal
+	input.form-control.form-control-sm.admin-search(type="search" placeholder="search" [(ngModel)]="search")
+	.btn-group.btn-group-sm.ml-1
+		button.btn.btn-default((click)="refresh()")
+			fa-icon([icon]="syncIcon" size="lg")
+
+	label.mx-2
+		| order by:
+	.btn-group.btn-group-sm(btnRadioGroup [(ngModel)]="orderBy")
+		button.btn(btnRadio="" [btnHighlight]="!orderBy")
+			| created
+		button.btn(btnRadio="-lastUsed" [btnHighlight]="orderBy === '-lastUsed'")
+			| last used
+
+	.pl-1([tooltip]="searchTooltip" placement="bottom" containerClass="tooltip-pre" style="width: 280px;")
+		small.text-muted
+			fa-icon.mr-1([icon]="filterIcon")
+			| filters
+
+.d-block.d-sm-flex.justify-content-end
+	.table-loader.text-muted.flex-grow-1.text-left(*ngIf="loading")
+		fa-icon.mr-1([icon]="spinnerIcon" [spin]="true")
+		| Loading...
+	strong.text-muted.mr-3(style="margin-top: 6px")
+		| {{totalItems > 900000000 ? '---' : totalItems}}
+	pagination(
+		[totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" [maxSize]="15"
+		[directionLinks]="false" [boundaryLinks]="true")
+
+table.table.table-fixed.table-striped.table-hover.table-sm
+	thead
+		tr
+			th.col-time created
+			th.col-time last used
+			th.col-pony pony
+			th.col-account account
+			th
+			th(style="width: 80px;")
+	tbody
+		tr(*ngFor="let i of items")
+			td.col-time
+				time-field([time]="ponyInfo.pony?.createdAt")
+			td.col-time
+				time-field([time]="ponyInfo.pony?.lastUsed")
+			td.col-pony
+				pony-info-remote(#ponyInfo [ponyId]="i")
+			td.col-account
+				account-info-remote(#accountInfo [accountId]="ponyInfo.pony?.account" [showDuplicates]="true")
+			td
+			td(style="width: 80px;")
+				button.btn.btn-xs.btn-danger((click)="remove(i)" title="Remove pony")
+					fa-icon([icon]="trashIcon" [fixedWidth]="true")
+				button.btn.btn-xs.btn-default.ml-1(
+					(click)="$event.shiftKey ? chatLog.add(accountInfo.account) : chatLog.show(accountInfo.account)" title="Show chat")
+					fa-icon([icon]="commentIcon" [fixedWidth]="true")
+
+admin-chat-log(#chatLog)
+
+.admin-bottom-padding

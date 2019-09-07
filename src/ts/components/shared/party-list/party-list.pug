@@ -1,0 +1,20 @@
+.party-list.unselectable(*ngIf="hasParty")
+	.dropdown(dropdown [hookToCanvas]="true")
+		a.game-button.party-list-options(dropdownToggle)
+			fa-icon(*ngIf="!isLeader" [icon]="cogIcon" [fixedWidth]="true" title="Party options")
+			fa-icon(*ngIf="isLeader" [icon]="leaderIcon" [fixedWidth]="true" title="You are party leader")
+		.dropdown-menu(*dropdownMenu)
+			.dropdown-header(*ngIf="isLeader")
+				| You are party leader
+			a.dropdown-item((click)="leave()")
+				| Leave party
+			a.dropdown-item((click)="hidden = !hidden")
+				| {{hidden ? 'Show party' : 'Hide party'}}
+
+	.party-list-items.pt-1(*ngIf="!hidden")
+		.game-button.party-list-ellipsis.mb-1(*ngIf="start" (click)="prev()")
+			fa-icon([icon]="ellipsisIcon")
+		div(*ngFor="let m of members | slice:start:limit")
+			party-box([member]="m")
+		.game-button.party-list-ellipsis(*ngIf="hasMore" (click)="next()" style="margin-top: -5px")
+			fa-icon([icon]="ellipsisIcon")

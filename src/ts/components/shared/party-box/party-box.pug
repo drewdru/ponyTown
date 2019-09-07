@@ -1,0 +1,6 @@
+.party-box([class.pending]="member.pending" [class.offline]="member.offline" (window:resize)="true")
+	portrait-box.cursor-pointer([pony]="paletteInfo" size="small" (click)="click()")
+	.party-box-icon.party-box-leader.pointer-none(*ngIf="member.leader" title="Party leader")
+		fa-icon([icon]="leaderIcon" size="xs")
+	.party-box-icon.party-box-offline.pointer-none(*ngIf="member.offline" title="Offline")
+		fa-icon([icon]="offlineIcon" size="sm")

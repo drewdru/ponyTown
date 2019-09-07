@@ -1,0 +1,77 @@
+@import './variables';
+
+$chat-line-indent: 10px;
+
+.chat-line {
+	color: $chat-color;
+	font-size: 14px;
+	padding-left: $chat-line-indent;
+	text-shadow: 1px 1px 1px #000;
+}
+
+.chat-line, .chat-box-type-name {
+	.pixelart {
+		margin-top: -1px;
+		margin-left: 2px;
+		margin-right: 2px;
+		vertical-align: top;
+		height: 20px;
+	}
+}
+
+@each $key, $value in $chat-colors {
+	&.chat-line-#{$key} {
+		color: $value;
+
+		> .chat-line-name {
+			color: darken($value, 10%);
+		}
+	}
+}
+
+.chat-line-party-announcement, .chat-line-whisper-announcement {
+	> .chat-line-message {
+		color: $chat-announcement;
+	}
+}
+
+.chat-line-name {
+	color: darken($chat-color, 15%);
+}
+	
+.chat-line-name-content {
+	padding-right: 3px;
+	margin-right: -3px;
+}
+
+.chat-line-label, .chat-line-name-content {
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline !important;
+	}
+}
+
+.chat-line-break {
+	word-break: break-all;
+}
+
+.chat-line-lead {
+	margin-left: -$chat-line-indent;
+}
+
+.chat-line-name {
+	white-space: nowrap;
+}
+
+.chat-line-name-content {
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 150px;
+	vertical-align: bottom;
+}
+
+.chat-line-name-index {
+	color: #aaa;	
+}

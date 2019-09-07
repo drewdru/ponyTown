@@ -1,0 +1,13 @@
+@keyframes loading-animation {
+	0%, 100% { content: ''; }
+	25% { content: '.'; }
+	50% { content: '..';  }
+	75% { content: '...'; }
+}
+
+#loading > div:after {
+	content: '';
+	display: inline-block;
+	width: 30px;
+	animation: loading-animation 2s infinite;
+}

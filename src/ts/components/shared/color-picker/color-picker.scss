@@ -1,0 +1,123 @@
+@import '../../../../styles/partials/variables';
+@import '../../../../styles/partials/mixins';
+
+$color-picker-height: 175px;
+$color-picker-hue-width: 28px;
+$color-picker-sv-width: $color-picker-height;
+$color-picker-indicator-size: 5px;
+$color-picker-box-offset: 5px;
+
+.color-picker {
+	position: relative;
+	display: inline-block;
+	width: 100%;
+	font-size: 1rem;
+}
+
+.color-picker-input {
+	padding-left: 35px;
+	padding-right: 40px;
+	width: 100% !important;
+	font-family: $font-family-monospace;
+	
+	.indicator > & {
+		border-left-width: $color-picker-indicator-size;
+	}
+}
+
+.color-picker-box {
+	background: black;
+	position: absolute;
+	left: $color-picker-box-offset;
+	top: 5px;
+	bottom: 5px;
+	width: 25px;
+	border: solid 1px $border-color;
+	border-radius: 2px;
+	pointer-events: none;
+	z-index: 10;
+
+	.disabled > & {
+		opacity: 0.8;
+	}
+	
+	.indicator > & {
+		left: $color-picker-box-offset + $color-picker-indicator-size;
+	}
+}
+
+.color-picker-chevron {
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: $text-muted !important;
+	width: 40px;
+	height: 100%;
+	padding: 7px 0;
+	text-align: center;
+}
+
+.color-picker-menu {
+	@include nipple(10px);
+	padding: 5px;
+	display: flex;
+}
+
+.color-picker-sv {
+	position: relative;
+	width: $color-picker-sv-width;
+	height: $color-picker-height;
+	margin-right: 5px;
+}
+
+.color-picker-hue {
+	background: linear-gradient(to bottom, red, yellow, lime, cyan, blue, magenta, red);
+	position: relative;
+	width: $color-picker-hue-width;
+	height: $color-picker-height;
+}
+
+.color-picker-sv-overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: $color-picker-sv-width;
+	height: $color-picker-height;
+	background:
+		linear-gradient(to bottom, rgba(0, 0, 0, 0), black),
+		linear-gradient(to right, white, rgba(255, 255, 255, 0));
+}
+
+.color-wheel-circle-sv, .color-wheel-circle-hue {
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	&::after {
+		content: '';
+		position: absolute;
+		border: solid 1px black;
+		box-shadow: 0 0 0 2px white;
+	}
+}
+
+.color-wheel-circle-sv{
+	&::after {
+		left: -4px;
+		top: -4px;
+		border-radius: 4px;
+		width: 9px;
+		height: 9px;
+	}
+}
+
+.color-wheel-circle-hue {
+	width: 100%;
+
+	&::after {
+		left: 0;
+		top: -2px;
+		right: 0;
+		height: 5px;
+	}
+}

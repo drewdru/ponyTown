@@ -1,0 +1,18 @@
+.party-list {
+	position: relative;
+
+	@media (max-height: 180px)	 {
+		display: none;
+	}
+}
+
+.party-list-ellipsis {
+	margin-top: -4px;	
+	margin-left: -3px;	
+}
+
+.party-list-items {
+	@media (max-height: 260px)	 {
+		display: none;
+	}
+}

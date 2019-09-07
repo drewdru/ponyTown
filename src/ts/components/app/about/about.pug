@@ -1,0 +1,102 @@
+h1(focusTitle) About
+
+.row.text-large
+	.col-lg-7
+		p.lead.
+			A game of ponies building a town
+
+		h2 Contact
+		p For all inquiries please send an email to #[b {{contactEmail}}]
+
+		//- div
+			hr
+
+			h2.text-success Custom servers
+
+			p.
+				You can #[a.text-success(href="...") download the files] and start your own custom {{title}} server.
+			p.
+				The package contains server files and instruction on steps required to start your own server.
+				It also allows you to customize and modify the game to your liking.
+			p.
+				Feel free to use this to host a server for your friends, fandom, language group or just a general
+				server for everyone.
+
+			a.d-block.mx-auto.my-4.btn.btn-lg.btn-outline-success.px-3(href="..." style="max-width: 400px;")
+				| Download game files
+
+			p.
+				All necessary instructions required to build and run the server are included in README.md file
+				included in the package.
+			p.
+				Running the server requires basic knowledge of configuring and hosting web applications,
+				it's not intended for beginner users.
+
+			hr
+
+		div(*ngIf="patreonLink")
+			h2 Support {{title}}
+
+			p.
+				If you'd like to help keep {{title}} running, and support future development of the project,
+				please consider #[a([href]="patreonLink" target="_blank" rel="noopener noreferrer") supporting us on Patreon].
+
+			support-button.d-block.mx-auto.my-4(style="max-width: 400px;")
+
+			p.
+				Patreon supporter rewards include the following:
+			ul
+				li(*ngFor="let r of rewards")
+					| {{r}}
+			p.
+				Note that in order to receive any patreon rewards you need to connect your Patreon to your {{title}} account.
+
+		h2 Technology
+
+		p.
+			The entire game is written in #[a(href="http://www.typescriptlang.org/") TypeScript],
+			a typed superset of JavaScript that compiles to plain JavaScript.
+			Server side code is running on #[a(href="https://nodejs.org/en/") Node.js]
+			server with WebSockets for communication.
+			User interface is built using #[a(href="https://angular.io/") Angular]
+			framework and the game itself is using WebGL for rendering graphics.
+
+		div(*ngIf="credits.length")
+			h2 The Team
+
+			.mb-4
+				.row.team-members
+					.col-md-6(*ngFor="let c of credits")
+						.team-member
+							.team-avatar.float-left(
+								[style.background-image]="c.background"
+								[style.background-position]="c.position"
+								style="background-size: 328px 246px")
+							b.text-truncate.sno {{c.name}}
+							.text-muted {{c.title}}
+							site-links([links]="c.links")
+
+				//- small.text-muted
+					em avatars by #[a.text-muted(href="link") Name]
+
+		h2 Contributors
+
+		div(*ngFor="let g of contributors")
+			h3 {{g.group}}
+			p(*ngFor="let c of g.contributors")
+				strong {{c.name}}
+				span(*ngIf="c.links")
+					|  - 
+					site-links([links]="c.links")
+
+	.col-lg-5
+
+		h2 Changelog
+
+		div(*ngFor="let v of changelog")
+			h4 {{v.version}}
+			ul
+				li(*ngFor="let c of v.changes" [innerHTML]="c")
+
+.text-center.text-muted
+	.tinyface

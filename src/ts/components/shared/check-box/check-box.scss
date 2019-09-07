@@ -1,0 +1,30 @@
+@import '../../../../styles/partials/variables';
+
+.check-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	height: $input-height;
+	width: $input-height;
+	margin: 0;
+	color: $input-color;
+	background-color: $input-bg;
+	border: 1px solid $border-color;
+	border-radius: $input-border-radius;
+	appearance: none;
+
+	&:focus {
+		outline: none;
+  	box-shadow: 0 0 0 $btn-focus-width rgba($focus-color, .5);
+	}
+
+	&.disabled {
+		background: $input-disabled-bg;
+		color: $input-disabled-color;
+	}
+	
+	> fa-icon {
+		font-size: 17px;
+	}
+}

@@ -1,0 +1,14 @@
+.tools-offset
+	.text-center
+		button.btn.btn-xs.btn-default((click)="moveY(-1)")
+			fa-icon([icon]="upIcon" [fixedWidth]="true")
+	.text-center
+		button.btn.btn-xs.btn-default((click)="moveX(-1)")
+			fa-icon([icon]="leftIcon" [fixedWidth]="true")
+		small.text-center.tools-offset-value
+			| {{offset?.x}} / {{offset?.y}}
+		button.btn.btn-xs.btn-default((click)="moveX(1)")
+			fa-icon([icon]="rightIcon" [fixedWidth]="true")
+	.text-center
+		button.btn.btn-xs.btn-default((click)="moveY(1)")
+			fa-icon([icon]="downIcon" [fixedWidth]="true")

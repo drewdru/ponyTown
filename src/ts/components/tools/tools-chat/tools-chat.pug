@@ -1,0 +1,11 @@
+.d-flex.m-2
+	canvas.pixelart(#canvas width="1000" height="900")
+	.ml-2
+		a.btn.btn-default(routerLink="/")
+			fa-icon([icon]="homeIcon")
+		button.btn.btn-default.ml-1((click)="toggleBg()")
+			| Toggle BG
+		.mt-2
+			fa-icon.supporter-1([icon]="starIcon" size="lg")
+			fa-icon.supporter-2.ml-1([icon]="starIcon" size="lg")
+			fa-icon.supporter-3.ml-1([icon]="starIcon" size="lg")

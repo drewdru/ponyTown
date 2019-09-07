@@ -1,0 +1,56 @@
+@import '../../../../styles/partials/variables';
+
+:host {
+	display: block;
+	overflow: hidden;
+	background: $dark-bg;
+	border: solid 1px $border-color;
+	border-radius: $border-radius-base;
+
+	&:focus {
+		outline: none;
+  	box-shadow: 0 0 0 $btn-focus-width rgba($focus-color, .5);
+	}
+}
+
+.selection-list {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: -1px;
+	margin-right: -5px;
+}
+
+.selection-item {
+	width: 52px;
+	height: 52px;
+	border-right: solid 1px $border-color;
+	border-bottom: solid 1px $border-color;
+	margin: 0;
+	overflow: hidden;
+
+	> sprite-box {
+		width: 52px;
+		height: 52px;
+	}
+
+	&:hover {
+		background: lighten($input-bg, 10%);
+		text-decoration: none;
+	}
+
+	&.active {
+		background: #ccc;
+	}
+
+	&.disabled {
+		opacity: 0.4;
+		pointer-events: none;
+	}
+}
+
+.selection-item-more {
+	color: $text-muted;
+	font-weight: bold;
+	font-size: 27px;
+	text-align: center;
+}

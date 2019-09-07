@@ -1,0 +1,49 @@
+ng-template(#settingsModal)
+	settings-modal((close)="modalRef.hide()" [focusTrap]="true" (keydown)="$event.stopPropagation()")
+
+ng-template(#invitesModal)
+	invites-modal((close)="modalRef.hide()" [focusTrap]="true" (keydown)="$event.stopPropagation()")
+
+ng-template(#actionsModal)
+	actions-modal((close)="modalRef.hide()" [focusTrap]="true" (keydown)="$event.stopPropagation()")
+
+.settings-box.unselectable
+	.dropdown(#dropdown="ag-dropdown" dropdown autoClose="outsideClick" [hookToCanvas]="true")
+		button.game-button.dropdown-toggle.no-arrow(dropdownToggle (click)="false" title="Settings")
+			fa-icon([icon]="cogIcon" [fixedWidth]="true")
+		.dropdown-menu.dropdown-menu-right.settings-box-menu(*dropdownMenu)
+			.dropdown-header.d-flex.justify-content-between
+				span {{server}}
+				span.clock-display {{time}}
+			.dropdown-item.d-flex
+				fa-icon.mr-2([icon]="searchIcon" [fixedWidth]="true")
+				.flex-grow-1 Scale (x{{scale}})
+				button.btn.btn-xs.btn-outline-secondary((click)="zoomOut()" aria-label="Zoom out")
+					fa-icon([icon]="minusIcon" [fixedWidth]="true")
+				button.btn.btn-xs.btn-outline-secondary.ml-2((click)="zoomIn()" aria-label="Zoom in")
+					fa-icon([icon]="plusIcon" [fixedWidth]="true")
+			.dropdown-item.dropdown-item-static
+				a((click)="toggleVolume()" title="Toggle sound")
+					fa-icon([icon]="volumeIcon" [fixedWidth]="true")
+				slider-bar([(value)]="volume" [step]="1" (started)="volumeStarted()")
+				.text-muted.text-right(*ngIf="track" style="margin-top: -5px;")
+					small
+						| playing: #[b {{track}}]
+						a.text-muted.ml-1((click)="nextTrack()" title="Next track")
+							fa-icon([icon]="forwardIcon" [fixedWidth]="true")
+			a.dropdown-item((click)="unhideAllHiddenPlayers()")
+				fa-icon.mr-2([icon]="emptyIcon" [fixedWidth]="true")
+				| Unhide players (temporary)
+			a.dropdown-item((click)="openSettings()")
+				fa-icon.mr-2([icon]="emptyIcon" [fixedWidth]="true")
+				| Settings
+			a.dropdown-item((click)="openActions()")
+				fa-icon.mr-2([icon]="emptyIcon" [fixedWidth]="true")
+				| Actions
+			//-a.dropdown-item((click)="openInvites()" *ngIf="hasInvites")
+				fa-icon.mr-2([icon]="emptyIcon" [fixedWidth]="true")
+				| Manage invites
+			.dropdown-divider
+			a.dropdown-item((click)="leave()")
+				fa-icon.mr-2([icon]="signOutIcon" [fixedWidth]="true")
+				| Leave

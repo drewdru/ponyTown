@@ -1,0 +1,17 @@
+.form-inline.p-1
+	.form-group
+		a.btn.btn-default(routerLink="/")
+			fa-icon([icon]="homeIcon")
+
+	.form-group
+		label.ml-2
+		scale-picker([(scale)]="scale" (scaleChange)="redraw()")
+
+	.form-group
+		label.control-label.ml-2 columns:
+		input.form-control.ml-1(type="number" [(ngModel)]="columns" (input)="redraw()" style="width: 80px;")
+
+	.form-group
+		button.btn.btn-default.ml-2((click)="png()") PNG
+
+canvas(#canvas)

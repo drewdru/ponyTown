@@ -1,0 +1,29 @@
+.sr-only(#ariaAnnounce aria-live="assertive")
+
+.character-list([class.character-list-searchable]="searchable" [class.in-game]="inGame")
+
+	.dropdown.character-select-search.input-group(
+		(mousedown)="$event.stopPropagation()" (mouseup)="$event.stopPropagation()"
+		(click)="$event.stopPropagation()" (keydown)="keydown($event)")
+		input.form-control(
+			#searchInput type="search" [placeholder]="placeholder" [(ngModel)]="search" (input)="updatePonies()"
+			autocomplete="nope")
+		.input-group-append(*ngIf="tags.length" #tagsDropdown="ag-dropdown" dropdown)
+			button.btn.btn-secondary.rounded-right(dropdownToggle title="Search by tags")
+				fa-icon([icon]="hashIcon")
+			.dropdown-menu.dropdown-menu-right.shadow.tag-list(*dropdownMenu)
+				button.dropdown-item(*ngFor="let tag of tags" (click)="search = tag; tagsDropdown.close(); updatePonies()")
+					| {{tag}}
+
+	ul.character-select-list(role="listbox" [attr.aria-activedescendant]="'pony-item-' + selectedIndex")
+		li(
+			*ngFor="let p of ponies; let i = index"
+			[id]="'pony-item-' + i"
+			[class.active]="i === selectedIndex"
+			[class.selected]="p?.id === selectedPony?.id")
+			a.d-flex(role="option" (click)="select(p)" (mouseenter)="setPreview(p)" (mouseleave)="unsetPreview(p)")
+				span.flex-grow-1.character-name {{p.name}}
+				span.character-desc.text-muted {{p.desc}}
+		li(*ngIf="canNew")
+			a.text-center(role="option" (click)="createNew()")
+				em new pony

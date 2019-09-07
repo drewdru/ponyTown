@@ -1,0 +1,5 @@
+span([class.extended]="extended")
+	span.text-muted(*ngIf="loading") ...
+	auth-info-remote(*ngFor="let a of auths | slice:0:limit" [authId]="a" [showName]="extended")
+	a.text-muted.ml-1.text-nowrap(*ngIf="auths.length > limit" (click)="limit = 9999")
+		small ({{auths.length - limit}} more)

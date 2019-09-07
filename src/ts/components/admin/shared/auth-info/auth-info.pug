@@ -1,0 +1,13 @@
+﻿a(*ngIf="auth?.url" [href]="auth?.url" target="_blank" rel="noopener noreferrer" [title]="name")
+	fa-icon([icon]="icon" [fixedWidth]="true")
+span(*ngIf="!auth?.url" [title]="name")
+	fa-icon([icon]="icon" [fixedWidth]="true")
+span(*ngIf="showName")
+	span.ml-1(*ngIf="name")
+		| {{name}}
+		em.text-muted.ml-1
+			| {{name | translit}}
+	span.text-muted.ml-1(*ngIf="!name")
+		| &lt;no name&gt;
+	span.badge.badge-success.ml-1(*ngIf="pledged")
+		| ${{pledged}}

@@ -1,0 +1,26 @@
+.m-4(style="position: relative;" (agDrag)="dragRegion($event)" agDragRelative="self")
+	table.table-fixed.pointer-none
+		tbody
+			tr(*ngFor="let row of regions")
+				td(*ngFor="let cell of row"
+					style="border: solid 1px #666;"
+					[style.background]="cell"
+					[style.width.px]="regionSize * tileWidth * scale"
+					[style.height.px]="regionSize * tileHeight * scale")
+	div(style="position: absolute; border: dashed 1px red; top: 0; left: 0;"
+		[style.width.px]="currentMapSize * tileWidth * scale"
+		[style.height.px]="currentMapSize * tileHeight * scale")
+	div(style="position: absolute; border: solid 1px lime; display: flex; justify-content: center; align-items: center;"
+		[style.width.px]="camera.w * scale"
+		[style.height.px]="camera.h * scale"
+		[style.left.px]="camera.x * scale"
+		[style.top.px]="camera.y * scale")
+		div(style="width: 30%; height: 30%; border: dashed 1px lime;")
+	div(style="position: absolute; border: dashed 1px orange;"
+		[style.width.px]="approxCamera.w * scale"
+		[style.height.px]="approxCamera.h * scale"
+		[style.left.px]="approxCamera.x * scale"
+		[style.top.px]="approxCamera.y * scale")
+	div(style="position: absolute; width: 4px; height: 4px; border-radius: 100%; background: lime;"
+		[style.left.px]="player.x * tileWidth * scale - 2"
+		[style.top.px]="player.y * tileHeight * scale - 2")

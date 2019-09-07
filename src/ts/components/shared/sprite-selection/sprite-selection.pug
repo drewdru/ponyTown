@@ -1,0 +1,17 @@
+.selection-list
+	.selection-item(
+		*ngFor="let s of sprites | slice:skip:end; let i = index"
+		role="radio"
+		(click)="select(i + skip)"
+		[id]="id + '-' + i"
+		[class.active]="isSelected(i)"
+		[class.disabled]="disabled"
+		[attr.aria-label]="(s ? s.label : emptyLabel) || ''"
+		[attr.aria-setsize]="sprites.length - skip"
+		[attr.aria-checked]="isSelected(i)")
+		sprite-box(
+			[sprite]="s" [fill]="fill" [outline]="outline" [circle]="circle" [reverseExtra]="reverseExtra"
+			[index]="i + skip" [timestamp]="s?.timestamp" [invisible]="invisible" [darken]="darken")
+	button.btn-unstyled.selection-item.selection-item-more(
+		*ngIf="hasMore" (click)="showMore()" title="Show more..." aria-hidden="true" tabindex="-1")
+		| ...

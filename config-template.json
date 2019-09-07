@@ -1,0 +1,33 @@
+{
+	"title": "Your Town",
+	"twitterLink": "<LINK_TO_TWITTER>",
+	"contactEmail": "your_contact_email@example.com",
+	"port": 8090,
+	"adminPort": 8091,
+	"host": "http://localhost:8090/",
+	"local": "localhost:8090",
+	"adminLocal": "localhost:8091",
+	"secret": "gfhfdshtrdhgedryhe4t3y5uwjthr",
+	"token": "sdlfgihsdor8ghor8dgdrgdegrdg",
+	"db": "mongodb://<username>:<password>@localhost:27017/<database_name>",
+	"oauth": {
+		"google": {
+			"clientID": "<CLIENT_ID_HERE>",
+			"clientSecret": "<CLIENT_SECRET_HERE>"
+		}
+	},
+	"assetsPath": "assets-source",
+	"servers": [
+		{
+			"id": "test",
+			"port": 8090,
+			"path": "/s00/ws",
+			"local": "localhost:8090",
+			"name": "Test server",
+			"desc": "Testing server",
+			"flags": {
+				"test": true
+			}
+		}
+	]
+}

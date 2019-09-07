@@ -1,0 +1,47 @@
+@import './variables';
+
+.popover.popover-frames {
+	max-width: none;
+	width: 530px;
+	
+	.frame-select-container {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.frame-select {
+		display: block;
+		margin-left: -1px;
+		margin-top: -1px;
+	}
+
+	.sprite-box {
+		display: block;
+		border: solid 1px #ddd;
+
+		&:hover {
+			background: #ffd800;
+		}
+	}
+}
+
+.tools-animation {
+	.sprite-box {
+		display: block;
+		margin: -6px;
+
+		&:hover {
+			background: #ffd800;
+		}
+	}
+
+	.far-cell canvas {
+		opacity: 0.6;
+	}
+
+	.character-preview {
+		width: 300px;
+		height: 300px;
+		margin-right: 10px;
+	}
+}

@@ -1,0 +1,19 @@
+@mixin elastic-animation($name, $fromX, $fromY) {
+	@at-root {
+		@keyframes #{$name} {
+			@each $percent, $mult in (0%, 1), (14%, -0.38), (28%, 0.13), (42%, -0.05), (57%, 0.02), (71%, -0.01), (85%, 0.005), (100%, 0) {
+				#{$percent} {
+					animation-timing-function: ease-in-out;
+					transform: translate3d($fromX * $mult, $fromY * $mult, 0);
+				}
+			}
+		}
+	}
+}
+
+@include elastic-animation(elastic-from-right, 50px, 0);
+
+.elastic-from-right {
+	display: block;
+	animation: elastic-from-right 0.5s forwards linear;
+}

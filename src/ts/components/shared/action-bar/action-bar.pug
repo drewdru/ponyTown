@@ -1,0 +1,19 @@
+.action-bar(
+	[class.has-scroller]="hasScroller" [class.is-mobile]="mobile" [class.is-blurred]="blurred"
+	#scroller (mousewheel)="scroll($event)" (wheel)="scroll($event)" (scroll)="true")
+	action-button(
+		*ngFor="let a of actions; let i = index"
+		[class.blur-me]="i < blurCount"
+		[action]="a.action"
+		[active]="a.action && activeAction === a"
+		[editable]="editable"
+		[shortcut]="shortcuts[i] || ''"
+		(use)="use(a.action)"
+		[draggableItem]="a.action"
+		[draggableDisabled]="!editable || !a.action"
+		[draggablePad]="10"
+		(draggableDrag)="drag(i)"
+		(draggableDrop)="drop($event, i)")
+	.action-button-padding
+.scroller-label
+	| scroll using this bar

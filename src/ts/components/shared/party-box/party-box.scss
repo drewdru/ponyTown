@@ -1,0 +1,33 @@
+.party-box {
+	margin-bottom: 10px;
+	position: relative;
+
+	&.pending {
+		opacity: 0.5;
+	}
+
+	&.offline {
+		opacity: 0.7;
+		filter: grayscale(100%);
+	}
+}
+
+.party-box-icon {
+	position: absolute;
+	text-shadow: 0 0 5px #000;
+	font-size: 18px;
+	
+	> fa-icon {
+		filter: drop-shadow(0 0 5px #000);
+	}
+}
+
+.party-box-leader {
+	left: -5px;
+	top: -14px;
+}
+
+.party-box-offline {
+	left: -2px;
+	bottom: -8px;
+}

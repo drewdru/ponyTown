@@ -1,0 +1,43 @@
+.sign-in-box.mx-auto.text-center
+	p.lead
+		| Sign in with your social site account
+
+	div(*ngIf="signUpProviders.length")
+		.sign-in-heading
+			span(aria-hidden="true") Sign in #[i or] sign up
+
+		.sign-in-box-providers
+			button.btn.btn-lg.btn-dark(
+				*ngFor="let p of signUpProviders"
+				(click)="signInTo(p)"
+				[class.disabled]="p.disabled"
+				[style.border-bottom-color]="p.color"
+				title="Sign in using {{p.name}}")
+				fa-icon([icon]="icon(p.id)" [fixedWidth]="true" size="lg")
+				.sr-only Sign in or sign up using {{p.name}}
+
+	div(*ngIf="signInProviders.length")
+		.sign-in-heading
+			span(aria-hidden="true") Sign in #[i only]
+
+		.text-muted.mb-3 (You #[b cannot] use these social sites to create new account)
+
+		.sign-in-box-providers.sign-in-only
+			button.btn.btn-lg.btn-dark(
+				*ngFor="let p of signInProviders"
+				(click)="signInTo(p)"
+				[class.disabled]="p.disabled"
+				[style.border-bottom-color]="p.color"
+				title="Sign in using {{p.name}}")
+				fa-icon([icon]="icon(p.id)" [fixedWidth]="true" size="lg")
+				.sr-only Sign in using {{p.name}}
+
+	div(*ngIf="local")
+		.btn-group.dropdown(dropdown)
+			button.btn.btn-lg.btn-dark.dropdown-toggle(dropdownToggle)
+				| Mock login
+			.dropdown-menu(*dropdownMenu)
+				//- NOTE: change usernames to ids of accounts you want to use for testing
+				a.dropdown-item(href="/auth/local?password=x&username=57a3dc6f2f0019a161cdebf6" target="_self") Admin
+				a.dropdown-item(href="/auth/local?password=x&username=57ae2332a67f4dc52e123e14" target="_self") Test
+				a.dropdown-item(href="/auth/local?password=x&username=57ae2332a67f4dc52e123e15" target="_self") Other

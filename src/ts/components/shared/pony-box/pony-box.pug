@@ -1,0 +1,63 @@
+.pony-box(*ngIf="pony")
+	.pony-box-tags
+		.pony-box-tag(*ngIf="special" [ngClass]="specialClass")
+			| {{special}}
+		.pony-box-tag.tag-friend(*ngIf="isFriend(pony)")
+			| friend
+	.pony-box-rect
+		.pony-box-name
+			| {{pony.name}}
+		.pony-box-buttons
+			site-info([site]="pony.site")
+
+		.pony-box-buttons-box
+			.btn-group.btn-group-shadow.dropdown(dropdown (isOpenChange)="removingFriend = false")
+				button.btn.btn-xs.dropdown-toggle(dropdownToggle [ngClass]="ignoredOrHidden ? 'btn-danger' : 'btn-default'")
+					fa-icon([icon]="cogIcon")
+
+				.dropdown-menu(*dropdownMenu)
+					button.dropdown-item((click)="toggleIgnore()")
+						fa-icon.mr-2([icon]="ignoreIcon" [fixedWidth]="true")
+						| {{isIgnored(pony) ? 'Unignore player' : 'Ignore player'}}
+						fa-icon.ml-1(*ngIf="isIgnored(pony)" [icon]="checkIcon")
+					button.dropdown-item((click)="hidePlayer(1)")
+						fa-icon.mr-2([icon]="hideIcon" [fixedWidth]="true")
+						| Hide player #[span.text-muted (24 hours)]
+					button.dropdown-item((click)="hidePlayer(0)")
+						fa-icon.mr-2([icon]="hideIcon" [fixedWidth]="true")
+						| Hide player #[span.text-muted (permanent)]
+
+					.dropdown-divider
+					button.dropdown-item((click)="sendMessageTo()")
+						fa-icon.mr-2([icon]="messageIcon" [fixedWidth]="true")
+						| Send whisper
+					button.dropdown-item(*ngIf="!isFriend(pony)" (click)="addFriend()")
+						fa-icon.mr-2.text-success([icon]="addFriendIcon" [fixedWidth]="true")
+						| Send friend request
+					div(*ngIf="isFriend(pony)" style="position: relative;")
+						button.dropdown-item((click)="removingFriend = true; $event.stopPropagation()")
+							fa-icon.mr-2.text-danger([icon]="removeFriendIcon" [fixedWidth]="true")
+							| Remove from friends
+						.remove-confirmation.px-2.d-flex.justify-content-center(*ngIf="removingFriend")
+							button.btn.btn-sm.btn-outline-success.flex-grow-1((click)="removingFriend = false; $event.stopPropagation()")
+								| Cancel
+							button.btn.btn-sm.btn-outline-danger.flex-grow-1.ml-1((click)="removeFriend()")
+								| Confirm remove
+
+					div(*ngIf="canInviteToSupporterServers")
+						h6.dropdown-header Supporter options
+						button.dropdown-item((click)="inviteToSupporterServers()")
+							fa-icon.mr-2.text-success([icon]="starIcon" [fixedWidth]="true")
+							| Invite to supporter servers
+							fa-icon.ml-1(*ngIf="isInvitedToSupporterServers" [icon]="checkIcon")
+
+			.btn-group.btn-group-shadow(*ngIf="canInviteToParty || canRemoveFromParty || canPromoteToLeader")
+				button.btn.btn-xs.btn-default(*ngIf="canInviteToParty" (click)="inviteToParty()" tooltip="Invite to party")
+					fa-icon([icon]="inviteIcon")
+				button.btn.btn-xs.btn-default(*ngIf="canRemoveFromParty" (click)="removeFromParty()" tooltip="Remove from party")
+					fa-icon([icon]="removeIcon")
+				button.btn.btn-xs.btn-default(*ngIf="canPromoteToLeader" (click)="promoteToLeader()" tooltip="Promote to leader")
+					fa-icon([icon]="leaderIcon")
+			mod-box(*ngIf="isMod" [pony]="pony")
+
+	portrait-box.pony-box-avatar([pony]="paletteInfo")

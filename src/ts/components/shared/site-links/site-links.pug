@@ -1,0 +1,4 @@
+span(*ngFor="let l of links; let i = index")
+	span(*ngIf="i > 0")  | 
+	a([href]="l" target="_blank" rel="noopener noreferrer")
+		| {{l | siteName}}

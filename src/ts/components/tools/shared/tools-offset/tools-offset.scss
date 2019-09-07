@@ -1,0 +1,17 @@
+.tools-offset {
+	width: 110px;
+	margin: auto;
+
+	.btn {
+		position: relative;
+		box-shadow: 0 0 5px black;
+	}
+}
+
+.tools-offset-value {
+	width: 40px;
+	padding: 5px;
+	background: #222;
+	color: #eee;
+	border-radius: 5px;
+}

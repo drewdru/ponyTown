@@ -1,0 +1,22 @@
+.d-flex.align-items-center.mb-1
+	auth-info.flex-grow-1([auth]="auth" [showName]="true")
+	small.text-muted
+		from-now.mr-1([time]="auth?.lastUsed")
+	.btn-group.dropdown(dropdown)
+		button.btn.btn-xs.btn-default(dropdownToggle title="Assign to another account")
+			fa-icon([icon]="assignIcon" [fixedWidth]="true")
+		.dropdown-menu(*dropdownMenu)
+			button.dropdown-item(*ngFor="let d of duplicates" (click)="assignTo(d.account)")
+				span.text-muted assign to
+				account-info-remote.ml-1([accountId]="d.account" [basic]="true")
+	.btn-group.ml-1
+		button.btn.btn-xs.btn-default((click)="showAuthData(auth)" title="Show more data")
+			fa-icon([icon]="infoIcon" [fixedWidth]="true")
+		button.btn.btn-xs((click)="toggleAuthBanned(auth)" [btnHighlight]="auth?.banned || false"
+											title="Toggle auth locked (can't be restored by user)")
+			fa-icon([icon]="lockIcon" [fixedWidth]="true")
+		button.btn.btn-xs((click)="toggleAuthDisabled(auth)" [btnHighlight]="auth?.disabled || false"
+											title="Toggle auth disabled (can be restored by user)")
+			fa-icon([icon]="eyeSlashIcon" [fixedWidth]="true")
+		button.btn.btn-xs.btn-default((click)="removeAuth(auth)" title="Remove auth")
+			fa-icon([icon]="trashIcon" [fixedWidth]="true")

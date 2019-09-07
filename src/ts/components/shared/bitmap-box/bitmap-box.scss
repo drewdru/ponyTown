@@ -1,0 +1,27 @@
+@import '../../../../styles/partials/variables';
+
+:host {
+	border: solid 1px $border-color;
+	border-radius: $border-radius-base;
+	overflow: hidden;
+	display: inline-block;
+}
+
+.bitmap-box-row {
+	display: flex;
+	
+	&:last-child > .bitmap-box-cell {
+		border-bottom: none;
+	}
+}
+
+.bitmap-box-cell {
+	width: 40px;
+	height: 40px;
+	border-right: solid 1px $border-color;
+	border-bottom: solid 1px $border-color;
+
+	&:last-child {
+		border-right: none;
+	}
+}

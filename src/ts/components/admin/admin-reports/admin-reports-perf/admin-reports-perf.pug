@@ -1,0 +1,41 @@
+div(style="position: relative;")
+	div(style="position: absolute; top: -50px; right: 0;")
+		b.p-2 {{server}}
+		.btn-group(*ngIf="server")
+			button.btn.btn-default((click)="resetZoom()")
+				| Reset zoom
+			button.btn.btn-default((click)="fitZoom()")
+				| Fit zoom
+			button.btn.btn-default((click)="fullFrameZoom()")
+				| Full frame
+		button.btn.btn-default.ml-1(*ngIf="server" (click)="load(server)")
+			| Refresh
+		.btn-group.dropdown.ml-1(dropdown)
+			button.btn.btn-default.dropdown-toggle(dropdownToggle)
+				| Load
+			.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+				button.dropdown-item(*ngFor="let s of servers" (click)="load(s)")
+					| {{s}}
+
+	div(#container style="position: relative; overflow: hidden;")
+		canvas(#canvas (mousemove)="mouseMove($event)" (wheel)="wheel($event)" (agDrag)="drag($event)")
+		div(#tooltip style="display: none; position: absolute; left: 0; top: 0; padding: 2px 6px; background: #111; border-radius: 2px; font-size: 12px; white-space: pre; pointer-events: none;")
+		
+		.float-right.text-muted
+			div total samples: {{timings.length}}
+
+		table.table.table-sm(style="font-size: small; width: 1000px;")
+			thead
+				tr
+					th.text-right Self Time
+					th.text-right Self %
+					th.text-right Total %
+					th.text-right Count
+					th Name
+			tbody.font-monospace
+				tr(*ngFor="let l of listing")
+					td.text-right {{l.selfTime.toFixed(2)}} ms
+					td.text-right.text-muted {{l.selfPercent.toFixed(2)}} %
+					td.text-right.text-muted {{l.totalPercent.toFixed(2)}} %
+					td.text-right.text-muted {{l.count}}
+					td {{l.name}}

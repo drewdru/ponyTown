@@ -1,0 +1,4 @@
+canvas.pixelart.sprite-box(#canvas [tooltip]="sprite?.title")
+.sprite-box-none(*ngIf="!sprite")
+	fa-icon([icon]="noneIcon" [fixedWidth]="true")
+.sprite-box-index(*ngIf="debug" aria-hidden="true") {{index}}

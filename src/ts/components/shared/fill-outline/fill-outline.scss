@@ -1,0 +1,18 @@
+@import '../../../../styles/partials/variables';
+@import '../../../../styles/partials/mixins';
+
+.col-lock-box {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	> label {
+		margin: 0;
+	}
+}
+
+.col-outline {
+	@include media-breakpoint-down(xs) {
+		padding-top: 0.5rem;
+	}
+}

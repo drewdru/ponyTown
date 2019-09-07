@@ -1,0 +1,55 @@
+.friends-box.dropdown(
+	dropdown autoClose="outsideClick" (isOpenChange)="toggle()" [hookToCanvas]="true" [focusOnOpen]="false"
+	[preventAutoCloseOnOutlet]="true")
+	button.game-button.dropdown-toggle.no-arrow(dropdownToggle (click)="false" title="Friends")
+		fa-icon([icon]="friendsIcon" [fixedWidth]="true")
+	.friends-dropdown-menu.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+		.friends-list-header.list-unstyled
+			.dropdown-header.d-flex
+				.flex-grow-1 Friends
+				.dropdown(dropdown)
+					button.dropdown-toggle.no-arrow(dropdownToggle)
+						span.text-success(*ngIf="!hidden") online
+						span.text-muted(*ngIf="hidden") offline
+						fa-icon.ml-2([icon]="cogIcon")
+					.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+						button.dropdown-item((click)="setStatus('online')")
+							fa-icon.mr-2.text-success([icon]="statusIcon" size="xs" [fixedWidth]="true")
+							| Online
+						button.dropdown-item((click)="setStatus('invisible')")
+							fa-icon.mr-2.text-muted([icon]="statusIcon" size="xs" [fixedWidth]="true")
+							| Show as Offline
+		.friends-list(*ngIf="friends && friends.length; else noFriends")
+			//- [itemSize]="42")
+			.friends-item(
+				dropdown
+				*ngFor="let f of friends"
+				[ngClass]="f.online ? 'online' : 'offline'"
+				[useOutlet]="true"
+				[hookToCanvas]="true"
+				[focusOnOpen]="false"
+				[focusOnClose]="false")
+				button.d-flex(dropdownToggle)
+					portrait-box.mr-2([pony]="f.ponyInfo" size="small" [noBorder]="true")
+					.flex-grow-1.friends-item-details
+						.friends-item-name {{f.actualName}}&#160;
+						.friends-item-more
+							.text-success.float-right.ml-2(*ngIf="f.online") online
+							.text-muted.float-right.ml-2(*ngIf="!f.online") offline
+							.text-muted.friends-item-account {{f.accountName}}
+				.friends-item-delete.d-flex.px-2.py-1(*ngIf="removing === f")
+					button.btn.btn-sm.btn-outline-success.flex-grow-1((click)="cancelRemove(); $event.stopPropagation()")
+						| Cancel
+					button.btn.btn-sm.btn-outline-danger.flex-grow-1.ml-2((click)="confirmRemove(); $event.stopPropagation()")
+						| Confirm remove
+				//- span.badge.badge-none.friends-item-server PG
+				.options-dropdown-menu.dropdown-menu(*dropdownMenu)
+					button.dropdown-item((click)="sendMessageTo(f)" [disabled]="!f.online") Send whisper
+					button.dropdown-item((click)="inviteToParty(f)" [disabled]="!f.online") Invite to party
+					.dropdown-divider
+					button.dropdown-item((click)="remove(f)") Remove
+		ng-template(#noFriends)
+			.text-center.text-muted.p-2(*ngIf="friends")
+				| select a player and use #[fa-icon([icon]="userOptionsIcon")] menu to add them to your friends
+			.text-center.text-muted.p-2(*ngIf="!friends")
+				| Loading...

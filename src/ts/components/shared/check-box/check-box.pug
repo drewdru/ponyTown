@@ -1,0 +1,8 @@
+button.check-box(
+	role="checkbox"
+	(click)="toggle()"
+	[class.disabled]="disabled"
+	[attr.aria-disabled]="disabled"
+	[attr.aria-label]="label || ''"
+	[attr.aria-checked]="checked")
+	fa-icon(*ngIf="checked" [icon]="icon" [fixedWidth]="true")

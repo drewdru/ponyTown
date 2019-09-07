@@ -1,0 +1,61 @@
+#app-game.app-game([hidden]="!playing")
+	canvas#canvas.unselectable.pixelart
+	span#stats.d-none.d-sm-inline
+	pony-box#pony-box(*ngIf="selected" [pony]="selected" (sendMessage)="messageToPony(chatBox, $event)")
+	editor-box#editor(*hasFeature="'editor'; also playing && isMod")
+	party-list#party-list
+	settings-box#settings-box
+	swap-box#swap-box
+	notification-list#notifications([notifications]="notifications" [notificationsLength]="notifications.length")
+	chat-log#chat-log(*ngIf="playing" (toggleType)="chatBox.setChatType($event)" (nameClick)="chatLogNameClick(chatBox, $event)")
+	action-bar#action-bar(*ngIf="showActionBar" [blurred]="chatBox.isOpen" [editable]="editingActions")
+	friends-box#friends-box((sendMessage)="messageToFriend(chatBox, $event)")
+	chat-box#chat-box(#chatBox [disabled]="editingActions")
+	#game-announcer(#announcer style="display: none")
+		div(#announcerText aria-live="assertive")
+	#touch-origin
+	#touch-position
+	#range-indicator
+	div
+		dropdown-outlet
+
+.container([hidden]="playing")
+	menu-bar(
+		*ngIf="!playing" [logo]="true" [account]="account" [loading]="loading" (signIn)="signIn($event)" (signOut)="signOut()")
+		menu-item(route="/" name="Home" [icon]="homeIcon")
+		menu-item(route="/help" name="Help" [icon]="helpIcon")
+		menu-item(route="/about" name="About" [icon]="aboutIcon")
+		menu-item(route="/character" name="Characters" [icon]="charactersIcon" *ngIf="account")
+
+	main
+		router-outlet
+
+	footer.text-muted.text-nowrap(*ngIf="!playing")
+		.app-version
+			| version #[b {{version}}]
+
+		.text-right
+			.d-flex.flex-wrap
+				//- .text-nowrap.mr-2
+					| &copy; 2016-{{date | date:'yyyy'}}
+					|  #[a.text-muted.mr-1([href]="twitterLink" target="_blank") {{copyright}}] | 
+				.text-nowrap
+					a.text-muted.mr-2(*ngIf="twitterLink" [href]="twitterLink" target="_blank" title="Twitter")
+						fa-icon([icon]="twitterIcon" [fixedWidth]="true")
+					a.text-muted.mr-2(*ngIf="patreonLink" [href]="patreonLink" target="_blank" title="Patreon")
+						fa-icon([icon]="patreonIcon" [fixedWidth]="true")
+					a.text-muted.mr-2(*ngIf="contactEmail" href="mailto:{{contactEmail}}" target="_blank" title="Email")
+						fa-icon([icon]="emailIcon" [fixedWidth]="true")
+			div
+				a.text-muted.privacy-policy(href="/privacypolicy.html" target="_blank" rel="noopener") privacy policy
+				span.mx-2 |
+				a.text-muted(href="/termsofservice.html" target="_blank" rel="noopener") terms of service
+
+draggable-outlet
+
+ng-template(#reloadModal)
+	.modal-body
+		iframe.modal-frame#reload-frame(src="/reload.html" frameBorder="0")
+	.modal-footer
+		button.btn.btn-outline-secondary((click)="cancelReloadModal()")
+			| Cancel

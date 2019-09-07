@@ -1,0 +1,4 @@
+div(*ngFor="let o of origins | slice:0:limit")
+	origin-info-remote([originIP]="o.ip")
+a.text-muted(*ngIf="origins.length > limit" (click)="limit = 999999")
+	small ({{origins.length - limit}} more)

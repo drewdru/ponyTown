@@ -1,0 +1,50 @@
+﻿.form-inline
+	.form-group
+		a.btn.btn-default(routerLink="/")
+			fa-icon([icon]="homeIcon")
+
+	.form-group
+		label.ml-2 sheets:
+		.btn-group.dropdown.ml-1(dropdown)
+			button.btn.btn-default.dropdown-toggle(dropdownToggle style="width: 200px;")
+				| {{sheet.name}}
+				fa-icon.ml-1(*ngIf="sheet.file" [icon]="imageIcon")
+			.dropdown-menu(*dropdownMenu)
+				div(*ngFor="let s of sheets")
+					.dropdown-divider(*ngIf="s.spacer")
+					a.dropdown-item((click)="setSheet(s)" *ngIf="!s.spacer")
+						| {{s.name}}
+						fa-icon.ml-1(*ngIf="s.file" [icon]="imageIcon")
+
+	.form-group
+		label.ml-1
+		scale-picker([(scale)]="scale" (scaleChange)="redraw()")
+
+	.form-group
+		button.btn.btn-default.ml-1((click)="redraw()")
+			fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+	.form-group
+		label.ml-2 rows:
+		input.form-control.ml-1(type="number" [(ngModel)]="rows" (input)="redraw()" style="width: 70px;")
+
+	.form-group
+		label.ml-2 cols:
+		input.form-control.ml-1(type="number" [(ngModel)]="cols" (input)="redraw()" style="width: 70px;")
+
+	.form-group
+		label.ml-2 pattern:
+		input.form-control.ml-1(type="number" [(ngModel)]="pattern" (input)="redraw()" style="width: 70px;")
+
+	.form-group
+		button.btn.btn-default.ml-2((click)="png()") PNG
+		button.btn.btn-default.ml-1((click)="psd()") PSD
+		button.btn.btn-default.ml-1((click)="allPSDs()") All PSDs
+		button.btn.btn-danger.ml-1(*ngIf="sheet.alert" disabled) {{sheet.alert}}
+
+.tools-sheet-offsets(#offsetsDiv [hidden]="!sheet.offsets")
+	tools-offset(
+		*ngFor="let o of sheet.offsets" [offset]="o" (change)="redraw()" [style.width.px]="sheet.offset * scale")
+
+.tools-sheet-scroll([class.with-offsets]="sheet.offsets" (scroll)="offsetsDiv.scrollLeft = $event.target.scrollLeft")
+	canvas(#canvas)

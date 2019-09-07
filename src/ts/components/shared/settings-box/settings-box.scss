@@ -1,0 +1,17 @@
+@import '../../../../styles/partials/variables';
+@import '../../../../styles/partials/mixins';
+
+.settings-box {
+	> div {
+		display: inline-block;
+	}
+
+	> .dropdown {
+		padding-bottom: 5px;
+	}
+}
+
+.settings-box-menu {
+	@include nipple(9px);
+	min-width: 205px;
+}

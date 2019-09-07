@@ -1,0 +1,159 @@
+@import '../../../../styles/partials/variables';
+
+$chat-log-bg: rgba(0, 0, 0, 0.2);
+$chat-log-bg-faded: rgba(0, 0, 0, 0.1);
+$chat-log-bg-hover: rgba(0, 0, 0, 0.5);
+$chat-log-tabs-height: 30px;
+$chat-log-buttons-width: 40px;
+
+$resizer-size: 12px;
+$resizer-offset: $resizer-size / 2;
+
+.chat-log {
+	display: flex;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	min-width: 200px;
+	max-width: 100%;
+	max-height: calc(100vh - 220px);
+	min-height: 120px;
+}
+
+.chat-log-buttons {
+	flex-direction: column-reverse;
+	width: $chat-log-buttons-width;
+	padding: 5px 3px;
+	padding-bottom: 30px;
+	z-index: 2;
+}
+
+.chat-log-toggle {
+	position: absolute;
+	bottom: 5px;
+	left: 4px;
+	z-index: 3;
+}
+
+.has-unread .main-bubble {
+	color: $chat-whisper;
+}
+
+.whispers-count {
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	position: absolute;
+	left: 6px;
+	top: 9px;
+	width: 16px;
+	font-size: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: 1rem;
+}
+
+.whisper-icon {
+	position: absolute;	
+	top: 0;
+	left: 0;
+	font-size: 14px;
+	color: $chat-whisper !important;
+}
+
+.chat-log-content {
+	position: relative;
+	display: flex;
+	background: $chat-log-bg;
+	padding: 5px 0;
+	padding-left: 40px;
+	margin-left: -$chat-log-buttons-width;
+	border-radius: $border-radius-base;
+	word-break: break-word;
+	white-space: pre-line;
+	line-height: 20px;
+	height: 100%;
+	width: 100%;
+}
+
+.chat-log-tabs {
+	position: absolute;
+	top: -$chat-log-tabs-height;
+	left: 30px;
+	display: flex;
+	user-select: none;
+}
+
+.chat-log-tab {
+	background: $chat-log-bg-faded;
+	padding: 5px 10px 0;
+	margin-left: 10px;
+	height: $chat-log-tabs-height;
+	border-top-left-radius: $border-radius-base;
+	border-top-right-radius: $border-radius-base;
+	color: white;
+	overflow: hidden;
+
+	&.active {
+		background: $chat-log-bg;
+	}
+}
+
+.chat-log-scroll-outer {
+	overflow: hidden;
+	width: 100%;
+}
+
+.chat-log-scroll-inner {
+	width: calc(100% + 50px);
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+}
+
+.chat-log-scroll-inner-inner {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	min-height: 100%;
+	padding: 0 5px;
+}
+
+.chat-log-resize-top {
+	position: absolute;
+	top: -$resizer-offset;
+	right: $resizer-offset;
+	height: $resizer-size;
+	left: 250px;
+	cursor: ns-resize;
+}
+
+.chat-log-resize-top-right {
+	position: absolute;
+	top: -($resizer-offset + 1);
+	right: -($resizer-offset + 1);
+	width: $resizer-size + 4;
+	height: $resizer-size + 4;
+	cursor: nesw-resize;
+}
+
+.chat-log-resize-right {
+	position: absolute;
+	top: $resizer-offset;
+	right: -$resizer-offset;
+	width: $resizer-size;
+	bottom: $resizer-offset;
+	cursor: ew-resize;
+}
+
+.resize-icon {
+	font-size: 18px;
+	position: absolute;
+	top: -3px;
+	right: 1px;
+	transform: rotate(45deg);
+	color: rgba(255, 255, 255, 0.2);
+}

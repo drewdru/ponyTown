@@ -1,0 +1,14 @@
+@import '../../../../styles/partials/variables';
+
+.character-select {
+	max-width: 400px;
+	margin: auto;
+	z-index: 200;
+}
+
+character-list {
+	@include media-breakpoint-down(sm) {
+		left: auto;
+		right: 0;
+	}
+}

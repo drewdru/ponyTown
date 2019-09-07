@@ -1,0 +1,59 @@
+﻿.text-center.pt-5(*ngIf="!stats")
+	fa-icon.text-muted([icon]="spinnerIcon" [fixedWidth]="true" [spin]="true" size="3x")
+
+.row(*ngIf="stats")
+	.col-md-6
+		h3
+			| Origins statistics
+			button.btn.btn-xs.btn-default.ml-1((click)="update()")
+				fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+		.stat-field Total origin count: #[b {{stats.totalOrigins}}]
+		.stat-field Total origin count (IP4 / IP6): #[b {{stats.totalOriginsIP4}} / {{stats.totalOriginsIP6}}]
+		.stat-field.mt-3 Unique origins: #[b {{stats.uniqueOrigins}}]
+		.stat-field Multiple account origins: #[b {{stats.duplicateOrigins}}]
+		.stat-field Single account origins: #[b {{stats.singleOrigins}}]
+
+		h3.mt-3
+			| Ignores statistics
+			button.btn.btn-xs.btn-default.ml-1((click)="update()")
+				fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+		.stat-field Total ignore count: #[b {{other?.totalIgnores}}]
+
+		h3.mt-3
+			| Other statistics
+			button.btn.btn-xs.btn-default.ml-1((click)="update()")
+				fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+		.stat-field Auths with empty account: #[b {{other?.authsWithEmptyAccount}}]
+		.stat-field Auths with missing account: #[b {{other?.authsWithMissingAccount}}]
+
+	.col-md-6
+		h3 Origins distribution 
+
+		table.table.table-sm(style="width: auto;")
+			thead
+				tr
+					th origins
+					th accounts
+					th
+			tbody
+				tr(*ngFor="let d of stats.distribution; let i = index")
+					td {{i}}
+					td {{d}}
+					td
+						button.btn.btn-xs.btn-default((click)="clear(i)" [disabled]="pending" title="Clear old singles in this row")
+							fa-icon([icon]="eraserIcon" [fixedWidth]="true")
+						button.btn.btn-xs.btn-default.ml-1((click)="clear(i, true)" [disabled]="pending" title="Clear old singles in or below this row")
+							fa-icon([icon]="eraserIcon" [fixedWidth]="true")
+							fa-icon([icon]="chevronDownIcon" [fixedWidth]="true")
+						button.btn.btn-xs.btn-default.ml-1((click)="clearSingles(i)" [disabled]="pending" title="Clear singles in or below this row")
+							fa-icon([icon]="userIcon" [fixedWidth]="true")
+							fa-icon([icon]="chevronDownIcon" [fixedWidth]="true")
+						button.btn.btn-xs.btn-default.ml-1((click)="clearOld(i)" [disabled]="pending" title="Clear very old (3 months) in or below this row")
+							fa-icon([icon]="clockIcon" [fixedWidth]="true")
+							fa-icon([icon]="chevronDownIcon" [fixedWidth]="true")
+						button.btn.btn-xs.btn-default.ml-1((click)="clearTo10(i)" [disabled]="pending" title="Trim origins to 10 most recent")
+							b 10
+							fa-icon([icon]="chevronDownIcon" [fixedWidth]="true")

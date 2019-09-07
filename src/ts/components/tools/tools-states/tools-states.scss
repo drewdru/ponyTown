@@ -1,0 +1,57 @@
+$state-size: 100px;
+$time-size: 20px;
+
+.state-item-container {
+	position: relative;
+	
+	> svg {
+		position: relative;
+		z-index: 1;
+	}
+}
+
+.state-item {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	cursor: pointer;
+	
+	> div {
+		position: absolute;
+		left: -$state-size / 2;
+		top: -$state-size / 2;
+		width: $state-size;
+		height: $state-size;
+		background: gray;
+		border-radius: 100%;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 0 5px #000;
+	}
+}
+
+.state-item-time{
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	font-size: 10px;
+	font-weight: bold;
+	color: black;
+	z-index: 2;
+
+	> div {
+		position: absolute;
+		left: -$time-size / 2;
+		top: -$time-size / 2;
+		width: $time-size;
+		height: $time-size;
+		background: gray;
+		border-radius: 100%;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}

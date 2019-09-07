@@ -1,0 +1,15 @@
+{
+  "width": 32,
+  "height": 32,
+  "tiles": "RAICARwCBQEbAgUBHAIEARECAgMJAgYBDgIFAwkCBAENAgYDDAICAQkCAwEGAwwCBAEFAgUBAQIEAw4CBQECAgMBBQIDAxACBwEaAgYBGgIGARoCCwEEBBICCgEEBBICBwEDAgQEEwIGAQMCBAQOAgcBAgICARICCgEDAgIBDgIDCwMBBQICAQMCBAEMAgQLBgIECgMCAwEEBQgCBAsGAgUKBQIFBQcCBQsFAgUKBAIGBQcCBQsFAgUKBAIFBRICBAoGAgQFxQI=",
+  "defaultTile": 2,
+  "spawnArea": {
+    "x": 16,
+    "y": 16,
+    "w": 0,
+    "h": 0
+  },
+  "spawns": {},
+  "lockedTiles": [],
+  "entities": []
+}

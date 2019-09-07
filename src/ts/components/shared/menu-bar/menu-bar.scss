@@ -1,0 +1,57 @@
+@import '../../../../styles/partials/variables';
+
+.navbar {
+	font-size: 16px;
+	margin-bottom: 0;
+	padding: 0px !important;
+	padding-top: $navbar-link-border !important;
+
+	.navbar-toggler {
+		margin: 8px 0;
+	}
+}
+
+.logo {
+	margin-top: 5px;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	&.active {
+		display: none;
+	}
+}
+
+.logo-large {
+	display: none;
+
+	@include media-breakpoint-up(lg) {
+		display: block;
+	}	
+}
+
+.logo-small {
+	display: block;
+
+	@include media-breakpoint-up(lg) {
+		display: none;
+	}
+}
+
+.btn {
+	transition: none;
+}
+
+.sign-in-only {
+	opacity: 0.6;	
+}
+
+.account-alert-icon {
+	position: absolute;
+	right: 20px;
+	top: 5px;
+}
+
+.online-offline {
+	font-weight: 500;
+}

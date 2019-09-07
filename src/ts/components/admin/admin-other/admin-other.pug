@@ -1,0 +1,52 @@
+.row
+	.col-6
+		.form
+			.form-group
+				h3 Notifications
+
+		.form
+			.form-group(*ngFor="let field of fields")
+				label {{field.title}}
+				textarea.form-control([(ngModel)]="field.value" rows="4" style="width: 400px;")
+			.form-group
+				button.btn.btn-primary(type="button" (click)="saveFields()") Save
+				button.btn.btn-default.ml-1(type="button" (click)="resetFields()") Reset
+
+	.col-6
+		.form
+			.form-group
+				h3 Patreon
+			.form-group.d-flex
+				button.btn.btn-default((click)="updatePatreon()")
+					| Update Data
+				.input-group.ml-1(style="width: 400px")
+					input.form-control(#patreonToken placeholder="patreon token")
+					.input-group-append
+						button.btn.btn-warning((click)="updatePatreonToken(patreonToken.value); patreonToken.value = ''")
+							| Update Token
+			.form-group
+				| To get new token, got to #[a(href="https://www.patreon.com/portal/registration/register-clients") My Clients],
+				| refresh token and update patreon token field with "Creator's Access Token" from the site.
+			.form-group
+				button.btn.btn-default((click)="getLastPatreonData()")
+					| Get last patreon data
+
+		.form
+			.form-group
+				h3 Other
+			.form-group
+				button.btn.btn-default((click)="updatePastSupporters()")
+					| Update past supporters
+
+.row
+	.col-12
+		.form
+			.form-group
+				label Suspicious pony info to report
+				textarea.form-control([(ngModel)]="suspiciousPonies" rows="15")
+			.form-group(*ngIf="suspiciousPoniesError")
+				.alert.alert-danger
+					| {{suspiciousPoniesError}}
+			.form-group
+				button.btn.btn-primary((click)="saveSuspiciousPonies()") Save
+				button.btn.btn-default.ml-1((click)="resetSuspiciousPonies()") Reset

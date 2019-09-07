@@ -1,0 +1,204 @@
+@import '../../../styles/partials/variables';
+
+:host {
+	display: block;
+	position: relative;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	position: relative;
+}
+
+main {
+	padding-top: 50px;
+	padding-bottom: 100px;
+	flex-grow: 1;
+
+	@include media-breakpoint-down(sm) {
+		padding-top: 20px;
+		padding-bottom: 50px;
+	}
+}
+
+footer {
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 20px;
+
+	@include media-breakpoint-down(xs) {
+		white-space: normal !important;
+		display: block;
+		font-size: 16px;
+
+		.app-version {
+			padding-bottom: 10px;
+		}
+
+		.text-right {
+			text-align: left !important;
+		}
+
+		a {
+			display: inline-block;
+			padding: 10px 10px;
+
+			&.privacy-policy {
+				padding-left: 0;
+			}
+		}
+	}
+}
+
+.app-game {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+#canvas {
+	left: 0;
+	top: 0;
+	position: fixed;
+	touch-action: none;
+	cursor: default;
+	user-select: none;
+}
+
+#pony-box {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+}
+
+$chat-pad: 5px;
+
+#chat-box {
+	position: fixed;
+	left: $chat-pad;
+	bottom: $chat-pad;
+	right: $chat-pad;
+	height: 0;
+}
+
+#chat-log {
+	position: fixed;
+	left: $chat-pad;
+	bottom: $chat-pad + 42px;
+	right: $chat-pad;
+	height: 0;
+}
+
+#action-bar {
+	position: fixed;
+	left: $chat-pad + 45px;
+	bottom: 0;
+}
+
+#party-list {
+	position: fixed;
+	top: 105px;
+	left: 10px;
+	z-index: 2;
+}
+
+#editor {
+	position: fixed;
+	left: 5px;
+	top: 5px;
+}
+
+#settings-box {
+	position: fixed;
+	top: 5px;
+	right: 5px;
+}
+
+#friends-box {
+	position: fixed;
+	top: 5px;
+	right: 45px;
+}
+
+#swap-box {
+	position: fixed;
+	top: 5px;
+	right: 86px;
+}
+
+#notifications {
+	position: fixed;
+	top: 45px;
+	right: 5px;
+}
+
+#stats {
+	position: fixed;
+	right: 5px;
+	bottom: 0px;
+	color: #222;
+	font-size: 12px;
+	font-family: monospace;
+	pointer-events: none;
+	user-select: none;
+}
+
+#touch-origin {
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 100px;
+	width: 100px;
+	display: none;
+	border: 4px solid white;
+	border-radius: 50%;
+	will-change: transform;
+}
+
+#touch-position {
+	background: white;
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 50px;
+	width: 50px;
+	display: none;
+	border-radius: 50%;
+	will-change: transform;
+}
+
+#range-indicator {
+	pointer-events: none;
+	position: fixed;
+	border: solid 5px white;
+	border-radius: 50%;
+	display: none;
+}
+
+#game-announcer {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	
+	> div {
+		font-size: 16px;
+		padding: 10px 15px;
+		background: #222;
+		color: $body-color;
+		max-width: 400px;
+		border-radius: 10px;
+		margin-top: 100px;
+	}
+}

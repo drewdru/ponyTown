@@ -1,0 +1,389 @@
+ng-template(#descriptionTooltip)
+	.text-left
+		p Description and tags help you organize and search for your ponies.
+		p Use # tags to be able to quickly find specific ponies like #oc #winter or #unicorn
+		p
+			| Use @ tags to sort your ponies. @top to put them at the start of the list, @end at the end,
+			| and @1 @2 @3 ... to order them manually.
+
+page-loader(*ngIf="!playing")
+
+.row(*ngIf="!playing && !loading")
+	.col-lg-6.text-center
+		h1.sr-only(focusTitle) Characters
+		h2.sr-only Character selection
+		.mx-auto(style="max-width: 400px;")
+			support-button.mb-3
+			install-button.mb-3
+			character-select(
+				[(error)]="error" [newButton]="true" [removeButton]="true" (change)="updateMuzzles()"
+				(preview)="previewPony = $event")
+
+			.character-preview-box.mx-auto.my-3((fixToTop)="fixed = $event" [fixToTopOffset]="-40")
+				character-preview(
+					#characterPreview [pony]="previewInfo" [state]="state" [noBackground]="true" [noShadow]="fixed"
+					[name]="previewName" [tag]="previewTag" [extra]="previewExtra" style="z-index: 100")
+
+			.form-group.text-center
+				button.btn.btn-lg.btn-default([disabled]="!canDuplicate" (click)="duplicate()" aria-label="Duplicate character")
+					| Duplicate
+				button.btn.btn-lg.btn-default.ml-2([disabled]="!canRevert" (click)="revert()" aria-label="Revert changes")
+					| Revert
+				button.btn.btn-lg.btn-default.ml-2([disabled]="!canSave" (click)="save()" aria-label="Save character")
+					| Save
+
+			play-box(label="Save & Play" [(error)]="error")
+			play-notice
+
+	.col-lg-6.character-tabs([setOutlineHidden]="!customOutlines" [class.character-tab-warning]="updateWarning")
+		h2.sr-only Character customization
+		tabset(type="pills" *ngIf="loaded" saveActiveTab="character-active-tab" label="Character customization")
+			tab(title="body")
+				.character-tab(*tabContent)
+					div(*ngIf="account?.supporter")
+						.row.form-group
+							label.col-sm-4.col-form-label.text-patreon
+								| Supporter options
+							.col-sm-8.text-muted.pt-2
+								custom-checkbox([(checked)]="pony.hideSupport") hide supporter tag
+						hr.my-2
+
+					.row.form-group
+						label.col-sm-4.col-form-label Advanced options
+						.col-sm-8.text-muted.pt-1
+							custom-checkbox([(checked)]="pony.respawnAtSpawn")
+								| always respawn at spawn point
+							custom-checkbox([(checked)]="info.customOutlines")
+								| allow custom outlines
+							custom-checkbox([(checked)]="info.freeOutlines" (checkedChange)="freeOutlinesChanged($event)")
+								| don't darken outlines
+							custom-checkbox(
+								[(checked)]="info.darkenLockedOutlines" [disabled]="!info.freeOutlines"
+								(checkedChange)="darkenLockedOutlinesChanged($event)")
+								| darken locked outlines
+
+					.row.form-group(*ngIf="debug")
+						label.col-sm-4.col-form-label Debug options
+						.col-sm-8
+							button.btn.btn-sm.btn-default((click)="addBlush()") Add blush
+
+					.row.form-group
+						label.col-sm-4.col-form-label Export/Import options
+						.col-sm-8
+							button.btn.btn-sm.btn-default((click)="exportPony()") Export pony
+							button.btn.btn-sm.btn-default.ml-1((click)="exportPonies()") Export all ponies
+							button.btn.btn-sm.btn-default.ml-1((click)="importFile.click()") Import ponies
+							input.d-none(#importFile type="file" (change)="importPonies(importFile.files[0])")
+
+					.row.form-group
+						label#social-site-label.col-sm-4.col-form-label Show social site
+						.col-sm-8
+							.dropdown.btn-group(dropdown)
+								button.btn.btn-default.dropdown-toggle(
+									dropdownToggle aria-labelledby="social-site-label" aria-describedby="social-site-help")
+									fa-icon.mr-1(
+										*ngIf="site?.icon" [icon]="icon(site.icon)" [fixedWidth]="true" [style.color]="site.color"
+										size="lg" [attr.aria-label]="site.icon")
+									strong {{site?.name}}
+								.dropdown-menu(*dropdownMenu)
+									a.dropdown-item(*ngFor="let s of sites" (click)="site = s")
+										fa-icon.mr-1(
+											*ngIf="s.icon" [icon]="icon(s.icon)" [fixedWidth]="true" [style.color]="s.color"
+											size="lg" [attr.aria-label]="s.icon")
+										strong {{s.name}}
+
+							.dropdown.btn-group.ml-1(dropdown *ngIf="tags.length > 1")
+								button.btn.btn-default.dropdown-toggle(dropdownToggle aria-label="Show tag")
+									span.badge(*ngIf="tag.id" [ngClass]="'badge-' + tag.className") {{tag.id}}
+									strong(*ngIf="!tag.id") {{tag.name}}
+								.dropdown-menu(*dropdownMenu)
+									a.dropdown-item(*ngFor="let t of tags" (click)="tag = t")
+										span.badge(*ngIf="t.id" [ngClass]="'badge-' + t.className") {{t.id}}
+										strong(*ngIf="!t.id") {{t.name}}
+
+							#social-site-help.text-muted.mt-1
+								| Shows social site next to your name to prove to others that it's your account.
+
+					.row.form-group
+						label.col-sm-4.col-form-label(for="description")
+							| Description
+							fa-icon.text-muted.ml-2([icon]="infoIcon" [tooltip]="descriptionTooltip" containerClass="tooltip-desc")
+						.col-sm-8
+							input.form-control#description(
+								[(ngModel)]="pony.desc" placeholder="example: with a hat #oc #winter" [maxlength]="maxDescLength")
+
+					.row.form-group
+						.col-sm-4.col-lock-box
+							label(for="frame-input") Animation
+							check-box.lock-box([icon]="playIcon" [(checked)]="playAnimation" label="Play animation")
+						.col-sm-8
+							.input-group
+								input.form-control#frame-input(
+									type="number" [(ngModel)]="state.animationFrame" [disabled]="playAnimation" min="0"
+									title="Animation frame" aria-label="Animation frame")
+
+								.input-group-append.dropdown(*ngIf="canSaveFiles" dropdown)
+									button.btn.btn-default.dropdown-toggle(dropdownToggle *ngIf="canExport" aria-label="Export / Import")
+										fa-icon([icon]="codeIcon")
+									.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+										a.dropdown-item((click)="export()") export all
+										a.dropdown-item((click)="import()") import data
+										a.dropdown-item((click)="testSize()") print compressed
+										a.dropdown-item((click)="testJSON()") print raw
+
+								.input-group-append.dropdown(dropdown)
+									button.btn.btn-default(
+										*ngIf="canSaveFiles" (click)="export(activeAnimation)" title="Save as PNG" aria-label="Save as PNG")
+										fa-icon([icon]="saveIcon")
+									button.btn.btn-default.dropdown-toggle(dropdownToggle style="min-width: 80px")
+										strong {{animations[activeAnimation]().name}}
+									.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+										a.dropdown-item(*ngFor="let a of animations; let i = index" (click)="setActiveAnimation(i)")
+											| {{a().name}}
+
+					hr
+					fill-outline(
+						label="Body color" [(fill)]="info.coatFill" [(outline)]="info.coatOutline"
+						[(outlineLocked)]="info.lockCoatOutline" [outlineHidden]="!customOutlines" (change)="changed()")
+					hr
+					set-selection(
+						label="Horn" [base]="coatFill" [set]="info.horn" [sets]="horns" [compact]="true" (change)="changed()"
+						[darken]="darken")
+					hr
+					.row.form-group
+						label.col-sm-4.col-form-label Magic color
+						.col-sm-8
+							color-picker([(color)]="info.magicColor" label="Magic color")
+					hr
+					set-selection(
+						label="Wings" [base]="coatFill" [set]="info.wings" [sets]="wings" [compact]="true" (change)="changed()"
+						[darken]="darken")
+					hr
+					set-selection(
+						label="Ears" [base]="coatFill" [set]="info.ears" [sets]="ears" [compact]="true" (change)="changed()"
+						[darken]="darken")
+					hr
+					set-selection(
+						label="Front hooves" [base]="coatFill" [set]="info.frontHooves" [sets]="frontHooves" [compact]="true"
+						[darken]="darken" (change)="changed()")
+					hr
+					set-selection(
+						label="Back hooves" [base]="hoovesFill" [set]="info.backHooves" [sets]="backHooves" [compact]="true"
+						[darken]="darken" (change)="changed()")
+					hr
+					butt-mark-editor([info]="info" [state]="buttMarkState")
+
+			tab(title="mane")
+				.character-tab(*tabContent)
+					set-selection(
+						label="Mane" [base]="maneFill" [set]="info.mane" [sets]="manes" [nonLockable]="true"
+						[darken]="darken" (change)="changed()")
+					hr
+					set-selection(
+						label="Back mane" [base]="maneFill" [set]="info.backMane" [sets]="backManes"
+						[darken]="darken" (change)="changed()")
+
+			tab(title="tail")
+				.character-tab(*tabContent)
+					set-selection(
+						label="Tail" [base]="maneFill" [set]="info.tail" [sets]="tails" [darken]="darken" (change)="changed()")
+					.form-group.text-center
+						button.btn.btn-sm.btn-default((click)="copyCoatColorToTail()" [disabled]="info.tail.lockFills[0]")
+							| Use body color
+
+			tab(title="face")
+				.character-tab(*tabContent)
+
+					.row.form-group
+						.col-sm-4.col-lock-box
+							label#eye-color Eye color
+							check-box.lock-box(
+								[(checked)]="info.lockEyeColor" [icon]="lockIcon" (checkedChange)="eyeColorLockChanged($event)"
+								label="Lock color for both eyes" title="Lock color for both eyes")
+						.col-sm-8
+							color-picker([(color)]="info.eyeColorRight" (colorChange)="changed()" labelledBy="eye-color")
+					.row.form-group(*ngIf="!info.lockEyeColor")
+						label#eye-color-left.col-sm-4.col-form-label Eye color (left)
+						.col-sm-8
+							color-picker([(color)]="info.eyeColorLeft" labelledBy="eye-color-left")
+
+					.row.form-group
+						.col-sm-4.col-lock-box
+							label#eye-whites-label Eye whites
+							check-box.lock-box(
+								[(checked)]="lockEyeWhites" [icon]="lockIcon" (checkedChange)="eyeWhiteLockChanged($event)"
+								label="Lock left eye white for both eyes" title="Lock left eye white for both eyes")
+						.col-sm-8
+							color-picker([(color)]="info.eyeWhites" (colorChange)="changed()" labelledBy="eye-whites-label")
+					.row.form-group(*ngIf="info.unlockEyeWhites")
+						label#eye-whites-label-left.col-sm-4.col-form-label Eye whites (left)
+						.col-sm-8
+							color-picker([(color)]="info.eyeWhitesLeft" labelledBy="eye-whites-label-left")
+
+					.row.form-group
+						.col-sm-4.col-lock-box
+							label#eyes {{info.lockEyes ? 'Eyes' : 'Right eye'}}
+							check-box.lock-box(
+								[(checked)]="info.lockEyes" [icon]="lockIcon" (checkedChange)="eyeOpennessChanged($event)"
+								label="Lock both eyes" title="Lock both eyes")
+						.col-sm-8
+							sprite-selection(
+								[(selected)]="info.eyeOpennessRight" [sprites]="eyesRight" [fill]="info.eyeColorRight"
+								[circle]="info.coatFill" [reverseExtra]="true" [skip]="1" [limit]="9" [darken]="darken"
+								(selectedChange)="eyeOpennessChanged(info.lockEyes)" aria-labelledby="eyes")
+					.row.form-group(*ngIf="!info.lockEyes")
+						.col-sm-4
+							label#left-eye Left eye
+						.col-sm-8
+							sprite-selection(
+								[(selected)]="info.eyeOpennessLeft" [sprites]="eyesLeft" [fill]="info.eyeColorLeft" [darken]="darken"
+								[circle]="info.coatFill" [reverseExtra]="true" [skip]="1" [limit]="5" aria-labelledby="left-eye")
+
+					.row.form-group
+						.col-sm-4.col-lock-box
+							label Eyeshadow
+							check-box.lock-box(
+								[(checked)]="info.eyeshadow" (checkedChange)="characterPreview.blink()"
+								label="Use eye shadow" title="Use eye shadow")
+						.col-sm-8
+							color-picker([(color)]="info.eyeshadowColor" [isDisabled]="!info.eyeshadow" label="Eyeshadow color")
+
+					.row.form-group
+						label#eyelashes.col-sm-4.col-form-label Eyelashes
+						.col-sm-8
+							sprite-selection(
+								[(selected)]="info.eyelashes" [sprites]="eyelashes" [fill]="info.eyeColorRight" [darken]="darken"
+								[circle]="info.coatFill" [reverseExtra]="true" aria-labelledby="eyelashes")
+
+					.row.form-group
+						.col-sm-4.col-lock-box
+							label#eyelashes-label Eyelash color
+							check-box.lock-box(
+								[(checked)]="lockEyelashColor" [icon]="lockIcon" (checkedChange)="eyelashLockChanged($event)"
+								label="Lock eyelash color for both eyes" title="Lock eyelash color for both eyes")
+						.col-sm-8
+							color-picker([(color)]="info.eyelashColor" (colorChange)="changed()" labelledBy="eyelashes-label")
+					.row.form-group(*ngIf="!lockEyelashColor")
+						label#eyelashes-label-left.col-sm-4.col-form-label Eyelash color (left)
+						.col-sm-8
+							color-picker([(color)]="info.eyelashColorLeft" labelledBy="eyelashes-label-left")
+
+					hr
+					set-selection(
+						label="Muzzle" base="info.coatFill" [set]="info.nose" [sets]="noses" [darken]="darken"
+						[compact]="true" (change)="changed(); updateMuzzles()")
+					hr
+					set-selection(
+						label="Markings" [base]="coatFill" [set]="info.head" [sets]="heads" [darken]="darken"
+						[onlyPatterns]="true" (change)="changed()")
+					hr
+					.row.form-group
+						label#fangs.col-sm-4.col-form-label Fangs
+						.col-sm-8
+							sprite-selection(
+								[(selected)]="info.fangs" [sprites]="fangs" [fill]="info.nose.fills" [darken]="darken"
+								[outline]="info.nose.outlines" [circle]="info.coatFill" aria-labelledby="fangs")
+					.row.form-group
+						label#expression.col-sm-4.col-form-label(for="#expression-selection") Expression
+						.col-sm-8
+							sprite-selection#expression-selection(
+								[(selected)]="info.muzzle" [sprites]="muzzles" [fill]="info.nose.fills" [darken]="darken"
+								[outline]="info.nose.outlines" [circle]="info.coatFill" [limit]="9" aria-labelledby="expression")
+					hr
+					set-selection(
+						label="Facial hair" [base]="maneFill" [set]="info.facialHair" [sets]="facialHair" [darken]="darken"
+						(change)="changed()")
+
+			tab(title="other")
+				.character-tab(*tabContent)
+					tabset.accessories-tabset(saveActiveTab="character-active-accessory-tab" label="Character accessories")
+						tab(title="head")
+							.accessory-tab(*tabContent)
+								set-selection(
+									label="Head accessories" [set]="info.headAccessory" [sets]="headAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+								hr
+								set-selection(
+									label="Ear accessories" [set]="info.earAccessory" [sets]="earAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+								hr
+								set-selection(
+									label="Face accessories" [set]="info.faceAccessory" [sets]="faceAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+
+						tab(title="neck")
+							.accessory-tab(*tabContent)
+								set-selection(
+									label="Neck accessories" [set]="info.neckAccessory" [sets]="neckAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+
+						tab(title="legs")
+							.accessory-tab(*tabContent)
+								.row.form-group
+									label.col-sm-4.col-form-label Use the same accessory
+									.col-sm-8.text-muted.pt-1
+										.mb-2
+											custom-checkbox([(checked)]="info.lockBackLegAccessory")
+												| for front and back legs
+										.mb-2
+											custom-checkbox([(checked)]="lockFrontLegAccessory")
+												| for both front legs
+										.mb-2
+											custom-checkbox([(checked)]="lockBackLegAccessory" [disabled]="info.lockBackLegAccessory")
+												| for both back legs
+
+								set-selection(
+									[label]="info.lockFrontLegAccessories ? 'Front leg accessory' : 'Front leg accessory (left)'"
+									[set]="info.frontLegAccessory" [sets]="frontLegAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+								hr
+								div(*ngIf="info.unlockFrontLegAccessory")
+									set-selection(
+										label="Front leg accessory (right)"
+										[set]="info.frontLegAccessoryRight" [sets]="frontLegAccessories" [darken]="darken"
+										[nonLockable]="true" (change)="changed()")
+									hr
+								//- .form-group.d-flex.justify-content-center
+									custom-checkbox([(checked)]="info.lockBackLegAccessory") use the same accessory for back legs
+								div(*ngIf="!info.lockBackLegAccessory")
+									set-selection(
+										[label]="info.lockBackLegAccessories ? 'Back leg accessory' : 'Back leg accessory (left)'"
+										[set]="info.backLegAccessory" [sets]="backLegAccessories" [darken]="darken"
+										[nonLockable]="true" (change)="changed()")
+									hr
+								div(*ngIf="!info.lockBackLegAccessory && info.unlockBackLegAccessory")
+									set-selection(
+										label="Back leg accessory (right)"
+										[set]="info.backLegAccessoryRight" [sets]="backLegAccessories" [darken]="darken"
+										[nonLockable]="true" (change)="changed()")
+
+						tab(title="chest")
+							.accessory-tab(*tabContent)
+								set-selection(
+									label="Chest accessories" [set]="info.chestAccessory" [sets]="chestAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+								set-selection(
+									*ngIf="hasSleeves(info.chestAccessory.type)" label="Sleeves" [set]="info.sleeveAccessory" [darken]="darken"
+									[sets]="sleeveAccessories" (change)="changed()")
+
+						tab(title="back")
+							.accessory-tab(*tabContent)
+								set-selection(
+									label="Back accessories" [set]="info.backAccessory" [sets]="backAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+
+						tab(title="waist")
+							.accessory-tab(*tabContent)
+								set-selection(
+									label="Waist accessories" [set]="info.waistAccessory" [sets]="waistAccessories" [darken]="darken"
+									[nonLockable]="true" (change)="changed()")
+
+						tab(title="other")
+							.accessory-tab(*tabContent)
+								.form-group.d-flex.justify-content-center.pt-2
+									custom-checkbox([(checked)]="previewExtra") show preview
+									em.text-muted.ml-2
+										| (you have to enable these accessories in-game)
+								set-selection(
+									label="Extra accessories" [set]="info.extraAccessory" [sets]="extraAccessories"
+									[darken]="darken" (change)="changed()")

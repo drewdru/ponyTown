@@ -1,0 +1,107 @@
+@import '../../../../styles/partials/variables';
+@import '../../../../styles/partials/mixins';
+
+.friends-box {
+	padding-bottom: 5px;
+}
+
+.friends-dropdown-menu {
+	@include nipple(8px);
+	min-width: 205px;
+}
+
+.options-dropdown-menu {
+	@include nippleLeft(11px);
+	min-width: 200px;
+	margin-left: 4px;
+	
+	&.dropdown-menu-up {
+		@include nippleLeftFlip();
+	}
+}
+
+.friends-list-header {
+	margin-bottom: 0;
+}
+
+.friends-list {
+	width: 250px;
+	max-height: 500px;
+	overflow-y: auto;
+	margin-bottom: 0;
+
+	@media screen and (max-height: 600px) {
+		max-height: 70vh;
+		max-height: calc(100vh - 100px);
+	}
+}
+
+.friends-item {
+	height: 42px;
+	color: $dropdown-link-color;
+	padding: 0 8px;
+	cursor: pointer;
+	position: relative;
+	text-align: left;
+
+	> button {
+		width: 100%;
+		overflow: hidden;
+		text-align: left;
+	}
+
+	portrait-box {
+		margin-top: 5px;
+	}
+
+	&.offline {
+		> button {
+			opacity: 0.6;
+		}
+	}
+
+	&:hover {
+		background: $dropdown-link-hover-bg;
+		color: $dropdown-link-hover-color;
+	}
+}
+
+.friends-item-delete {
+	position: absolute;
+	background: white;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.friends-item-details {
+	overflow: hidden;
+	padding-bottom: 5px;
+}
+
+.friends-item-name {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.friends-item-more {
+	margin-bottom: -2px;
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.friends-item-account {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.friends-item-server {
+	position: absolute;
+	left: 24px;
+	bottom: 0;
+	font-size: 8px;
+}

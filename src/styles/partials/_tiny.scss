@@ -1,0 +1,23 @@
+@keyframes tiny-shake {
+	0%, 100% { transform: translate3d(-2px, -2px, 0); }
+	50% { transform: translate3d(2px, 2px, 0); }
+}
+
+.tinyface  {
+	padding: 20px;
+	display: inline-block;
+	
+	&::after {
+		content: '• c •';
+		white-space: nowrap;
+	}
+
+	&:hover {
+		will-change: transform;
+		animation: 0.1s infinite tiny-shake;
+		
+		&::after {
+			content: '•` c ˊ•';
+		}
+	}
+}

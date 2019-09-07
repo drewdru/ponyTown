@@ -1,0 +1,38 @@
+style.
+	.canvas-container {
+		position: fixed;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		overflow: hidden;
+	}
+	
+	#ref {
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		box-shadow: 0 0 5px #000;
+		display: none;
+	}
+
+	#canvas {
+		position: fixed;
+		left: 0;
+		top: 0;
+	}
+	
+	#fps {
+		position: fixed;
+		top: 5px;
+		right: 5px;
+		font-family: monospace;
+		padding: 2px 7px;
+		background: black;
+		border-radius: 3px;
+	}
+
+.canvas-container
+	canvas#canvas.pixelart(#canvas width="800" height="600")
+	canvas#ref(#canvas2)
+	#fps 0

@@ -1,0 +1,5 @@
+.btn-group.dropdown(dropdown)
+	button.btn.btn-default.dropdown-toggle(dropdownToggle)
+		| &times;{{scale}}
+	.dropdown-menu(*dropdownMenu)
+		a.dropdown-item(*ngFor="let s of scales" (click)="setScale(s)") &times;{{s}}

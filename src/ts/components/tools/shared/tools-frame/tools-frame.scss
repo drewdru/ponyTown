@@ -1,0 +1,16 @@
+.frame-select {
+	display: block;
+	position: relative;
+
+	&.active .sprite-box {
+		background: #ccc;
+	}
+}
+
+.frame-select-number {
+	color: #999;
+	position: absolute;
+	right: 2px;
+	top: 1px;
+	font-size: 11px;
+}

@@ -1,0 +1,47 @@
+div(*ngIf="compact && !onlyPatterns")
+	.row.form-group
+		label.col-sm-4.col-form-label {{label}}
+		.col-sm-8
+			sprite-selection(
+				[(selected)]="set.type" [sprites]="sprites" [fill]="set.fills" [outline]="set.outlines" [darken]="darken"
+				(selectedChange)="onChange()" [circle]="circle" [attr.aria-label]="'Select ' + label" emptyLabel="No {{label}}")
+
+div(*ngIf="!compact && !onlyPatterns")
+	.row.form-group
+		label.col-sm-12.text-center.col-form-label.text-muted {{label}}
+	.row.form-group
+		.col-sm-12
+			sprite-selection(
+				[(selected)]="set.type" [sprites]="sprites" [fill]="set.fills" [outline]="set.outlines" [darken]="darken"
+				(selectedChange)="onChange()" [circle]="circle" [attr.aria-label]="'Select ' + label" emptyLabel="No {{label}}")
+
+div(*ngIf="showColorPatterns && !onlyPatterns")
+	.row.form-group
+		label.col-sm-12.text-center.col-form-label.text-muted Color pattern
+	.row.form-group
+		.col-sm-12
+			sprite-selection(
+				[(selected)]="set.pattern" [sprites]="sets[set.type]" [fill]="exampleFills" [outline]="exampleOutlines"
+				(selectedChange)="onChange()" aria-label="Select color pattern" [darken]="darken")
+
+div(*ngIf="onlyPatterns")
+	.row.form-group
+		label.col-sm-4.col-form-label {{label}}
+		.col-sm-8
+			sprite-selection(
+				[(selected)]="set.pattern" [sprites]="sets[set.type]" [fill]="exampleFills" [outline]="exampleOutlines"
+				(selectedChange)="onChange()" aria-label="Select color pattern" [darken]="darken")
+
+div(*ngFor="let c of exampleFills; let i = index")
+	fill-outline(
+		*ngIf="patternColors > i"
+		label="Color {{i + 1}}"
+		[base]="i === 0 ? base : set.fills[0]"
+		[nonLockable]="i === 0 && nonLockable"
+		[outlineHidden]="isOutlineHidden"
+		[indicatorColor]="showColorPatterns ? c : ''"
+		[(fill)]="set.fills[i]"
+		[(locked)]="set.lockFills[i]"
+		[(outline)]="set.outlines[i]"
+		[(outlineLocked)]="set.lockOutlines[i]"
+		(change)="onChange()")

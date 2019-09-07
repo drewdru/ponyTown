@@ -1,0 +1,108 @@
+@import '../../../../styles/partials/variables';
+
+.character-list {
+	width: 300px;
+	max-width: calc(100vw - 70px);
+}
+
+.character-list.in-game {
+	max-width: calc(100vw - 90px);
+}
+
+.character-select-search {
+	height: 30px;
+	padding: 0 5px;
+	display: none;
+	position: relative;
+
+	> .form-control {
+		background: white;
+		color: #222;
+		border-color: #eee !important;
+		border-radius: 3px !important;
+		box-shadow: none !important;
+		// width: 100%;
+
+		&:active, &:focus {
+			border-color: #ddd !important;
+		}
+	}
+
+	.character-list-searchable > & {
+		display: flex;
+	}
+}
+
+.hash-button {
+	position: absolute;
+	right: 7px;
+	top: 5px;
+	font-size: 16px;
+	padding: 0 10px;
+}
+
+.character-select-list {
+	background: #fff;
+	padding: 0;
+	margin: 0;
+  list-style: none;
+  font-size: $font-size-base;
+  text-align: left;
+	padding-top: 1px;
+	max-height: 400px;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	> li {
+		&.active {
+			background: $nav-tabs-link-active-color;
+		}
+
+		&.selected > a {
+			font-weight: bold;
+		}
+
+		> a {
+			display: block;
+			padding: 3px 20px;
+			clear: both;
+			font-weight: normal;
+			line-height: $line-height-base;
+			color: $dropdown-link-color;
+			white-space: nowrap;
+			cursor: pointer;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			&:hover,
+			&:focus {
+				text-decoration: none;
+				color: $dropdown-link-hover-color;
+				background-color: $dropdown-link-hover-bg;
+			}
+		}
+	}
+
+	.character-list-searchable > & {
+		border-top: solid 1px #eee;
+		margin-top: 9px;
+	}
+}
+
+.character-desc {
+	font-size: smaller;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: 4px;
+	margin-left: 10px;
+}
+
+.character-name {
+	white-space: nowrap;
+}
+
+.tag-list {
+	max-height: 400px;
+	overflow-y: auto;
+}

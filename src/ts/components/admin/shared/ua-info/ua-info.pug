@@ -1,0 +1,6 @@
+div(*ngIf="userAgent" [tooltip]="userAgent")
+	fa-icon([icon]="browserClass" [fixedWidth]="true")
+	b.ml-1 {{browserVersion}}
+	fa-icon.ml-1([icon]="osClass" [fixedWidth]="true")
+	b.ml-1 {{osVersion}}
+	fa-icon.ml-1([icon]="deviceClass" [fixedWidth]="true")

@@ -1,0 +1,7 @@
+.notification-list
+	.game-button.notification-ellipsis(*ngIf="start" (click)="prev()")
+		fa-icon([icon]="ellipsisIcon")
+	notification-item(
+		*ngFor="let n of notifications | slice:start:limit" [notification]="n" [class.elastic-from-right]="n.fresh")
+	.game-button.notification-ellipsis(*ngIf="hasMore" (click)="next()")
+		fa-icon([icon]="ellipsisIcon")

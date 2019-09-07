@@ -1,0 +1,16 @@
+ng-template(#timeoutTooltip)
+	from-now([time]="value")
+
+.dropdown(dropdown)
+	a.icon-button.cursor-pointer(dropdownToggle [title]="type" [tooltip]="isTimedOut ? timeoutTooltip : null")
+		fa-icon([icon]="icon" [fixedWidth]="true" [ngClass]="className")
+		fa-icon.text-alert.ban-icon-timer(*ngIf="isTimedOut" [icon]="clockIcon" [fixedWidth]="true")
+
+	.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+		a.dropdown-item((click)="clear()")
+			| clear #[b {{type}}]
+		a.dropdown-item((click)="perma()")
+			| perma #[b {{type}}]
+		.dropdown-divider
+		a.dropdown-item(*ngFor="let t of timeouts" (click)="timeout(t.value)")
+			| {{t.label}}

@@ -1,0 +1,10 @@
+.d-flex
+	select.form-control.w-50(placeholder="Day" [(ngModel)]="day" (ngModelChange)="change()")
+		option(disabled [ngValue]="0") Day
+		option(*ngFor="let d of days" [ngValue]="d") {{d}}
+	select.form-control.ml-2(placeholder="Month" [(ngModel)]="month" (ngModelChange)="change()")
+		option(disabled [ngValue]="0") Month
+		option(*ngFor="let m of months; let i = index" [ngValue]="i + 1") {{m}}
+	select.form-control.ml-2.w-50(placeholder="Year" [(ngModel)]="year" (ngModelChange)="change()")
+		option(disabled [ngValue]="0") Year
+		option(*ngFor="let y of years" [ngValue]="y") {{y}}

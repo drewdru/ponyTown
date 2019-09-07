@@ -1,0 +1,285 @@
+﻿ng-template(#modal)
+	settings-modal((close)="modalRef.hide()")
+
+.container-fluid.mt-3(*ngIf="initialized")
+	tabset(type="pills" saveActiveTab="tools-ui-main-tab")
+		tab(title="General")
+			ng-template(tabContent)
+				.mt-2.d-flex
+					div(style="width: 300px;")
+						.mb-3
+							.form-group
+								a.btn.btn-default(routerLink="/")
+									fa-icon([icon]="homeIcon")
+
+						h3 Color picker
+						.mb-3
+							.form-group
+								color-picker([(color)]="color")
+							.form-group
+								color-picker([(color)]="color")
+
+						h3 Checkbox
+						.mb-3
+							.form-group.mb-2.d-flex.align-items-center
+								check-box([(checked)]="customOutlines")
+								check-box.ml-2([(checked)]="checked" [icon]="heartIcon")
+								check-box.ml-2([(checked)]="checked" [icon]="lockIcon" [disabled]="true")
+								label.ml-2
+									| check box
+									span.badge.badge-success.ml-2(*ngIf="checked") checked
+							.form-group
+								button.btn.btn-default(btnCheckbox [(ngModel)]="checked") btnCheckbox
+								.btn-group.ml-2(btnRadioGroup [(ngModel)]="radio")
+									button.btn.btn-default(btnRadio="a") a
+									button.btn.btn-default(btnRadio="b") b
+									button.btn.btn-default(btnRadio="c") c
+								span.ml-2 btnRadio: {{radio}}
+
+						h3 Slider
+						.mb-3
+							.form-group
+								label
+									span#slider-label music volume:
+									span.text-muted.ml-1 {{slider}}
+							.form-group
+								slider-bar([(value)]="slider" [step]="1" labelledBy="slider-label")
+							.form-group
+								slider-bar.w-75([(value)]="slider" [step]="1" [disabled]="true" label="another slider")
+
+						h3 Emotes
+						.mb-3
+							.form-group
+								p.
+									I #[emote-box(emote="blue_heart")] you. #[emote-box(emote="rock")] #[emote-box(emote="🍎")]
+										#[emote-box(emote="imp")] #[emote-box(emote="face")]
+
+						h3 Custom checkbox
+						.mb-3
+							custom-checkbox([(checked)]="customChecked") Label here
+							| checked: {{customChecked}}
+
+						h3 Supporter stars
+						.mb-3
+							.form-group
+								fa-icon.supporter-1([icon]="starIcon" size="lg")
+								fa-icon.supporter-2.ml-1([icon]="starIcon" size="lg")
+								fa-icon.supporter-3.ml-1([icon]="starIcon" size="lg")
+
+						h3 External links
+						.mb-3
+							.form-group
+								a(href="http://google.com/") should open in new tab
+
+					.ml-5(style="width: 400px;")
+						h3 Character preview
+						.mb-3
+							character-preview([pony]="pony" name="Offline Pony" [tag]="selected.tag")
+
+						h3 Sprite box
+						.mb-3
+							.form-group.d-flex
+								sprite-box([class.active]="spriteActive" (click)="spriteActive = !spriteActive" [sprite]="sprite" fill="red" outline="maroon" circle="gray")
+								sprite-box([class.active]="spriteActive" [sprite]="sprite" [fill]="fills" [outline]="outlines")
+							.form-group
+								color-picker([(color)]="fills[0]")
+
+						h3 Dropdown
+						.mb-3.d-flex
+							.dropdown(dropdown [autoClose]="autoCloseDropdown")
+								button.btn.btn-default.dropdown-toggle(dropdownToggle)
+									| toggle me
+								.dropdown-menu(*dropdownMenu)
+									.dropdown-item aaa
+									.dropdown-item bbb
+									.dropdown-item ccc
+							.dropdown.ml-1(dropdown [autoClose]="autoCloseDropdown")
+								button.btn.btn-default.dropdown-toggle(dropdownToggle)
+									| 2nd one
+								.dropdown-menu(*dropdownMenu)
+									.dropdown-item 111
+									.dropdown-item 222
+									.dropdown-item 333
+							.btn-group.ml-1(btnRadioGroup [(ngModel)]="autoCloseDropdown")
+								button.btn([btnRadio]="true" [btnHighlight]="autoCloseDropdown === true") true
+								button.btn([btnRadio]="false" [btnHighlight]="autoCloseDropdown === false") false
+								button.btn([btnRadio]="'outsideClick'" [btnHighlight]="autoCloseDropdown === 'outsideClick'") outsideClick
+
+						h3 Tabset
+						.mb-3
+							tabset(type="pills" saveActiveTab="tools-ui-tab-active-index")
+								tab(title="A")
+									ng-template(tabContent) aaa
+								tab(title="B")
+									ng-template(tabContent) bbb
+								tab(title="C")
+									ng-template(tabContent) ccc
+								tab(title="D" [disabled]="true")
+									ng-template(tabContent) ddd
+
+					.ml-5(style="width: 400px;")
+						h3 Bitmap box
+						.mb-3
+							bitmap-box([bitmap]="pony.cm" tool="brush" [color]="color" [width]="cmSize" [height]="cmSize")
+
+						h3 Sprite set selection
+						.mb-3
+							.form-group
+								set-selection(
+									label="Tail" [base]="baseHairColor" [set]="pony.tail" [sets]="tails"
+									[outlineHidden]="!customOutlines" (change)="changed()")
+
+		tab(title="Game")
+			ng-template(tabContent)
+				.mt-3.d-flex
+					div(style="width: 300px")
+						h3 Modal
+						.mb-3
+							.form-group
+								button.btn.btn-default((click)="showModal(modal)") show modal
+
+						h3 Supporter stars
+						.mb-3
+							.form-group
+								custom-checkbox([(checked)]="isPartyLeader") is party leader
+							.form-group
+								party-list(style="position: absolute;")
+
+					.ml-5(style="width: 400px")
+						h3 Pony box
+						.mb-3
+							.form-group.py-4
+								pony-box([pony]="selected")
+							.form-group.pt-3
+								.btn-group.btn-group-sm
+									button.btn([btnHighlight]="isIgnored(selected)" (click)="toggleIgnored(selected)") ignore
+									button.btn([btnHighlight]="selected.modInfo.note" (click)="selected.modInfo.note = selected.modInfo.note ? '' : 'test'") note
+									button.btn([btnHighlight]="isHidden(selected)" (click)="toggleHidden(selected)") hide
+									.btn-group.btn-group-sm.dropdown(dropdown)
+										button.btn.btn-default.dropdown-toggle(dropdownToggle) mute
+										.dropdown-menu(*dropdownMenu)
+											a.dropdown-item((click)="selected.modInfo.mute=''") none
+											a.dropdown-item((click)="selected.modInfo.mute='perma'") perma
+											a.dropdown-item((click)="selected.modInfo.mute='5 hours'") timed
+									.btn-group.btn-group-sm.dropdown(dropdown)
+										button.btn.btn-default.dropdown-toggle(dropdownToggle) shadow
+										.dropdown-menu(*dropdownMenu)
+											a.dropdown-item((click)="selected.modInfo.shadow=''") none
+											a.dropdown-item((click)="selected.modInfo.shadow='perma'") perma
+											a.dropdown-item((click)="selected.modInfo.shadow='5 hours'") timed
+									.btn-group.btn-group-sm.dropdown(dropdown)
+										button.btn.btn-default.dropdown-toggle(dropdownToggle) tag: {{selected.tag || 'none'}}
+										.dropdown-menu(*dropdownMenu)
+											a.dropdown-item(*ngFor="let tag of tags" (click)="selected.tag = tag") {{tag || 'none'}}
+							.form-group
+								custom-checkbox([(checked)]="isFriend") is friend
+
+						h3 Portrait
+						.mb-3
+							.form-group.d-flex
+								portrait-box([pony]="pal")
+								portrait-box.ml-2([pony]="pal" size="medium")
+								portrait-box.ml-2([pony]="pal" size="small")
+								portrait-box.ml-2([pony]="pal" size="small" [noBorder]="true" [flip]="true")
+
+					.ml-5(style="width: 400px")
+						h3 Settings box
+						.mb-3
+							div(style="position: relative")
+								settings-box
+							canvas#canvas(width="300" height="100" style="background: #111; width: 300px; height: 100px; position: static;")
+
+						h3 Page loader
+						.mb-3
+							.form-group
+								page-loader
+
+		tab(title="Chatlog")
+			ng-template(tabContent)
+				.mt-2
+					.bg-grass(style="width: 800px; height: 600px; position: relative;")
+						chat-log(#chatlog style="position: absolute; left: 5px; bottom: 5px; right: 5px;")
+					.mt-2
+						button.btn.btn-default((click)="addMessage(chatlog, 'some message')")
+							| Add message
+						button.btn.btn-default.ml-1((click)="addMessage(chatlog, 'some 🍎 message')")
+							| Add emote message
+						button.btn.btn-default.ml-1((click)="addWhisper(chatlog, 'some whisper message')")
+							| Add whisper
+						button.btn.ml-1((click)="spamChat(chatlog)" [btnHighlight]="spamChatInterval")
+							| Spam chat
+						slider-bar([(value)]="chatlogOpacity" style="width: 300px")
+						span {{chatlogOpacity / 100 | percent}}
+
+		tab(title="Settings")
+			ng-template(tabContent)
+				.modal.show.d-block(style="margin-top: 55px")
+					.modal-dialog
+						.modal-content
+							settings-modal([focusTrap]="focusTrap")
+				button.btn.btn-default((click)="focusTrap = !focusTrap" style="position: fixed; top: 10px; right: 10px;")
+					| Toggle focus trap
+
+		tab(title="Invites")
+			ng-template(tabContent)
+				.modal.show.d-block(style="margin-top: 55px")
+					.modal-dialog
+						.modal-content
+							invites-modal([focusTrap]="true")
+
+		tab(title="Actions")
+			ng-template(tabContent)
+				.modal.show.d-block(style="margin-top: 55px; height: calc(100% - 140px)")
+					.modal-dialog
+						.modal-content
+							actions-modal((close)="saveActions()")
+				action-bar([editable]="actionBarEditable" style="position: fixed; left: 50px; bottom: 5px;")
+				custom-checkbox([(checked)]="actionBarEditable" style="position: fixed; left: 10px; bottom: 5px;" title="editable")
+				color-picker([(color)]="expressionActionsColor" style="position: fixed; top: 60px; left: 10px; width: 250px; z-index: 10000;")
+
+		tab(title="Camera angle")
+			ng-template(tabContent)
+				.mt-3.d-flex
+					div(style="width: 400px")
+						h3 Camera angle
+						.mb-3
+							.form-group.d-flex.align-items-center
+								label.mb-0 angle:
+								slider-bar([(value)]="angle" [max]="90")
+								.text-muted(style="width: 100px") {{angle | number:'0.0-0'}} deg
+							.form-group.d-flex.align-items-center
+								label.mb-0 horizontal tile height:
+								.text-muted.ml-2 {{horizontalTileHeight}} px
+							.form-group.d-flex.align-items-center
+								label.mb-0 vertical tile height:
+								.text-muted.ml-2 {{verticalTileHeight}} px
+
+		tab(title="Virtual list")
+			ng-template(tabContent)
+				style.
+					.list {
+						background: #eee; color: #222; width: 250px; height: 500px;
+					}
+					.list2 {
+						background: #eee; color: #222; width: 250px; max-height: 500px;
+					}
+					.item {
+						height: 42px; padding: 10px; border-bottom: solid 1px #ddd;
+					}
+				.d-flex
+					div(style="margin: 50px;")
+						virtual-list.list([itemSize]="42")
+							.item(*virtualFor="let item of virtualItems; index as i; count as c")
+								div {{item.name}} [{{i}}/{{c}}]
+
+					div(style="margin: 50px;")
+						virtual-list.list2([itemSize]="42")
+							.item(*virtualFor="let item of virtualItems2; index as i; count as c")
+								div {{item.name}} [{{i}}/{{c}}]
+								
+					div(style="margin: 50px;")
+						button.btn.btn-default((click)="virtualItems2.push({ name: 'An item ' + virtualItems2.length })") Add
+						button.btn.btn-default.ml-1((click)="virtualItems2.pop()") Remove
+						button.btn.btn-default.ml-1((click)="virtualItems2.push(virtualItems2.shift())") Move
+
+#range-indicator

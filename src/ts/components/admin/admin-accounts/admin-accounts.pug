@@ -1,0 +1,88 @@
+﻿ng-template(#searchTooltip)
+	.text-left.help-tooltip
+		div: em search by:
+		div name:&lt;account_name&gt; #[em - account name]
+		div note:&lt;note_text&gt; #[em - note contents]
+		div email:&lt;email_fragment&gt; #[em - email fragment]
+		div role:&lt;role_name&gt; #[em - role]
+		div exact:&lt;name&gt; #[em - exact account name]
+		div ignores:&lt;count&gt; #[em - amount of ignores (at least)]
+		div ponies:&lt;count&gt; #[em - amount of ponies (at least)]
+		div auths:&lt;count&gt; #[em - amount of auths (at least)]
+		div old:&lt;number_of_days&gt; #[em - days since last visit]
+		div disabled! #[em - list accounts with disabled auths]
+		div locked! #[em - list accounts with locked auths]
+		div spam/swering/timeouts/limits:&lt;number&gt;
+
+ng-template(#duplicatesPopover)
+	a.text-secondary.d-block(*ngFor="let e of duplicateEntries" (click)="search = e")
+		| {{e}}
+
+.d-block.d-sm-flex
+	input.form-control.form-control-sm.admin-search(type="search" placeholder="search" [(ngModel)]="search")
+	.btn-group.btn-group-sm.ml-1
+		button.btn.btn-default((click)="refresh(true)")
+			fa-icon([icon]="syncIcon" size="lg")
+		button.btn(btnCheckbox [(ngModel)]="autoRefresh" [btnHighlight]="autoRefresh")
+			| auto
+	.btn-group.btn-group-sm.ml-1
+		button.btn.btn-sm.btn-danger(
+			*ngIf="duplicateEntries?.length" [popover]="duplicatesPopover" [outsideClick]="true"
+			placement="bottom" containerClass="popover-wide")
+			| Duplicates ({{duplicateEntries.length}})
+		button.btn.btn-sm.btn-danger((click)="refreshDuplicates()" title="Refresh duplicates")
+			fa-icon([icon]="syncIcon" size="lg")
+	.btn-group.btn-group-sm.ml-1(btnRadioGroup [(ngModel)]="showOnly")
+		button.btn(*ngFor="let f of filters" [btnRadio]="f" [btnHighlight]="showOnly === f") {{f}}
+	button.btn.btn-sm.ml-1((click)="not = !not" [btnHighlight]="not") not
+	button.btn.btn-sm.btn-default.ml-2((click)="createAccount()") create account
+
+.d-block.d-sm-flex.justify-content-between.align-items-start
+	.pl-1([tooltip]="searchTooltip" placement="bottom" containerClass="tooltip-pre" style="width: 280px;")
+		small.text-muted
+			fa-icon.mr-1([icon]="filterIcon")
+			| filters
+	.d-block.d-sm-flex.mt-2
+		fa-icon.text-muted.mr-3(*ngIf="loading" [icon]="spinnerIcon" [spin]="true" size="2x" style="margin-top: 3px")
+		strong.text-muted.mr-3(style="margin-top: 6px")
+			| {{totalItems === 99999999 ? '' : totalItems}}
+		pagination(
+			[totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage"
+			[maxSize]="15" [directionLinks]="false" [boundaryLinks]="true")
+
+table.table.table-fixed.table-striped.table-hover.table-sm
+	thead
+		tr
+			th.col-time created
+			th.col-time last visit
+			th.col-account name
+			th.col-email emails
+			th.col-auth auths
+			th.col-origin origins
+			th ponies
+			th(style="width: 40px;")
+	tbody
+		tr(*ngFor="let a of itemsOnPageIds")
+			td.col-time
+				time-field([time]="info.account?.createdAt")
+			td.col-time
+				time-field([time]="info.account?.lastVisit")
+			td.col-account
+				account-info-remote(#info [accountId]="a")
+			td.col-email
+				email-list([emails]="info.account?.emails")
+			td.col-auth
+				auth-list-remote([accountId]="a")
+			td.col-origin
+				origin-list-remote([accountId]="a")
+			td
+				pony-list-remote([accountId]="a")
+			td(style="width: 40px;")
+				.btn-group.btn-group-xs
+					button.btn.btn-xs.btn-default(
+						(click)="$event.shiftKey ? chatLog.add(info.account) : chatLog.show(info.account)" title="Show chat")
+						fa-icon([icon]="commentIcon" [fixedWidth]="true")
+
+admin-chat-log(#chatLog)
+
+.admin-bottom-padding

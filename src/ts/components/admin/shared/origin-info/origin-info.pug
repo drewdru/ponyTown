@@ -1,0 +1,9 @@
+﻿.d-flex.align-items-center(*ngIf="origin")
+	a.origin-info-ip.mr-1([routerLink]="['/origins', origin.ip, origin.country]" [title]="origin.ip")
+		| {{origin.ip}}
+	span([title]="countryName") [{{origin.country}}]
+	span.badge.badge-none.ml-1(*ngIf="origin.accountsCount > 1" title="accounts using this IP")
+		| {{origin.accountsCount}}
+	ban-icon((toggle)="toggleBan('mute', $event)" [value]="origin.mute" type="mute")
+	ban-icon((toggle)="toggleBan('shadow', $event)" [value]="origin.shadow" type="shadow")
+	ban-icon((toggle)="toggleBan('ban', $event)" [value]="origin.ban" type="ban")

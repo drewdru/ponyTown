@@ -1,0 +1,99 @@
+@import '../../../../styles/partials/variables';
+
+$frame-size: 79px;
+
+.tools-animation {
+	padding: 10px;
+}
+
+.tools-animation-timeline {
+	margin-top: 10px;
+}
+
+.frame-cell {
+	height: $frame-size;
+	position: relative;
+}
+
+.form-inline {
+	margin-bottom: 5px;
+}
+
+hr {
+	margin: 10px 0;
+}
+
+td, th {
+	&.active {
+		background-color: #aef5ae !important;
+	}
+}
+
+.table-frames-header {
+	width: auto;
+	margin: 0;
+	color: $text-muted;
+
+	td, th {
+		text-align: right;
+		white-space: nowrap;
+	}
+}
+
+.frames-view {
+	background: #eee;
+	color: #222;
+	overflow-x: scroll;
+	border: solid 1px #ddd;
+}
+
+.frames-locked {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.from-group {
+	> .input-group, > .form-control {
+		margin-top: 1px;
+	}
+}
+
+.table-frames {
+	table-layout: fixed;
+	width: auto;
+	max-width: none;
+	margin: 0;
+	border: none;
+	color: $inverse-color;
+
+	td, th {
+		width: $frame-size;
+		text-align: center;
+		border-color: #ddd;
+	}
+
+	th {
+		cursor: pointer;
+	}
+}
+
+.frame-cell-xy {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	opacity: 0.2;
+
+	:hover > & {
+		opacity: 1;
+	}
+}
+
+.frame-cell-offset {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+}

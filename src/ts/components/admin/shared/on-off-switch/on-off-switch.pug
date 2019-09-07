@@ -1,0 +1,8 @@
+﻿.btn-group.mb-1
+	button.btn.btn-xs([ngClass]="on ? 'btn-default' : 'btn-danger active'" (click)="onToggle(false)" [disabled]="disabled")
+		b {{offText}}
+	button.btn.btn-xs([ngClass]="on ? 'btn-success active' : 'btn-default'" (click)="onToggle(true)" [disabled]="disabled")
+		b {{onText}}
+
+b.ml-2.mb-1.text-muted
+	| {{label}}

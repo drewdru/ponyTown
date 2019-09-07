@@ -1,0 +1,14 @@
+@import 'partials/variables';
+
+.limit-length {
+	max-width: 350px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+// .server-box {
+// 	background: #272727;
+// 	border-radius: $border-radius-lg;
+// 	padding: $spacer / 2 $spacer;
+// 	margin-bottom: $spacer / 2;
+// }

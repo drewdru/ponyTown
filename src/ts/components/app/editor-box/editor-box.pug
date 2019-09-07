@@ -1,0 +1,138 @@
+.d-flex
+	button.game-button.px-2((click)="toggleEditor()")
+		fa-icon([icon]="editIcon")
+
+	.d-flex.align-items-start.pl-2.pt-1(*ngIf="hasEditor")
+		.dropdown-menu.p-0(*ngIf="hasSelectedEntities" style="display: block; width: 500px; position: absolute; top: 36px; left: 0;")
+			.px-2
+				//- name
+				div
+					.row.form-group.mb-2
+						label.col-12.col-form-label
+							.float-right
+								button.btn.btn-xs.btn-dark.ml-1((click)="showEntitiesInfo()" title="Show info")
+									| info
+								button.btn.btn-xs.btn-danger.ml-1((click)="deleteEntities()" title="Delete entities")
+									fa-icon([icon]="deleteIcon")
+							| {{entityName}}
+
+				//- position
+				div(*ngIf="singleEntity")
+					.row.form-group.mb-2
+						label.col-4.col-form-label
+							| position
+						label.col-1.col-form-label
+							| x
+						.col-3
+							input.form-control([(ngModel)]="entityX" type="number")
+						label.col-1.col-form-label
+							| y
+						.col-3
+							input.form-control([(ngModel)]="entityY" type="number")
+
+				//- light
+				div(*ngIf="isLightEntity")
+					.row.form-group.mb-2
+						label.col-5.col-form-label
+							| light color
+						.col-7
+							color-picker([(color)]="entityLightColor")
+					.row.form-group.mb-2
+						label.col-5.col-form-label
+							| light scale ({{entityLightScale | number:'0.1-1'}})
+						.col-7.py-2
+							slider-bar([(value)]="entityLightScale" [min]="0" [max]="3")
+
+				//- light sprite
+				div(*ngIf="isLightSpriteEntity")
+					.row.form-group.mb-2
+						label.col-5.col-form-label
+							| light sprite color
+						.col-7
+							color-picker([(color)]="entityLightSpriteColor")
+					.row.form-group.mb-2
+						label.col-4.col-form-label
+							| light sprite
+						label.col-1.col-form-label
+							| x
+						.col-3
+							input.form-control([(ngModel)]="entityLightSpriteX" type="number")
+						label.col-1.col-form-label
+							| y
+						.col-3
+							input.form-control([(ngModel)]="entityLightSpriteY" type="number")
+	
+		.input-group.input-group-sm
+			input.form-control([(ngModel)]="editorEntity" placeholder="entity")
+			.input-group-append(dropdown)
+				button.btn.btn-default.dropdown-toggle(dropdownToggle)
+				.dropdown-menu(*dropdownMenu style="max-height: 90vh; column-width: 100px; font-size: 10px;")
+					a.dropdown-item(*ngFor="let e of editorEntities" (click)="editorEntity = e")
+						| {{e}}
+
+		.dropdown.ml-1(dropdown)
+			button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle)
+				fa-icon([icon]="cogIcon")
+			.dropdown-menu(*dropdownMenu)
+				a.dropdown-item((click)="clearLocalStorage()")
+					| Clear local storage
+				a.dropdown-item((click)="editorClear()" title="Remove all placed entities")
+					| Clear all entities
+				a.dropdown-item((click)="listEntities()" title="List all placed entities in console")
+					| List entities
+				div(*ngIf="dev")
+					h6.dropdown-header Show (numpad 4)
+					a.dropdown-item(*ngFor="let field of showFields" (click)="toggleShow(field); $event.stopPropagation()")
+						fa-icon.mr-1([icon]="isShow(field) ? checkIcon : emptyIcon" [fixedWidth]="true")
+						| {{field}}
+
+		button.btn.btn-sm.btn-default.ml-1(
+			[btnHighlight]="selectingEntities" (click)="toggleSelecting()" title="Select entities")
+			fa-icon([icon]="selectIcon")
+
+		.dropdown.ml-1(dropdown)
+			button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle)
+				| tile: {{tiles[editorTile + 1]}}
+			.dropdown-menu(*dropdownMenu)
+				a.dropdown-item(*ngFor="let t of tiles; let i = index" (click)="editorTile = i - 1")
+					| {{t}}
+
+		.dropdown.ml-1(dropdown)
+			button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle)
+				| brush: {{editor.brushSize}}
+			.dropdown-menu(*dropdownMenu)
+				a.dropdown-item((click)="editor.brushSize = 1") 1
+				a.dropdown-item((click)="editor.brushSize = 2") 2
+				a.dropdown-item((click)="editor.brushSize = 3") 3
+				a.dropdown-item((click)="editor.brushSize = 4") 4
+				a.dropdown-item((click)="editor.brushSize = 5") 5
+				a.dropdown-item((click)="editor.brushSize = 6") 6
+
+		.dropdown.ml-1(dropdown [autoClose]="false")
+			button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle)
+				| global
+			.dropdown-menu(*dropdownMenu style="width: 400px")
+				button(style="display: block; width: 0; height: 0;")
+				.px-2
+					.row.form-group
+						label.col-5.col-form-label.d-flex.justify-content-between
+							| light color
+							custom-checkbox([(checked)]="editor.customLight")
+						.col-7
+							color-picker([(color)]="editor.lightColor" [isDisabled]="!editor.customLight")
+					.row.form-group.mb-0
+						label.col-5.col-form-label shadow opacity ({{shadowOpacity}})
+						.col-7.py-2
+							slider-bar([(value)]="shadowOpacity" [min]="0" [max]="255")
+
+		.dropdown.ml-1(dropdown)
+			button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle)
+				| engine
+			.dropdown-menu(*dropdownMenu)
+				a.dropdown-item(*ngFor="let e of engines" (click)="setEngine(e)" [class.active]="isActiveEngine(e)")
+					| {{e.name}}
+
+		.btn.btn-sm.btn-default.disabled.ml-1(*ngIf="hasElevation")
+			| elevation: {{editorElevation}}
+		.btn.btn-sm.btn-default.disabled.ml-1(*ngIf="hasElevation")
+			| special: {{editorSpecial}}

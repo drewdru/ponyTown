@@ -1,0 +1,5 @@
+.navbar-link(routerLinkActive="active" [routerLinkActiveOptions]="{ exact: route === '/' }")
+	a([routerLink]="route" tabindex linkCurrent)
+		.d-none.d-sm-inline {{name}}
+		fa-icon.d-inline-block.d-sm-none(
+			[icon]="icon" [title]="name" [attr.aria-label]="name" [fixedWidth]="true" size="lg")

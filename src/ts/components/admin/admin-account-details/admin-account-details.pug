@@ -1,0 +1,447 @@
+﻿div(*ngIf="account")
+	.row
+		.col-md-12
+			h2
+				| {{account.name}}
+				small.text-muted.ml-1
+					em {{account.name | translit}}
+
+	.row
+		.col-md-4
+			.mb-2
+				account-info([account]="account" popoverPlacement="right")
+			.mb-2
+				code.text-muted {{account._id}}
+			.mb-2
+				div
+					span.text-muted created:
+					from-now.ml-1([time]="account.createdAt")
+					span.text-muted.ml-1 ({{account.createdAt | date}})
+				div
+					span.text-muted last visit:
+					from-now.ml-1([time]="account.lastVisit")
+					span.text-muted.ml-1 ({{account.lastVisit | date}})
+				div
+					span.text-muted last browser:
+					ua-info.ml-1([userAgent]="accountObject?.lastUserAgent")
+				div
+					span.text-muted age:
+					span([class.text-strike]="account.birthyear")
+						span.ml-1 {{age}}
+						span.text-muted.ml-1 ({{account.birthdate | date:'yyyy-MM-dd'}})
+					span(*ngIf="account.birthyear")
+						span.ml-1 {{forceAge}}
+						span.text-muted.ml-1 ({{account.birthyear}})
+					.d-inline-block.dropdown(dropdown)
+						a.icon-button.ml-1(dropdownToggle)
+							fa-icon([icon]="cogIcon")
+						.dropdown-menu(*dropdownMenu)
+							button.dropdown-item((click)="setAge(-1)")
+								| unset
+							button.dropdown-item(*ngFor="let age of ages" (click)="setAge(age)")
+								| set to #[b {{age}}]yo
+
+			.d-flex.justify-content-between.align-items-start
+				h5 Counters
+				div
+					button.btn.btn-xs.btn-default.ml-1((click)="refreshDetails()" title="Refresh account details")
+						fa-icon([icon]="syncIcon" [fixedWidth]="true")
+			.mb-2
+				div(*ngFor="let counter of counters")
+					span.text-muted {{counter.key}}:
+					span.ml-1 {{counter.value}}
+
+			.d-flex.justify-content-between.align-items-start
+				h5 Status
+				div
+					button.btn.btn-xs.btn-default.ml-1((click)="clearSessions()" title="Sign out user" [disabled]="clearingSessions")
+						fa-icon([icon]="clearingSessions ? spinnerIcon : signOutIcon" [fixedWidth]="true" [spin]="clearingSessions")
+					button.btn.btn-xs.btn-default.ml-1((click)="showAccountData()" title="Fetch account data (in console)")
+						fa-icon([icon]="consoleIcon" [fixedWidth]="true")
+					button.btn.btn-xs.btn-default.ml-1((click)="accountStatus.refresh()" title="Refresh status")
+						fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			.mb-2
+				account-status(#accountStatus [account]="account" [verbose]="true")
+
+			h5 Roles
+			.mb-2
+				.btn-group.btn-group-sm
+					button.btn(*ngFor="let r of roles" [btnHighlight]="hasRole(r)" (click)="toggleRole(r)" [disabled]="!canToggleRole(r)")
+						| {{r}}
+				button.btn.btn-sm.btn-danger.ml-1((click)="remove()" [disabled]="!canRemove" title="Delete account")
+					fa-icon([icon]="trashIcon" [fixedWidth]="true")
+
+			.d-flex.justify-content-between.align-items-start
+				h5
+					| Notes
+					a.text-muted.ml-1([href]="translateUrl(account.note)" target="_blank" title="Translate note")
+						fa-icon([icon]="langIcon")
+				.text-muted
+					from-now([time]="account.noteUpdated")
+			.well.pre-line.text-truncate
+				| {{account.note}}
+
+			.d-flex.justify-content-between.align-items-start
+				h5 Merges #[span.text-muted ({{merges?.length || 0}})]
+				div
+					button.btn.btn-xs.btn-default.ml-1((click)="refreshDetails()" title="Refresh account details")
+						fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			table.table.table-sm(*ngIf="merges?.length")
+				thead
+					tr
+						th id
+						th name
+						th date
+				tbody
+					tr(*ngFor="let m of merges" [class.text-slashed]="m.split")
+						td
+							ng-template(#mergeTooltip)
+								div {{getMergeTooltip(m)}}
+							div([tooltip]="mergeTooltip" placement="right" containerClass="tooltip-merge")
+								| {{m.id}}
+						td {{m.name}}
+						td
+							.d-flex
+								.flex-grow-1
+									time-field([time]="m.date")
+								.dropdown.float-right(dropdown)
+									button.btn.btn-xs.btn-default.dropdown-toggle(
+										dropdownToggle [tooltip]="(m.reason || '[null reason]') + (m.split ? ' (split)' : '')")
+										fa-icon([icon]="cogIcon" [fixedWidth]="true")
+									.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+										button.dropdown-item((click)="printMerge(m)")
+											| Print merge info
+										button.dropdown-item((click)="printMerge2(m)")
+											| Print usable merge info
+										button.dropdown-item((click)="showMergeInNewTab(m)")
+											| Show merge info
+										button.dropdown-item((click)="showMergeInNewTab2(m)")
+											| Show usable merge info
+										.dropdown-divider
+										button.dropdown-item((click)="unmerge(m._id, m.data.merge, m.data.account)")
+											| Split off #[b merged]
+										button.dropdown-item((click)="unmerge(m._id, m.data.account, m.data.merge)")
+											| Split off #[b account]
+
+			h5 Support #[span.text-muted ({{support?.length || 0}})]
+			table.table.table-sm(*ngIf="support?.length")
+				thead
+					tr
+						th message
+						th date
+				tbody
+					tr(*ngFor="let l of support")
+						td
+							fa-icon.mr-1([icon]="l.icon" [ngClass]="l.class")
+							| {{l.message}}
+						td
+							time-field.mr-2([time]="l.date")
+							span.text-muted ({{l.date | date:'MMM d'}})
+
+			h5 Ban log #[span.text-muted ({{banLog?.length || 0}})]
+			table.table.table-sm(*ngIf="banLog?.length")
+				thead
+					tr
+						th message
+						th date
+				tbody
+					tr(*ngFor="let l of banLog")
+						td {{l.message}}
+						td: time-field([time]="l.date")
+
+		.col-md-5
+			//- auths
+			.d-flex.justify-content-between.align-items-start
+				h5 Auths #[span.text-muted ({{auths.length}})]
+				.dropdown(dropdown)
+					button.btn.btn-xs.btn-default.dropdown-toggle(dropdownToggle)
+						fa-icon([icon]="cogIcon" [fixedWidth]="true")
+					.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+						a.dropdown-item((click)="fetchAuths()")
+							| Fetch auths data
+						a.dropdown-item((click)="printAuthList()")
+							| Print auths list
+						a.dropdown-item((click)="printAuthData()")
+							| Print auths data
+
+			.mb-2
+				auth-info-edit(*ngFor="let a of auths | slice:0:authLimit" [authId]="a" [duplicates]="duplicates")
+
+				a.text-muted((click)="authLimit = 99999" *ngIf="authLimit < auths.length")
+					| more ...
+
+				.well.mt-2.mb-1.py-2(*ngIf="authData" style="font-size: 12px;")
+					button.close((click)="clearAuthData()" style="color: #ddd; margin-right: -5px; margin-top: -5px;") &times;
+					button.close((click)="copyAuthData()" style="color: #ddd; margin-right: 6px; margin-top: -5px;")
+						fa-icon([icon]="copyIcon" size="xs")
+					.text-muted Auths for {{authDataAccount}}
+					.pre-line {{authData}}
+
+			//- origins
+			.d-flex.justify-content-between
+				h5 Origins #[span.text-muted ({{origins.length}})]
+				div
+					button.btn.btn-xs.btn-default((click)="clearOrigins(true, true)" title="Remove all origins older than 14 days used by only one account")
+						fa-icon.mr-1([icon]="trashIcon")
+						| old single
+					button.btn.btn-xs.btn-default.ml-1((click)="clearOrigins(true, false)" title="Remove all origins older than 14 days")
+						fa-icon.mr-1([icon]="trashIcon")
+						| old
+					button.btn.btn-xs.btn-default.ml-1((click)="clearOrigins(false, true)" title="Remove all origins used by only one account")
+						fa-icon.mr-1([icon]="trashIcon")
+						| single
+					button.btn.btn-xs.btn-default.ml-1((click)="clearOrigins(false, false)" title="Remove all origins")
+						fa-icon.mr-1([icon]="trashIcon")
+						| all
+					.dropdown.d-inline-block.ml-1(dropdown)
+						button.btn.btn-xs.btn-default.dropdown-toggle(dropdownToggle title="Remove all origins in region")
+							fa-icon.mr-1([icon]="trashIcon")
+							| region
+						.dropdown-menu(*dropdownMenu)
+							a.dropdown-item(*ngFor="let region of originRegions" (click)="clearOriginsInRegion(region)")
+								| {{region}}
+			.mb-2
+				.d-flex.align-items-center.mb-1(*ngFor="let o of origins")
+					origin-info-remote.flex-grow-1([originIP]="o.ip")
+					small.text-muted
+						from-now.mr-1([time]="o.last")
+					button.btn.btn-xs.btn-default((click)="removeOrigin(o.ip)" title="Remove origin")
+						fa-icon([icon]="trashIcon")
+
+			hr
+
+			//- duplicates
+			.d-flex.justify-content-between.align-items-start
+				h5
+					| Duplicates #[span.text-muted ({{duplicates?.length}})]
+					fa-icon.text-muted.ml-1(*ngIf="loadingDuplicates" [icon]="spinnerIcon" [fixedWidth]="true" [spin]="true")
+				div
+					button.btn.btn-xs.btn-default((click)="clearOriginsFromDuplicates()" title="Remove all origins older than 14 days from all duplicates")
+						fa-icon.mr-1([icon]="trashIcon")
+						| old
+					button.btn.btn-xs.btn-default.ml-1((click)="refresh()" title="Refresh duplicates")
+						fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			.mb-2
+				.text-muted(*ngIf="!duplicates || !duplicates.length")
+					| - no duplicates -
+
+				.mb-1.d-flex.align-items-center(*ngFor="let d of duplicates | slice:0:duplicatesLimit")
+					ng-template(#duplicatePonies)
+						.text-left(*ngIf="d.ponies")
+							div(*ngFor="let p of d.ponies")
+								| {{p}}
+
+					span.badge.badge-none(title="Duplicate origins" [class.deleted]="d.origins === 0")
+						| {{d.origins}}
+					span.badge.badge-none.ml-1(
+						title="Duplicate ponies" [class.deleted]="!d.ponies || !d.ponies.length"
+						[tooltip]="duplicatePonies" [isDisabled]="!d.ponies || !d.ponies.length")
+						| {{d.ponies ? d.ponies.length : '-'}}
+
+					fa-icon.ml-1.text-alert(
+						*ngIf="d.note" [icon]="duplicateNoteIcon" title="Duplicate in note")
+					fa-icon.ml-1.text-muted(
+						*ngIf="d.browserId" [icon]="duplicateBrowserIdIcon" title="Duplicate browser ID")
+					fa-icon.ml-1.text-muted(
+						*ngIf="d.userAgent" [icon]="duplicateBrowserIcon" [tooltip]="d.userAgent" title="Duplicate browser")
+					fa-icon.ml-1(
+						*ngIf="d.emails" [icon]="duplicateEmailIcon" title="Duplicate emails: {{d.emails}}"
+						[ngClass]="d.indenticalEmail ? 'text-alert' : 'text-muted'")
+					fa-icon.ml-1.text-alert(*ngIf="d.birthdate" [icon]="duplicateBirthdateIcon" title="Duplicate birthdate")
+					fa-icon.ml-1.text-muted(*ngIf="d.name" [icon]="duplicateNameIcon" title="Duplicate name")
+
+					account-info-remote.ml-1(#info [accountId]="d.account" [extendedAuths]="true")
+
+					button.btn.btn-xs.btn-default.ml-1((click)="merge(d.account)" title="Merge account")
+						fa-icon([icon]="mergeIcon" size="lg")
+					button.btn.btn-xs.btn-default.ml-1((click)="chatLog.add(info.account)" title="Add to chat log")
+						fa-icon([icon]="commentIcon" [fixedWidth]="true")
+
+				a.text-muted(*ngIf="duplicates && duplicates.length > duplicatesLimit" (click)="duplicatesLimit = 9999999")
+					| more ...
+				a.text-muted(*ngIf="duplicates && duplicatesLimit === 9999999" (click)="duplicatesLimit = 10")
+					| less ...
+
+			hr
+
+			//- around
+			.d-flex.justify-content-between.align-items-start
+				h5 Around #[span.text-muted ({{around ? around.length : '-'}})]
+				button.btn.btn-xs.btn-default((click)="refreshAround()" title="Refresh around")
+					fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of around")
+					span.badge.badge-none(title="Distance in tiles from user") {{a.distance.toFixed(1)}}
+
+					fa-icon.ml-1.text-alert(*ngIf="a.party" [icon]="partyIcon" title="In party with user")
+
+					account-info-remote.ml-1(#info [accountId]="a.account" [extendedAuths]="true" [showDuplicates]="true")
+
+					button.btn.btn-xs.btn-default.ml-1((click)="merge(a.account)" title="Merge account")
+						fa-icon([icon]="mergeIcon" size="lg")
+					button.btn.btn-xs.btn-default.ml-1((click)="chatLog.add(info.account)" title="Add to chat log")
+						fa-icon([icon]="commentIcon" [fixedWidth]="true")
+
+			hr
+
+			//- friends
+			.d-flex.justify-content-between.align-items-start
+				h5 Friends #[span.text-muted ({{friends ? friends.length : '?'}})]
+				button.btn.btn-xs.btn-default((click)="fetchFriends()" title="Fetch friends list")
+					fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of friends | slice:0:friendsLimit")
+					account-info-remote([accountId]="a")
+					button.btn.btn-xs.btn-default.ml-1((click)="removeFriend(a)" title="Remove friend")
+						fa-icon([icon]="trashIcon")
+				a.text-muted(*ngIf="friends && friends.length > friendsLimit" (click)="friendsLimit = 9999999")
+					| more ...
+
+			//- supporter invites
+			//- h5 Supporter invites #[span.text-muted ({{invites?.length || 0}})]
+			//- div(*ngIf="invites?.length")
+				.mb-1.d-flex.align-items-center(*ngFor="let i of invites")
+					.text-muted.mr-2 {{i.type}}
+					fa-icon.mr-2([icon]="checkIcon" [ngClass]="i.active ? 'text-success' : 'text-danger'")
+					account-info-remote.ml-1([accountId]="i.target" [extendedAuths]="true")
+					small.text-muted.flex-grow-1.text-right
+						time-field([time]="i.createdAt")
+
+			hr
+
+			//- force hides
+			div(*ngIf="account.hides && account.hides.length")
+				.d-flex.justify-content-between.align-items-start
+					h5 Force hidden #[span.text-muted ({{account.hides.length}})]
+
+				.mb-2
+					.mb-1.d-flex.align-items-center(*ngFor="let a of account.hides")
+						account-info-remote([accountId]="a")
+
+				hr
+
+			//- hides
+			.d-flex.justify-content-between.align-items-start
+				h5 Hidden by #[span.text-muted ({{hiddenBy ? hiddenBy.length : '?'}})]
+				button.btn.btn-xs.btn-default((click)="fetchHidden()" title="Fetch hidden list")
+					fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of hiddenBy | slice:0:hiddenByLimit")
+					account-info-remote([accountId]="a")
+				a.text-muted(*ngIf="hiddenBy && hiddenBy.length > hiddenByLimit" (click)="hiddenByLimit = 9999999")
+					| more ...
+
+			h5 Hides users #[span.text-muted ({{hidden ? hidden.length : '?'}})]
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of hidden | slice:0:hiddenLimit")
+					account-info-remote([accountId]="a")
+				a.text-muted(*ngIf="hidden && hidden.length > hiddenLimit" (click)="hiddenLimit = 9999999")
+					| more ...
+
+			//- hides (perma)
+			.d-flex.justify-content-between.align-items-start
+				h5 Perma hidden by #[span.text-muted ({{permaHiddenBy ? permaHiddenBy.length : '?'}})]
+
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of permaHiddenBy | slice:0:permaHiddenByLimit")
+					account-info-remote([accountId]="a")
+				a.text-muted(*ngIf="permaHiddenBy && permaHiddenBy.length > permaHiddenByLimit" (click)="permaHiddenByLimit = 9999999")
+					| more ...
+
+			h5 Perma hides users #[span.text-muted ({{permaHidden ? permaHidden.length : '?'}})]
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of permaHidden | slice:0:permaHiddenLimit")
+					account-info-remote([accountId]="a")
+				a.text-muted(*ngIf="permaHidden && permaHidden.length > permaHiddenLimit" (click)="permaHiddenLimit = 9999999")
+					| more ...
+
+			hr
+
+			//- ignores
+			.d-flex.justify-content-between.align-items-start
+				h5 Ignored by #[span.text-muted ({{ignoredBy ? ignoredBy.length : account.ignoresCount}})]
+				button.btn.btn-xs.btn-default((click)="fetchIgnores()" title="Fetch ignores list")
+					fa-icon([icon]="syncIcon" [fixedWidth]="true")
+
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of ignoredBy | slice:0:ignoredByLimit")
+					account-info-remote([accountId]="a")
+					button.btn.btn-xs.btn-default.ml-1((click)="removeIgnore(a._id, account._id)" title="Remove ignore")
+						fa-icon([icon]="trashIcon")
+				a.text-muted(*ngIf="ignoredBy && ignoredBy.length > ignoredByLimit" (click)="ignoredByLimit = 9999999")
+					| more ...
+
+			h5 Ignores users #[span.text-muted ({{ignores ? ignores.length : '?'}})]
+			.mb-2
+				.mb-1.d-flex.align-items-center(*ngFor="let a of ignores | slice:0:ignoresLimit")
+					account-info-remote([accountId]="a")
+					button.btn.btn-xs.btn-default.ml-1((click)="removeIgnore(account._id, a._id)" title="Remove ignore")
+						fa-icon([icon]="trashIcon")
+				a.text-muted(*ngIf="ignores && ignores.length > ignoresLimit" (click)="ignoresLimit = 9999999")
+					| more ...
+
+		.col-md-3
+			//- emails
+			h5.d-flex.justify-content-between
+				div Emails #[span.text-muted ({{account.emails?.length || 0}})]
+				.dropdown(dropdown)
+					button.btn.btn-xs.btn-default.dropdown-toggle(dropdownToggle)
+						fa-icon([icon]="cogIcon" [fixedWidth]="true")
+					.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+						a.dropdown-item((click)="addEmail()")
+							| Add email
+			.mb-2
+				.text-muted(*ngIf="!account.emails?.length")
+					| - no emails -
+				.d-flex.justify-content-between.items-align-center.mb-1(*ngFor="let e of account.emails | orderBy | slice:0:emailLimit")
+					div {{e}}
+					button.btn.btn-xs.btn-default((click)="removeEmail(e)" title="Remove email")
+						fa-icon([icon]="trashIcon")
+
+				a.text-muted((click)="emailLimit = 99999" *ngIf="emailLimit < (account.emails?.length || 0)")
+					| more ...
+
+			//- ponies
+			h5.d-flex.justify-content-between
+				div Ponies #[span.text-muted ({{account.characterCount}})]
+				.dropdown(dropdown)
+					button.btn.btn-xs.btn-default.dropdown-toggle(dropdownToggle)
+						fa-icon([icon]="cogIcon" [fixedWidth]="true")
+					.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+						a.dropdown-item((click)="getPoniesCreators()")
+							| Fetch creator info
+						a.dropdown-item((click)="restoringPonies = true")
+							| Restore ponies
+						a.dropdown-item((click)="removePoniesAboveLimit()")
+							| Remove ponies above limit
+						a.dropdown-item.text-danger((click)="removeAllPonies()")
+							| Remove all ponies
+			.mb-2(*ngIf="restoringPonies")
+				textarea.form-control.mb-1([(ngModel)]="poniesToRestore" placeholder="paste removed pony logs here")
+				textarea.form-control.mb-1([(ngModel)]="poniesToRestoreFilter" placeholder="paste pony ids to use here (optional)")
+				.text-right
+					button.btn.btn-xs.btn-default((click)="poniesToRestore = ''; restoringPonies = false") cancel
+					button.btn.btn-xs.btn-success.ml-1((click)="restorePonies()" [disabled]="!poniesToRestore") restore
+				hr
+			.mb-2
+				pony-list-remote(
+					[accountId]="id" [expanded]="true" [deletable]="true" [highlight]="highlighCharacter" [duplicates]="duplicates")
+
+	.row
+		.col-md-12
+			h5 Events
+			events-table([events]="events" (showChat)="chatLog.show(account)")
+
+	.row
+		.col-md-12
+			admin-chat-log(#chatLog [canClose]="false" [account]="account")
+				button.btn.btn-sm.btn-default((click)="printJSON()") raw data
+
+			.well.pre(*ngIf="rawData")
+				| {{rawData}}

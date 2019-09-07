@@ -1,0 +1,6 @@
+button.action-button(
+	(click)="click()" [class.active]="active" [class.no-shadow]="!shadow" [title]="action && action.title || ''")
+	canvas(#canvas width="29" height="29")
+	.shortcut {{shortcut}}
+	.count(*ngIf="action && action.type === 'item'") {{action.count}}
+	.cover

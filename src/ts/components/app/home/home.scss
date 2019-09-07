@@ -1,0 +1,26 @@
+@import '../../../../styles/partials/variables';
+
+.home-logo {
+	width: 574px;
+
+	@include media-breakpoint-down(sm) {
+		width: 287px;
+	}
+}
+
+.home-content {
+	max-width: 400px;
+	margin-top: 50px;
+
+	@include media-breakpoint-down(md) {
+		margin-top: 15px;
+	}
+}
+
+.heading {
+	margin-bottom: 50px;
+		
+	@include media-breakpoint-down(sm) {
+		margin-bottom: 20px;
+	}
+}

@@ -1,0 +1,33 @@
+﻿.row(style="margin-top: 100px;")
+	.col-md-6
+		h2 {{ip}} [{{info.origin?.country}}]
+
+		div(style="margin-bottom: 10px;")
+			origin-info-remote(#info [originIP]="ip")
+
+		div
+			a([href]="whoisHref" target="_blank" rel="noopener noreferrer")
+				| show whois info
+
+		div
+			span.text-muted created:
+			from-now.ml-1([time]="info.origin?.createdAt")
+
+		div
+			span.text-muted updated:
+			from-now.ml-1([time]="info.origin?.updatedAt")
+
+	.col-md-6
+		h3 Accounts #[span.text-muted.ml-1 ({{accounts.length}})]
+
+		div(*ngFor="let a of accounts | slice:0:50")
+			account-info-remote([accountId]="a")
+
+.row
+	.col-md-12
+		h3 Events
+		events-table([events]="events" (showChat)="chatLog.show($event.account)")
+
+.row
+	.col-md-12
+		admin-chat-log(#chatLog)

@@ -1,0 +1,62 @@
+@import '../../../../styles/partials/variables';
+
+.character-tabs {
+	min-height: 500px;
+	margin-bottom: 80px;
+}
+
+.character-tab {
+	background: $dark-bg;
+	margin-top: 10px;
+	padding: 10px 15px;
+	min-height: 900px;
+	border-radius: $border-radius-sm;
+
+	.character-tab-warning & {
+		box-shadow: 0 0 0 2px $warning;
+	}
+}
+
+.accessory-tab {
+	margin-top: 10px;
+}
+
+.character-preview-box {
+	position: relative;
+	width: 400px;
+	height: 400px;
+	background: $grass-color;
+	border-radius: $border-radius-lg;
+
+	@include media-breakpoint-down(sm) {
+		width: 280px;
+		height: 280px;
+	}
+
+	&.fixed-to-top {
+		character-preview {
+			position: fixed;
+			top: -45px;
+			z-index: 100;
+			pointer-events: none;
+		}
+	}
+}
+
+.col-lock-box {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+
+	> .lock-box {
+		@include media-breakpoint-down(xs) {
+			margin-right: 0;
+			margin-bottom: 5px;
+		}
+	}
+	
+	> label {
+		margin: 0;
+		padding-top: 6px;
+	}
+}

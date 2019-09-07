@@ -1,0 +1,60 @@
+.portrait-box {
+	$small: 33px;
+	$medium: 66px;
+	$large: 100px;
+	background: #444;
+	border-radius: 50%;
+	position: relative;
+
+	> canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	&.small {
+		width: $small;
+		height: $small;
+
+		> .portrait-box-cover {
+			width: $small + 4px;
+			height: $small + 4px;
+			border: solid 3px white;
+			box-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+		}
+	}
+
+	&.medium {
+		width: $medium;
+		height: $medium;
+
+		> .portrait-box-cover {
+			width: $medium + 4px;
+			height: $medium + 4px;
+			border: solid 4px white;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+		}
+	}
+
+	&.large {
+		width: $large;
+		height: $large;
+
+		> .portrait-box-cover {
+			width: $large + 4px;
+			height: $large + 4px;
+			border: solid 6px white;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+		}
+	}
+}
+
+.portrait-box-cover {
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	border-radius: 50%;
+}

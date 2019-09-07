@@ -1,0 +1,72 @@
+@import '../../../../styles/partials/variables';
+
+:host {
+	display: block;
+	pointer-events: none;
+}
+
+.action-bar {
+	overflow: hidden;
+	padding-bottom: 7px;
+	padding-top: 7px;
+	padding-right: 5px;
+	max-width: calc(100vw - 50px);
+	display: flex;
+
+	&.is-mobile {
+		overflow-x: scroll;
+		overflow-y: hidden;	
+		pointer-events: auto;
+	}
+	
+	&.is-blurred > .blur-me {
+		filter: blur(3px);
+	}
+
+	// &.is-blurred:not(.is-mobile) > :nth-child(-n+11) {
+	// 	filter: blur(3px);
+	// }
+
+	// &.is-blurred.is-mobile > :nth-child(-n+9) {
+	// 	filter: blur(3px);
+	// }
+
+	&.has-scroller {
+		padding-top: 25px;
+		min-width: calc(100vw - 50px);
+	}
+}
+
+.action-button-padding {
+	min-width: 1px;
+	width: 1px;
+	height: 1px;
+}
+
+.scroller-label {
+	display: none;
+
+	.has-scroller + & {
+		display: block;
+		background: #111;
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		padding: 1px;
+		margin-top: 5px;
+		text-align: center;
+		color: $text-muted;
+	}
+}
+
+action-button {
+	pointer-events: auto;
+	margin: 3px 6px;
+
+	.is-mobile & {
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-top: 15px;
+	}
+}

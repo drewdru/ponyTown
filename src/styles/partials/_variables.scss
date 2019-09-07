@@ -1,0 +1,205 @@
+// bootstrap
+
+$primary: #ca7e4e;
+$secondary: #6c757d;
+$default: #fafafa;
+$success: #5cb85c;
+$info: #3ab7da;
+$warning: #df871c;
+$danger: #d9534f;
+$dark: #222;
+$patreon: #f96955;
+
+$none: #777;
+$dev: #bd3e91;
+$mod: #5f2f8f;
+$forbidden: #a131e2;
+
+$safe: #5a8f5a;
+$unsafe: #d25757;
+
+$border-color: #555;
+$focus-color: #50a5ff;
+$headers-color: #ddbb74;
+$grass-color: #90ee90;
+
+$friends-color: #40bf19;
+$party-color: #50b5ff;
+
+$gamepad-colors: (
+	yellow: #e2a800,
+	red: #d92f38,
+	blue: #1473b3,
+	green: #7aaa00,
+	pink: #e0a3c9
+);
+
+$theme-colors: (
+  primary: $primary,
+  secondary: $secondary,
+  default: $default,
+  success: $success,
+  info: $info,
+  warning: $warning,
+  danger: $danger,
+  dark: $dark,
+  patreon: $patreon
+);
+
+$gold: #ffcf00;
+
+$supporter-1: $patreon;
+$supporter-2: #ffa32b;
+$supporter-3: $gold;
+
+$chat-color: #ffffff;
+$chat-party: #94e3ff;
+$chat-whisper: #ffa1df;
+$chat-announcement: #F0E68C;
+
+$chat-colors: (
+	system: lighten(#bbb, 5%),
+	admin: lighten(#ff69b4, 7%),
+	mod: lighten(#b689ff, 7%),
+	party: $chat-party,
+	thinking: darken($chat-color, 15%),
+	party-thinking: darken($chat-party, 15%),
+	announcement: $chat-announcement,
+	party-announcement: $chat-party,
+	supporter-1: lighten($supporter-1, 7%),
+	supporter-2: lighten($supporter-2, 7%),
+	supporter-3: lighten($supporter-3, 7%),
+	whisper: $chat-whisper,
+	whisper-announcement: $chat-whisper
+);
+
+$enable-print-styles: false;
+
+$spacer: 16px;
+
+// body
+$body-bg: #333;
+$body-color: #eee;
+
+$inverse-bg: #eee;
+$inverse-color: #444;
+
+$dark-bg: darken($body-bg, 7%);
+
+// links
+$link-color: #d88856;
+$link-hover-color: lighten($link-color, 15%);
+
+// fonts
+// $font-family-sans-serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-size: 14px;
+
+$headings-font-weight: 600;
+
+$text-muted: #9C9C9C;
+$text-smuted: #ccc;
+
+$hr-border-color: $border-color;
+
+// alerts
+$alert-success-color: #b3e9b4;
+$alert-success-bg: #519f52;
+$alert-info-color: #dce5f7;
+$alert-info-bg: #31708f;
+$alert-warning-color: #ffffff;
+$alert-warning-bg: #ca8e35;
+$alert-danger-color: #f7d9d9;
+$alert-danger-bg: #cf6461;
+
+// navs
+$nav-tabs-border-color: $border-color;
+$nav-tabs-link-hover-border-color: transparent;
+$nav-tabs-link-active-border-color: $border-color;
+$nav-tabs-link-active-color: #eee;
+
+// navbar
+$nav-link-hover-bg: fade-out(#000, 0.7);
+
+// components
+$border-radius-base: 3px;
+$border-radius-lg: 4px;
+$border-radius-sm: 2px;
+$border-radius-xs: 2px;
+
+// buttons
+$input-btn-focus-color: rgba($focus-color, .3);
+$input-focus-border-color: lighten($focus-color, 10);
+$input-btn-padding-y-sm: .375rem;
+$input-btn-padding-x-sm: .65rem;
+$btn-padding-x-xs: 5px;
+$btn-padding-y-xs: 1px;
+$font-size-xs: 0.858rem;
+$line-height-xs: 17px;
+$btn-default-color: #333;
+
+// dropdown
+$dropdown-link-disabled-color: #a6acb1;
+
+// forms
+$input-bg: #222;
+$input-color: #ddd;
+$input-disabled-bg: lighten($input-bg, 5%);
+$input-disabled-color: darken($input-color, 35%);
+$input-border-color: $border-color;
+
+// custom controls
+$custom-control-indicator-focus-box-shadow: 0 0 0 3px rgba($focus-color, .5);
+$custom-control-indicator-size: 1.2rem;
+// $custom-control-gutter: 1.7rem;
+$custom-control-indicator-checked-bg: $secondary;
+$custom-control-indicator-checked-disabled-bg: rgba($secondary, .5);
+$custom-control-label-disabled-color: $text-muted;
+$custom-control-indicator-active-bg: rgba($secondary, .6);
+$custom-control-indicator-checked-color: white;
+$custom-control-indicator-bg-size: 65% 65%;
+$custom-control-indicator-border-color: $border-color;
+
+// modals
+$modal-content-bg: $dark-bg;
+// $modal-content-border-color: #666;
+$modal-header-border-color: #444;
+$modal-footer-border-color: $modal-header-border-color;
+
+// tables
+$table-sm-cell-padding: 0.4rem;
+$table-border-color: #6c757d;
+$table-hover-bg: #3a3a3a;
+
+// badge
+$badge-padding-x: 0.4rem;
+$badge-padding-y: 0.27rem;
+
+// code
+$code-color: #d2b28f;
+$code-bg: #292929;
+
+// kbd
+$kbd-color: #444;
+$kbd-bg: #fff;
+
+$gamepad-color: #fff;
+$gamepad-bg: #7d7d7d;
+
+$navbar-link-border: 4px;
+
+// list group
+$list-group-bg: $body-bg;
+$list-group-disabled-color: $text-muted;
+
+// flags
+$flag-size: 1.3rem;
+$flag-white: #f9f9f9;
+$flag-blue: #428bc1;
+$flag-red: #ed4c5c;
+$flag-black: #3e4347;
+$flag-yellow: #ffe62e;
+$flag-green: #00aa00;
+
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";

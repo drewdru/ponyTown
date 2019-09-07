@@ -1,0 +1,26 @@
+﻿.color-picker.dropdown(
+	[class.disabled]="isDisabled" [class.open]="isOpen" [class.show]="isOpen")
+	//-[class.indicator]="indicatorColor"
+	.color-picker-box([style.background-color]="bg")
+	input.form-control.color-picker-input(
+		#input
+		type="text"
+		spellcheck="false"
+		(focus)="focus($event)"
+		(blur)="close()"
+		(input)="inputChanged(input.value)"
+		[value]="inputColor"
+		[disabled]="isDisabled"
+		[attr.aria-labelledby]="labelledBy"
+		[attr.aria-label]="label")
+		//-[style.border-left-color]="indicatorColor"
+	a.color-picker-chevron((mousedown)="toggleOpen()" [hidden]="isDisabled" aria-label="Pick color")
+		fa-icon([icon]="chevronIcon" [fixedWidth]="true")
+	.dropdown-menu.dropdown-menu-right.color-picker-menu.show(
+		(mousedown)="stopEvent($event)" *ngIf="isOpen" aria-hidden="true")
+		.color-picker-sv(
+			[style.background-color]="hue" (agDrag)="dragSV($event)" agDragRelative="self" [agDragPrevent]="true")
+			.color-picker-sv-overlay
+			.color-wheel-circle-sv([style.left.%]="svLeft" [style.top.%]="svTop")
+		.color-picker-hue((agDrag)="dragHue($event)" agDragRelative="self" [agDragPrevent]="true")
+			.color-wheel-circle-hue([style.top.%]="hueTop")

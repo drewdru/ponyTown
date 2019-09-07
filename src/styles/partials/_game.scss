@@ -1,0 +1,64 @@
+@import './variables';
+
+.game-button {
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: none;
+	appearance: none;
+	cursor: pointer;
+	border-radius: 50%;
+	width: 36px;
+	height: 36px;
+	text-align: center;
+	font-size: 24px;
+
+	> fa-icon, > .fa-icon {
+		color: white;
+		filter: drop-shadow(0 0 1px #000);
+	}
+
+	&:disabled {
+		pointer-events: none;
+
+		> fa-icon, > .fa-icon {
+			color: #ddd;
+		}
+	}
+
+	&:hover {
+		> fa-icon, > .fa-icon {
+			color: #ddd;
+			filter: drop-shadow(0 0 2px #000);
+		}
+	}
+
+	&:focus {
+		outline: none;
+	}
+}
+
+// notifications
+
+.notification-popover {
+	font-size: 14px;
+	padding: 2px;
+
+	p {
+		margin-bottom: 5px;
+	}
+}
+
+.notification-buttons {
+	.btn {
+		width: 50px;
+	}
+
+	.btn + .btn {
+		margin-left: 5px;
+	}
+}
+
+.popover-notification {
+	max-width: 250px;
+}

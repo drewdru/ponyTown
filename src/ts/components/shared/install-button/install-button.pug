@@ -1,0 +1,6 @@
+.btn-group.d-flex(*ngIf="canInstall")
+	button.btn.btn-lg.btn-outline-success.text-wrap.flex-grow-1((click)="install()")
+		| Add #[b Pony Town] to {{isMobile ? 'home screen' : 'desktop'}}
+	button.btn.btn-lg.btn-outline-success.flex-grow-0(
+		(click)="dismiss()" title="Dismiss" [attr.aria-label]="'Dismiss add to ' + (isMobile ? 'home screen' : 'desktop')")
+		fa-icon([icon]="closeIcon")

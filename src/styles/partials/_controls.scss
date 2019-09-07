@@ -1,0 +1,107 @@
+@import './variables';
+
+kbd {
+	font-weight: bold;
+	font-family: Verdana;
+	padding: 2px 6px 3px;
+	box-shadow: inset -1px -2px 0 rgba(0, 0, 0, 0.25);
+	border-radius: 3px;
+}
+
+.gamepad > kbd, kbd.gamepad {
+	background: $gamepad-bg;
+	color: $gamepad-color;
+	padding: 1px 5px 2px;
+	min-width: 25px;
+	text-align: center;
+	border-radius: 100%;
+	display: inline-block;
+}
+
+@each $color, $value in $gamepad-colors {
+	.gamepad-#{$color} > kbd, kbd.gamepad-#{$color} {
+		background: $value;
+	}
+}
+
+.gamepad-dpad > kbd, .gamepad-stick > kbd, kbd.gamepad-dpad, kbd.gamepad-stick {
+	box-shadow: inset -1px -2px 0 rgba(0, 0, 0, 0.25), 0 0 5px rgba(0, 0, 0, 0.5);
+	position: relative;
+}
+
+.gamepad-dpad > kbd, kbd.gamepad-dpad {
+	$arrow-width: 6px;
+	$arrow-height: 5px;
+	$arrow-shift: 5px;
+	$arrow-color: rgba(255, 255, 255, 0.9);
+
+	min-width: 20px;
+	height: 20px;
+	vertical-align: middle;
+	border-radius: 5px;
+
+	.dpad-up, .dpad-down {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border-left: $arrow-height solid transparent;
+		border-right: $arrow-height solid transparent;
+		left: $arrow-shift;
+	}
+
+	.dpad-up {
+		border-bottom: $arrow-width solid $arrow-color;
+		top: 6px;
+	}
+
+	.dpad-down {
+		border-top: $arrow-width solid $arrow-color;
+		bottom: 7px;
+	}
+}
+
+.gamepad-stick > kbd, kbd.gamepad-stick {
+	$arrow-width: 2px;
+	$arrow-height: 3px;
+	$arrow-shift: 9px;
+	$arrow-pad: 1px;
+	$arrow-color: rgba(255, 255, 255, 0.7);
+
+	.t, .l, .r, .b {
+		position: absolute;
+		width: 0;
+		height: 0;
+	}
+
+	.t, .b {
+		border-left: $arrow-height solid transparent;
+		border-right: $arrow-height solid transparent;
+		left: $arrow-shift;
+	}
+
+	.t {
+		border-bottom: $arrow-width solid $arrow-color;
+		top: $arrow-pad;
+	}
+
+	.b {
+		border-top: $arrow-width solid $arrow-color;
+		bottom: $arrow-pad;
+	}
+
+	.l, .r {
+		border-top: $arrow-height solid transparent;
+		border-bottom: $arrow-height solid transparent;
+		top: $arrow-shift;
+	}
+
+	.l {
+		border-right: $arrow-width solid $arrow-color;
+		left: $arrow-pad;
+	}
+
+	.r {
+		border-left: $arrow-width solid $arrow-color;
+		right: $arrow-pad;
+	}
+}

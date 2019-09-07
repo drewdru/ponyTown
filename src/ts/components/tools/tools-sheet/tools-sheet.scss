@@ -1,0 +1,30 @@
+.tools-sheet-offsets {
+	position: relative;
+	height: 70px;
+	overflow: hidden;
+	padding-right: 100px;
+	white-space: nowrap;
+
+	> tools-offset {
+		display: inline-block;
+		text-align: center;
+	}
+}
+
+.tools-sheet-scroll {
+	overflow: auto;
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 45px;
+	right: 0;
+	bottom: 0;
+
+	&.with-offsets {
+		top: 45px + 70px;
+	}
+}
+
+.form-inline {
+	padding: 5px;
+}

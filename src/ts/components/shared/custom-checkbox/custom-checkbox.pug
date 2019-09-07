@@ -1,0 +1,11 @@
+.custom-control.custom-checkbox.mb-2([class.disabled]="disabled")
+	label
+		input.custom-control-input(
+			type="checkbox"
+			[disabled]="disabled"
+			[(ngModel)]="checked"
+			(ngModelChange)="checkedChange.emit(checked)"
+			[attr.aria-describedby]="help ? helpId : undefined")
+		.custom-control-label
+			ng-content
+	small.form-text.text-muted.mt-0(*ngIf="help" [id]="helpId") {{help}}

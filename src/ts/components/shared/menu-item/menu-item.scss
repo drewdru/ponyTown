@@ -1,0 +1,26 @@
+@import '../../../../styles/partials/variables';
+
+.navbar-link {
+	border-top: solid $navbar-link-border transparent;
+	margin-top: -$navbar-link-border;
+	margin-right: 5px;
+
+	&.active {
+		text-decoration: none;
+		border-top-color: $navbar-dark-active-color;
+		border-right-color: $navbar-dark-active-color;
+	}
+
+	&:hover, &:active, &:link {
+		text-decoration: none;
+		border-top-color: $navbar-dark-active-color;
+		border-right-color: $navbar-dark-active-color;
+	}
+
+	> a {
+		@media (max-width: 360px) {
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+	}
+}

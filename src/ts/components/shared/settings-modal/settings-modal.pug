@@ -1,0 +1,137 @@
+.modal-header.d-none.d-sm-block.d-none-for-low-height
+	h4.modal-title(labelledBy=".modal")
+		| Settings
+
+.modal-body.modal-checkboxes
+	tabset(type="pills")
+		tab(title="Game" [icon]="gameIcon")
+			div(*tabContent)
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.ignorePartyInvites"
+						help="Useful when other players bother you with unwanted party invites (does not apply to friends)")
+						| Ignore party invites
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.ignoreFriendInvites"
+						help="Useful when other players bother you with unwanted friend requests")
+						| Ignore friend requests
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.seeThroughObjects"
+						help="Makes all obstacles transparent")
+						| See through obstacles
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.walkByDefault"
+						help="Uses walking speed by default and run when pressing shift key")
+						| Prefer walking to running
+
+		tab(title="Graphics" [icon]="graphicsIcon")
+			div(*tabContent)
+				.form-group
+					custom-checkbox(
+						*ngIf="!lockLowGraphicsMode" [(checked)]="browser.lowGraphicsMode"
+						help="Can improve game performance in some cases")
+						| Low graphics mode
+					custom-checkbox(
+						*ngIf="lockLowGraphicsMode" [checked]="true" [disabled]="true"
+						help="Can improve game performance in some cases")
+						| Low graphics mode
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.brightNight"
+						help="Increases brightness of the game at night and in dark areas")
+						| Brighter darkness
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.powerSaving"
+						help="Reduces frame rate to extend battery life and reduce CPU overheating")
+						| Power saving mode
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.showStats"
+						help="Show rendering and network stats")
+						| Show statistics
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.showFps"
+						help="Show FPS counter")
+						| Show FPS
+
+		tab(title="Chat" [icon]="chatIcon")
+			div(*tabContent)
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.ignorePublicChat"
+						help="Don't show any public chat messages, only party chat and whispes will be visible")
+						| Hide all public chat messages
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.ignoreNonFriendWhispers"
+						help="Don't show any whispers from players who are not on your friends list")
+						| Only allow whispers from friends
+				.form-group
+					label#chatlog-opacity-label Chatlog background opacity
+					div
+						slider-bar.mr-2(
+							[(value)]="account.chatlogOpacity" style="max-width: 300px" labelledBy="chatlog-opacity-label")
+						| {{(account.chatlogOpacity / 100) | percent}}
+					small.form-text.text-muted.mt-0 Changes chatlog background to make it more readable or less obtrusive.
+				.form-group
+					label#chatlog-range-label Chatlog range
+					div
+						slider-bar.mr-2(
+							[(value)]="account.chatlogRange" [min]="minChatlogRange" [max]="maxChatlogRange" [step]="1"
+							(valueChange)="updateChatlogRange($event)" (changed)="finishChatlogRange()"
+							style="max-width: 300px" labelledBy="chatlog-range-label")
+						| {{chatlogRangeText}}
+					small.form-text.text-muted.mt-0
+						| Only show messages in chatlog from players near you (doesn't affect party chat or whispers).
+
+		tab(title="Filters" [icon]="filtersIcon")
+			div(*tabContent)
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.filterCyrillic"
+						help="Hide all messages containing russian alphabet")
+						| Filter russian chat
+				.form-group
+					custom-checkbox(
+						[(checked)]="account.filterSwearWords"
+						help="Censors swear words and other harmful phrases in the chat")
+						| Filter bad words
+				.form-group
+					label.mb-1 Custom chat filter
+					small.form-text.text-muted.mt-0.mb-2
+						| Space separated list of words to filter.
+						| All chat messages containing listed words will be hidden.
+						| Does not affect party chat or whispers from friends.
+					textarea.form-control(rows="5" [(ngModel)]="account.filterWords")
+
+		tab(title="Controls" [icon]="controlsIcon")
+			div(*tabContent)
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.disableGamepad"
+						help="Useful if gamepad controls are causing issues with the game")
+						| Disable gamepad controls
+				.form-group
+					custom-checkbox(
+						[(checked)]="browser.disableFKeys"
+						help="Useful if you're using function keys in a way that conflicts with game controls")
+						| Disable function keys (F1-F12)
+
+.modal-footer.d-flex
+	button.btn.btn-wide.btn-outline-secondary.d-none.d-sm-block((click)="reset()")
+		| Reset
+	button.btn.btn-outline-secondary.d-none.d-sm-block((click)="export()" title="Export settings")
+		fa-icon([icon]="exportIcon" [fixedWidth]="true")
+	button.btn.btn-outline-secondary.d-none.d-sm-block((click)="importFile.click()" title="Import settings")
+		fa-icon([icon]="importIcon" [fixedWidth]="true")
+		input.d-none(#importFile type="file" (change)="import(importFile.files[0])")
+	.flex-grow-1
+	button.btn.btn-wide.btn-outline-secondary((click)="cancel()")
+		| Cancel
+	button.btn.btn-wide.btn-outline-secondary.ml-2((click)="ok()")
+		| OK

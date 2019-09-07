@@ -1,0 +1,5 @@
+﻿ng-template(#tooltip)
+	div {{time | date:'mediumDate'}}
+	.text-muted {{time | date:'mediumTime'}}
+
+from-now([time]="time" [tooltip]="tooltip" [isDisabled]="!time")

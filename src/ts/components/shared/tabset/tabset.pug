@@ -1,0 +1,30 @@
+.nav([ngClass]="navClass" role="tablist" [attr.aria-label]="label")
+	button.btn-unstyled.nav-link(
+		*ngFor="let tab of tabs; let i = index"
+		href
+		role="tab"
+		(click)="!tab.disabled && select(i); $event.preventDefault()"
+		(keydown)="keydown($event)"
+		[id]="tab.id"
+		[class.active]="i === activeIndex"
+		[class.disabled]="tab.disabled"
+		[tabindex]="i === activeIndex ? 0 : -1"
+		[attr.aria-controls]="(!destroyOnHide || i === activeIndex ? tab.id + '-panel' : null)"
+		[attr.aria-selected]="i === activeIndex"
+		[attr.aria-disabled]="tab.disabled")
+		span(*ngIf="tab.icon")
+			fa-icon.d-sm-none([icon]="tab.icon")
+			span.d-none.d-sm-inline {{tab.title}}
+		span(*ngIf="!tab.icon")
+			| {{tab.title}}
+		ng-template([ngTemplateOutlet]="tab.titleTpl?.templateRef")
+.tab-content
+	ng-template(ngFor let-tab [ngForOf]="tabs" let-i="index")
+		.tab-pane(
+			*ngIf="!destroyOnHide || i === activeIndex"
+			role="tabpanel"
+			id="{{tab.id}}-panel"
+			[class.active]="i === activeIndex"
+			[attr.aria-labelledby]="tab.id"
+			[attr.aria-expanded]="i === activeIndex")
+			ng-template([ngTemplateOutlet]="tab.contentTpl.templateRef")

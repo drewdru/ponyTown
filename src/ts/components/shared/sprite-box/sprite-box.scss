@@ -1,0 +1,30 @@
+@import '../../../../styles/partials/variables';
+
+:host {
+	position: relative;
+	cursor: pointer;
+	overflow: hidden;
+	display: block;
+}
+
+.sprite-box-none {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 24px;
+	color: darken($text-muted, 20%);
+	pointer-events: none;
+}
+
+.sprite-box-index {
+	position: absolute;
+	left: 3px;
+	top: 0;
+	color: darken($text-muted, 20%);
+	font-size: 8px;
+}

@@ -1,0 +1,80 @@
+@import '../../../../styles/partials/variables';
+
+$slider-bg: #aaa;
+$slider-fill: #eaeaea;
+
+$bar-height: 8px;
+$bar-control-size: 20px;
+$bar-border-radius: $bar-height / 2;
+
+:host {
+	display: inline-block;
+	padding: 2px ($bar-control-size - $bar-height + 10px) / 2;
+	width: 100%;
+	
+	&:focus {
+		outline: none;
+	}
+}
+
+.slider-bar {
+	background: $slider-bg;
+	display: inline-block;
+	position: relative;
+	height: $bar-height;
+	width: 100%;
+	border-radius: $bar-border-radius;
+
+	&.disabled {
+		background: darken($slider-bg, 20%);
+
+		.slider-bar-fill {
+			background: darken($progress-bg, 20%);
+		}
+
+		.slider-bar-control {
+			background: darken(theme-color('default'), 20%);
+		}
+	}
+}
+
+.slider-bar-fill {
+	background: $slider-fill;
+	width: 0;
+	height: 100%;
+	border-radius: $bar-border-radius;
+}
+
+.slider-bar-line {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.slider-bar-base {
+	position: absolute;
+	width: 1px;
+	top: 0;
+	left: 0;
+}
+
+.slider-bar-control {
+	position: absolute;
+	left: -$bar-control-size / 2;
+	top: -($bar-control-size - $bar-height) / 2;
+	width: $bar-control-size;
+	height: $bar-control-size;
+	border-radius: 50%;
+	background: theme-color('default');
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+	
+	:host:focus & {
+		box-shadow: 0 0 0 $btn-focus-width rgba($focus-color, 0.7);
+		outline: none;
+	}
+
+	:host:focus:not(.focus-visible) & {
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.5) !important;
+	}
+}

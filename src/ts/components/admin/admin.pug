@@ -1,0 +1,24 @@
+﻿.container-fluid
+
+	.d-flex.justify-content-between
+		.admin-initializing
+			div(*ngIf="loading")
+				fa-icon.mr-1([icon]="spinnerIcon" [spin]="true")
+				| {{loading}}...
+
+		menu-bar([loading]="model.loading" [account]="model.account" (signOut)="signOut()")
+			menu-item(route="/" name="State ({{clients}})" [icon]="stateIcon")
+			menu-item(route="/events" name="Events ({{events}})" [icon]="eventsIcon")
+			menu-item(route="/accounts" name="Accounts ({{accounts}})" [icon]="accountsIcon")
+			menu-item(route="/ponies" name="Ponies ({{ponies}})" [icon]="poniesIcon")
+			menu-item(route="/origins" name="Origins ({{origins}})" [icon]="originsIcon")
+			menu-item(route="/reports" name="Reports" *ngIf="isSuperadmin" [icon]="reportsIcon")
+			menu-item(route="/other" name="Other" *ngIf="isSuperadmin" [icon]="otherIcon")
+
+	.admin-view.mt-5
+		router-outlet
+
+.admin-error(*ngIf="model.error")
+	.alert.alert-danger
+		button.close.ml-2((click)="model.error = null") &times;
+		| {{model.error}}

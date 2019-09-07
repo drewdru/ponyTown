@@ -1,0 +1,1 @@
+save this file to trigger sprite regenerations in `gulp dev --sprites` mode

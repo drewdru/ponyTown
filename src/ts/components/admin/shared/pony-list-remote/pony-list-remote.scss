@@ -1,0 +1,14 @@
+.pony-list-expanded {
+	.pony-list-item {
+		display: block;
+	}
+}
+
+.icon-button {
+	display: none;
+	font-size: 12px;
+
+	.pony-list-deletable & {
+		display: inline;
+	}
+}

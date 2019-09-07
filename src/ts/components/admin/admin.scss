@@ -1,0 +1,14 @@
+@import 'partials/variables';
+
+.admin-initializing {
+	margin: 15px;
+	font-size: larger;
+	color: $text-muted;
+}
+
+.admin-error {
+	position: fixed;
+	left: 15px;
+	top: 10px;
+	width: 400px;
+}

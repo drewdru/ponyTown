@@ -1,0 +1,10 @@
+.text-muted(*ngIf="!status")
+	| checking...
+.text-unsafe(*ngIf="status && !status.length")
+	| offline
+.text-safe(*ngFor="let s of status")
+	| [{{s.server}}] [{{s.map}}] {{s.character}} ({{s.x}}, {{s.y}}) ({{s.duration}})
+	ua-info.ml-1([userAgent]="s.userAgent")
+	fa-icon.ml-1(*ngIf="s.incognito" [icon]="incognitoIcon")
+	.text-muted(*ngIf="verbose")
+		small {{s.userAgent}}

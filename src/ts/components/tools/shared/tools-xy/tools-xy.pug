@@ -1,0 +1,9 @@
+.tools-xy.btn-group
+	button.btn.btn-xs.btn-default((click)="changeY(y - 1)")
+		fa-icon([icon]="upIcon" [fixedWidth]="true")
+	button.btn.btn-xs.btn-default((click)="changeX(x - 1)")
+		fa-icon([icon]="leftIcon" [fixedWidth]="true")
+	button.btn.btn-xs.btn-default((click)="changeX(x + 1)")
+		fa-icon([icon]="rightIcon" [fixedWidth]="true")
+	button.btn.btn-xs.btn-default((click)="changeY(y + 1)")
+		fa-icon([icon]="downIcon" [fixedWidth]="true")

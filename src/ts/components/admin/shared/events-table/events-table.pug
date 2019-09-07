@@ -1,0 +1,51 @@
+﻿table.table.table-fixed.table-striped.table-hover.table-sm.table-ellipsis
+	thead
+		tr
+			th.col-time created
+			th.col-time updated
+			th message
+			th.col-account account
+			th.col-auth auths
+			th.col-pony pony
+			th.col-origin origin
+			th.col-actions actions
+	tbody
+		tr(*ngFor="let e of events" [class.deleted]="e.deleted")
+			td.col-time
+				time-field([time]="e.createdAt")
+			td.col-time
+				time-field(*ngIf="e.createdAt !== e.updatedAt" [time]="e.updatedAt")
+			td
+				span.badge.badge-admin([ngClass]="serverLabel(e)") {{e.server}}
+				span.badge.badge-admin([ngClass]="'badge-' + e.type") {{e.type}}
+				span.badge.badge-admin(*ngIf="e.count > 1" [ngClass]="e.count > 9 ? 'badge-danger' : 'badge-none'") {{e.count}}
+				b {{e.message}} 
+				a.text-muted(*ngIf="e.account" (click)="copyToNotes(e, accountInfo.account)" title="copy to account notes")
+					fa-icon([icon]="clipboardIcon")
+				.text-muted.event-desc.pre-line(*ngIf="e.desc")
+					span([innerHTML]="e.descHTML")
+					a.text-muted.ml-1([href]="translateUrl(e)" target="_blank" title="translate")
+						fa-icon([icon]="langIcon")
+			td.col-account
+				account-info-remote(#accountInfo [accountId]="e.account" [showDuplicates]="true")
+			td.col-auth
+				auth-list-remote([accountId]="e.account")
+			td.col-pony
+				pony-info-remote(*ngIf="e.pony" [ponyId]="e.pony")
+			td.col-origin
+				origin-info-remote([originIP]="e.origin?.ip")
+			td.col-actions.text-nowrap
+				button.btn.btn-xs.btn-danger.mr-1((click)="remove(e)" title="Remove event")
+					fa-icon([icon]="trashIcon")
+				.btn-group.dropdown(dropdown)
+					button.btn.btn-xs.btn-default(
+						(click)="onShowChat($event, e, accountInfo.account)" [disabled]="!e.account" title="Show chat log")
+						fa-icon([icon]="commentIcon")
+					button.btn.btn-xs.btn-default.dropdown-toggle(dropdownToggle)
+					.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+						a.dropdown-item((click)="removeAll(e)")
+							fa-icon.mr-1([icon]="trashIcon" [fixedWidth]="true")
+							| Remove all #[strong {{e.message}}]
+						a.dropdown-item((click)="onAddChat(e, accountInfo.account)")
+							fa-icon.mr-1([icon]="commentIcon" [fixedWidth]="true")
+							| Add to chat log

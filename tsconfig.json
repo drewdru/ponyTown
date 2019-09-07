@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"target": "es2017",
+		"lib": [
+			"dom",
+			"es6"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"importHelpers": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"declaration": false,
+		"noEmitOnError": false,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"noImplicitReturns": true,
+		"strict": true,
+		"strictFunctionTypes": true,
+		"sourceMap": true,
+		"preserveConstEnums": true
+	},
+	"exclude": [
+		"build",
+		"tools",
+		"src/scripts",
+		"node_modules"
+	]
+}

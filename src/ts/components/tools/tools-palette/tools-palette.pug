@@ -1,0 +1,24 @@
+.container-fluid
+	.form-inline.py-2
+		.form-group
+			a.btn.btn-default(routerLink="/")
+				fa-icon([icon]="homeIcon")
+		.form-group
+			scale-picker.ml-1([(scale)]="scale" (scaleChange)="redraw()")
+
+	.float-left.mr-2
+		canvas(#canvas width=512 height=512)
+
+	.float-left
+		.form-group.form-inline
+			label.text-muted sprite:
+			input.form-control.ml-1([(ngModel)]="spriteName" (change)="spriteChanged()" style="width: 200px;"
+			                        [typeahead]="sprites" (typeaheadOnSelect)="spriteChanged()")
+			button.btn.btn-default.ml-1((click)="loadPalette()")
+				| load palette
+
+		div
+			.form-group(*ngFor="let c of palette")
+				.badge([style.background]="c.original" style="border: solid 1px #666") ........
+				|  
+				color-picker([(color)]="c.current" (colorChange)="redraw()" style="display: inline-block;")

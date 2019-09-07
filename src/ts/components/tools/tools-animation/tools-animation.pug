@@ -1,0 +1,313 @@
+﻿ng-template(#shareLinkPopover)
+	div
+		span.close.ml-2((click)="shareLinkOpen = false") &times;
+		| {{shareLink}} 
+
+.tools-animation.mb-5
+	.d-flex(*ngIf="loaded")
+		character-preview([pony]="info" [state]="state" [scale]="scale" style="height: 350px")
+
+		.flex-grow-1.ml-2
+			.form-inline
+				.form-group
+					a.btn.btn-default(routerLink="/")
+						fa-icon([icon]="homeIcon" [fixedWidth]="true")
+				.form-group
+					label.ml-2 pony:
+					.btn-group.dropdown.ml-1(dropdown)
+						button.btn.btn-default.dropdown-toggle(dropdownToggle)
+							| {{pony.name}}
+						.dropdown-menu(*dropdownMenu)
+							a.dropdown-item(*ngFor="let p of ponies" (click)="setPony(p)") {{p.name}}
+					button.btn.btn-default.ml-1((click)="reloadPonies()" title="Reload ponies")
+						fa-icon([icon]="syncIcon" [fixedWidth]="true")
+				.form-group
+					label.ml-2 scale:
+					scale-picker.ml-1([(scale)]="scale")
+				//-.form-group
+					button.btn.ml-1(btnCheckbox [(ngModel)]="flip" (change)="update()" [btnHighlight]="flip")
+						fa-icon([icon]="rightIcon" [fixedWidth]="true")
+				.form-group
+					label.ml-2 mode:
+					.btn-group.dropdown.ml-1(dropdown)
+						button.btn.btn-default.dropdown-toggle(dropdownToggle)
+							| {{mode}}
+						.dropdown-menu(*dropdownMenu)
+							a.dropdown-item((click)="setMode('body')") body
+							a.dropdown-item((click)="setMode('head')") head
+
+			hr
+
+			.form-inline
+				.from-group.d-flex
+					button.btn.btn-default((click)="playing = false; frame = 0;" title="Stop")
+						fa-icon([icon]="stopIcon" [fixedWidth]="true")
+					button.btn.btn-default.ml-1((click)="playing = !playing" [title]="playing ? 'Pause' : 'Play'")
+						fa-icon([icon]="playing ? pauseIcon : playIcon" [fixedWidth]="true")
+					button.btn.btn-default.ml-1((click)="replay()" [disabled]="!playing" title="Replay")
+						fa-icon([icon]="replayIcon" [fixedWidth]="true")
+					button.btn.btn-default.ml-1((mousedown)="prevFrame()" [disabled]="playing" title="Prev frame")
+						fa-icon([icon]="prevIcon" [fixedWidth]="true")
+					input.form-control.ml-1(
+						[(ngModel)]="frame" [disabled]="playing" type="number" placeholder="frame" style="width: 100px;"
+						min="0" step="1")
+					button.btn.btn-default.ml-1((click)="nextFrame()" [disabled]="playing" title="Next frame")
+						fa-icon([icon]="nextIcon" [fixedWidth]="true")
+
+					.input-group.ml-1(style="width: 250px;")
+						input.form-control([(ngModel)]="animation.name" (change)="update(); sortAnimations()" [disabled]="animation.builtin")
+						.input-group-append.dropdown(dropdown)
+							button.btn.btn-default.dropdown-toggle(dropdownToggle)
+							.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+								a.dropdown-item(*ngFor="let a of animations" (click)="selectAnimation(a)")
+									| {{a.name}}
+
+					button.btn.ml-1(btnCheckbox [(ngModel)]="switch" (change)="update()" [btnHighlight]="switch"
+					                title="Switch close and far legs")
+						fa-icon([icon]="switchIcon" [fixedWidth]="true")
+					button.btn.btn-default.ml-1((click)="newAnimation()" title="New Animation")
+						fa-icon([icon]="fileIcon" [fixedWidth]="true")
+					button.btn.btn-default.ml-1((click)="duplicateAnimation()" title="Duplicate Animation")
+						fa-icon([icon]="copyIcon" [fixedWidth]="true")
+					button.btn.btn-danger.ml-1((click)="removeAnimation()" title="Delete Animation")
+						fa-icon([icon]="trashIcon" [fixedWidth]="true")
+
+			.form-inline
+				.from-group
+					button.btn.btn-default(
+						(click)="share()" title="Share" [popover]="shareLinkPopover" [isOpen]="shareLinkOpen"
+						popover-enable="shareLink" popover-class="popover-wide")
+						fa-icon([icon]="shareIcon" [fixedWidth]="true")
+					button.btn.btn-default.ml-1((click)="export()" title="Export")
+						fa-icon([icon]="codeIcon" [fixedWidth]="true")
+					.btn-group.dropdown.ml-1(dropdown)
+						button.btn.btn-default((click)="png()" title="Save as PNG")
+							| PNG
+						button.btn.btn-default.dropdown-toggle(dropdownToggle)
+						.dropdown-menu(*dropdownMenu)
+							a.dropdown-item((click)="png(2)") &times;2
+							a.dropdown-item((click)="png(3)") &times;3
+							a.dropdown-item((click)="png(4)") &times;4
+					.btn-group.ml-1(dropdown)
+						button.btn.btn-default((click)="gif()" title="Save as GIF")
+							| GIF
+						button.btn.btn-default.dropdown-toggle(dropdownToggle)
+						.dropdown-menu(*dropdownMenu)
+							a.dropdown-item((click)="gif(2)") &times;2
+							a.dropdown-item((click)="gif(3)") &times;3
+							a.dropdown-item((click)="gif(4)") &times;4
+
+					.btn.btn-warning.ml-1(*ngIf="animation.builtin" disabled)
+						| Changes to builtin animations aren't saved, duplicate it, to save the changes
+
+			hr
+
+			.form-inline
+				.form-group
+					label duration:
+					tools-range.ml-2([(ngModel)]="activeFrame.duration" (change)="update()" min="1" max="100" small="true")
+				.form-group
+					label.ml-2 fps:
+					tools-range.ml-2([(ngModel)]="animation.fps" (change)="update()" min="1" max="100" small="true")
+				.form-group
+					button.btn.btn-sm.ml-1([(ngModel)]="animation.loop" btnCheckbox [btnHighlight]="animation.loop")
+						| loop
+				.btn-group.ml-1(dropdown)
+					button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle title="Before animation")
+						| before: {{beforeAnimation?.name || 'none'}}
+					.dropdown-menu(*dropdownMenu)
+						a.dropdown-item((click)="selectBeforeAnimation(undefined)")
+							| none
+						a.dropdown-item(*ngFor="let a of bodyAnimations" (click)="selectBeforeAnimation(a)")
+							| {{a.name}}
+				.btn-group.ml-1(dropdown)
+					button.btn.btn-sm.btn-default.dropdown-toggle(dropdownToggle title="After animation")
+						| after: {{afterAnimation?.name || 'none'}}
+					.dropdown-menu(*dropdownMenu)
+						a.dropdown-item((click)="selectAfterAnimation(undefined)")
+							| none
+						a.dropdown-item(*ngFor="let a of bodyAnimations" (click)="selectAfterAnimation(a)")
+							| {{a.name}}
+
+			.form-inline
+				.form-group
+					label head offset:
+					tools-range.ml-2(
+						[(ngModel)]="activeFrame.headX" (change)="update()" [min]="-20" [max]="20" [small]="true")
+					.btn-group.ml-1
+						button.btn.btn-default.btn-sm((click)="moveAllHead(-1, 0)" title="All frames left")
+							fa-icon([icon]="doubleLeftIcon" [fixedWidth]="true")
+						button.btn.btn-default.btn-sm((click)="moveAllHead(1, 0)" title="All frames right")
+							fa-icon([icon]="doubleRightIcon" [fixedWidth]="true")
+					tools-range.ml-2(
+						[(ngModel)]="activeFrame.headY" (change)="update()" [min]="-20" [max]="20" [small]="true" [vertical]="true")
+					.btn-group.ml-1
+						button.btn.btn-default.btn-sm((click)="moveAllHead(0, -1)" title="All frames up")
+							fa-icon([icon]="doubleUpIcon" [fixedWidth]="true")
+						button.btn.btn-default.btn-sm((click)="moveAllHead(0, 1)" title="All frames down")
+							fa-icon([icon]="doubleDownIcon" [fixedWidth]="true")
+
+			.form-inline
+				.form-group(*ngIf="mode === 'body'")
+					label body offset:
+					tools-range.ml-2(
+						[(ngModel)]="activeFrame.bodyX" (change)="update()" [min]="-50" [max]="50" [small]="true")
+					.btn-group.ml-1
+						button.btn.btn-default.btn-sm((click)="moveAllBody(-1, 0)" title="All frames left")
+							fa-icon([icon]="doubleLeftIcon" [fixedWidth]="true")
+						button.btn.btn-default.btn-sm((click)="moveAllBody(1, 0)" title="All frames right")
+							fa-icon([icon]="doubleRightIcon" [fixedWidth]="true")
+					tools-range.ml-2(
+						[(ngModel)]="activeFrame.bodyY" (change)="update()" [min]="-50" [max]="50" [small]="true" [vertical]="true")
+					.btn-group.ml-1
+						button.btn.btn-default.btn-sm((click)="moveAllBody(0, -1)" title="All frames up")
+							fa-icon([icon]="doubleUpIcon" [fixedWidth]="true")
+						button.btn.btn-default.btn-sm((click)="moveAllBody(0, 1)" title="All frames down")
+							fa-icon([icon]="doubleDownIcon" [fixedWidth]="true")
+
+			.form-inline
+				.form-group(*ngIf="mode === 'body'")
+					label shadow (x, size):
+					tools-range.ml-2(
+						[(ngModel)]="activeFrame.shadowOffset" (change)="update()" [min]="-50" [max]="50" [small]="true")
+					tools-range.ml-2(
+						[(ngModel)]="activeFrame.shadowFrame" (change)="update()" [min]="-50" [max]="50" [small]="true")
+
+			hr
+
+			.form-inline
+				.from-group.d-flex
+					label frame:
+					button.btn.btn-sm.btn-default.ml-1((click)="addFrame()" title="Add new frame after current one")
+						fa-icon([icon]="plusIcon" [fixedWidth]="true")
+					button.btn.btn-sm.btn-default.ml-1((click)="duplicateFrame()" title="Duplicate frame and add after current one")
+						fa-icon([icon]="cloneIcon" [fixedWidth]="true")
+					button.btn.btn-sm.btn-default.ml-1((click)="moveFrameLeft()" [disabled]="frame === 0" title="Move current frame left")
+						fa-icon([icon]="leftIcon" [fixedWidth]="true")
+					button.btn.btn-sm.btn-default.ml-1((click)="moveFrameRight()" [disabled]="frame === (totalFrames - 1)" title="Move current frame right")
+						fa-icon([icon]="rightIcon" [fixedWidth]="true")
+					button.btn.btn-sm.btn-default.ml-1((click)="removeFrame()" [disabled]="totalFrames < 2" title="Delete current frame")
+						fa-icon([icon]="trashIcon" [fixedWidth]="true")
+
+	.tools-animation-timeline(*ngIf="loaded && mode === 'body'")
+		.float-left
+			table.table.table-bordered.table-frames-header.table-sm
+				thead
+					tr: th Frame (duration)
+				tbody
+					tr: td Head offset (x/y)
+					tr: td Body offset (x/y)
+					tr: td Shadow (x/size)
+					tr: td.frame-cell Front close Leg
+					tr
+						td.frame-cell
+							check-box.float-left([(checked)]="bodyAnimation.lockFrontLegs" (checkedChange)="update()" [icon]="lockIcon")
+							| Front far Leg
+					tr: td.frame-cell Back close Leg
+					tr
+						td.frame-cell
+							check-box.float-left([(checked)]="bodyAnimation.lockBackLegs" (checkedChange)="update()" [icon]="lockIcon")
+							| Back far Leg
+					tr: td.frame-cell Body
+					tr: td.frame-cell Wing
+					tr: td.frame-cell Tail
+		.frames-view
+			table.table.table-bordered.table-frames.table-sm(*ngIf="mode === 'body'")
+				thead
+					tr
+						th(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)" (click)="selectFrame(i)")
+							| {{i + 1}}
+							span.text-muted.ml-1 ({{f.duration || 1}})
+				tbody
+					tr
+						td(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)" (click)="selectFrame(i)")
+							| {{f.headX}} / {{f.headY}}
+					tr
+						td(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)" (click)="selectFrame(i)")
+							| {{f.bodyX}} / {{f.bodyY}}
+					tr
+						td(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)" (click)="selectFrame(i)")
+							| {{f.shadowOffset}} / {{f.shadowFrame}}
+					tr
+						td.frame-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.frontLeg" [sprites]="frontLegs" [pony]="info" [x]="-15" [y]="-40"
+							  (frameChange)="update()" (click)="selectFrame(i)")
+							tools-xy.frame-cell-xy([(x)]="f.frontLegX" [(y)]="f.frontLegY" (change)="update()")
+							.frame-cell-offset {{f.frontLegX}} / {{f.frontLegY}}
+					tr([class.frames-locked]="bodyAnimation.lockFrontLegs")
+						td.frame-cell.far-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.frontFarLeg" [sprites]="frontLegs" [pony]="info" [x]="-15" [y]="-40"
+							  (frameChange)="update()" (click)="selectFrame(i)")
+							tools-xy.frame-cell-xy([(x)]="f.frontFarLegX" [(y)]="f.frontFarLegY" (change)="update()")
+							.frame-cell-offset {{f.frontFarLegX}} / {{f.frontFarLegY}}
+					tr
+						td.frame-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.backLeg" [sprites]="backLegs" [pony]="info" [x]="-30" [y]="-40"
+							  (frameChange)="update()" (click)="selectFrame(i)")
+							tools-xy.frame-cell-xy([(x)]="f.backLegX" [(y)]="f.backLegY" (change)="update()")
+							.frame-cell-offset {{f.backLegX}} / {{f.backLegY}}
+					tr([class.frames-locked]="bodyAnimation.lockBackLegs")
+						td.frame-cell.far-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.backFarLeg" [sprites]="backLegs" [pony]="info" [x]="-30" [y]="-40"
+							  (frameChange)="update()" (click)="selectFrame(i)")
+							tools-xy.frame-cell-xy([(x)]="f.backFarLegX" [(y)]="f.backFarLegY" (change)="update()")
+							.frame-cell-offset {{f.backFarLegX}} / {{f.backFarLegY}}
+					tr
+						td.frame-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.body" [sprites]="body" [pony]="info" [x]="-30" [y]="-40"
+								(frameChange)="update()" (click)="selectFrame(i)")
+					tr
+						td.frame-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.wing" [sprites]="wing" [pony]="info" [x]="-30" [y]="-40"
+								(frameChange)="update()" (click)="selectFrame(i)")
+					tr
+						td.frame-cell(*ngFor="let f of bodyFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.tail" [sprites]="tail" [pony]="info" [x]="-30" [y]="-40"
+								(frameChange)="update()" (click)="selectFrame(i)")
+
+	.tools-animation-timeline(*ngIf="loaded && mode === 'head'")
+		.float-left
+			table.table.table-bordered.table-frames-header.table-sm
+				thead
+					tr: th Frame (duration)
+				tbody
+					tr: td Head offset (x/y)
+					tr: td.frame-cell Right eye
+					tr
+						td.frame-cell
+							check-box.float-left([(checked)]="headAnimation.lockEyes" (checkedChange)="update()" [icon]="lockIcon")
+							| Left eye
+					tr: td.frame-cell Mouth
+		.frames-view
+			table.table.table-bordered.table-frames.table-sm
+				thead
+					tr
+						th(*ngFor="let f of headFrames; index as i" [class.active]="isActive(i)" (click)="selectFrame(i)")
+							| {{i + 1}}
+							span.text-muted.ml-1 ({{f.duration || 1}})
+				tbody
+					tr
+						td(*ngFor="let f of headFrames; index as i" [class.active]="isActive(i)" (click)="selectFrame(i)")
+							| {{f.headX}} / {{f.headY}}
+					tr
+						td.frame-cell(*ngFor="let f of headFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.right" [sprites]="rightEyes" [pony]="info" [x]="-15" [y]="-20" [circle]="coat"
+							  (frameChange)="update()" [reverseExtra]="true" (click)="selectFrame(i)")
+					tr([class.frames-locked]="headAnimation.lockEyes")
+						td.frame-cell(*ngFor="let f of headFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.left" [sprites]="leftEyes" [pony]="info" [x]="-15" [y]="-20" [circle]="coat"
+							  (frameChange)="update()" [reverseExtra]="true" (click)="selectFrame(i)")
+					tr
+						td.frame-cell(*ngFor="let f of headFrames; index as i" [class.active]="isActive(i)")
+							tools-frame(
+								[(frame)]="f.mouth" [sprites]="mouths" [pony]="info" [x]="-15" [y]="-20" [circle]="coat"
+							  (frameChange)="update()" [reverseExtra]="true" (click)="selectFrame(i)")

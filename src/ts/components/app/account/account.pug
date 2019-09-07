@@ -1,0 +1,134 @@
+h1(focusTitle) Account settings
+
+.row.text-large
+	.col-md-6
+		form(name="form" (submit)="submit()" style="max-width: 400px; margin-bottom: 100px")
+			.form-group
+				h3 Account details
+			.form-group
+				label(for="account-id") Account ID
+				input#account-id.form-control([value]="account?.id" readonly)
+			.form-group
+				label(for="account-name") Account Name
+				input#account-name.form-control(
+					type="text" name="name" [(ngModel)]="data.name" required [maxlength]="nameMaxLength")
+				small.form-text.text-warning This name will be visible to other players
+			.form-group
+				label(for="birthdate")
+					| Date of birth
+					fa-icon.ml-1.text-danger(*ngIf="showAccountAlert" [icon]="alertIcon" title="Missing field value")
+				date-picker([(date)]="data.birthdate")
+			.form-group(*ngIf="accountError")
+				.alert.alert-danger
+					| {{accountError}}
+			.form-group(*ngIf="accountSaved")
+				.alert.alert-success
+					| Changes saved
+			.form-group.text-right
+				button.btn.btn-default(type="submit" [disabled]="!canSubmit" style="min-width: 100px;")
+					| Save
+
+		div(style="margin-bottom: 100px;")
+			.form-group
+				h3 Connected social accounts
+
+			.form-group
+				p.text-muted.
+					If you remove social account, you won't be able to use it to sign-in to the game anymore.
+
+			.form-group
+				ul.list-unstyled
+					li.item-connected-account.d-flex.justify-content-between(*ngFor="let s of sites")
+						a([href]="s.url" target="_blank" rel="noopener noreferrer")
+							fa-icon.mr-1([icon]="icon(s.icon)" [fixedWidth]="true")
+							b #[span.sr-only {{s.icon}}] {{s.name}}
+						button.btn.btn-sm.btn-danger(*ngIf="sites.length > 1" (click)="removeSite(s)" [disabled]="removingSite")
+							| remove
+
+			.form-group
+				p.text-danger.
+					Please do NOT connect any social sites that #[b do not belong to you!]
+					Connecting social sites belonging to other people may result in unexpected account merge
+					and loss of one or both accounts.
+				p.text-danger.
+					Please contact our support email if you accidentally merge your account with someone else.
+				.dropdown(dropdown)
+					button.btn.btn-default.dropdown-toggle(dropdownToggle)
+						| connect another social site to this account
+					.dropdown-menu(*dropdownMenu)
+						button.dropdown-item(*ngFor="let p of providers" (click)="connectSite(p)")
+							fa-icon.mr-1([icon]="icon(p.id)" [fixedWidth]="true")
+							| #[span.sr-only {{p.name}}] {{p.name}}
+
+			.form-group(*ngIf="mergeError")
+				.alert.alert-danger
+					| {{mergeError}}
+
+			.form-group(*ngIf="authError")
+				.alert.alert-danger
+					| {{authError}}
+
+			.form-group(*ngIf="mergedAccount")
+				.alert.alert-success
+					| Account connected successfully
+
+			.form-group(*ngIf="removedAccount")
+				.alert.alert-success
+					| Account removed successfully
+
+	.col-md-6
+		div(style="margin-bottom: 100px;")
+			.clearfix(*ngIf="showSupporter")
+				.form-group
+					h3
+						fa-icon.mr-2([icon]="starIcon" [ngClass]="supporterClass")
+						| Thank you for your support
+
+				supporter-pony.float-right(#pony (mouseenter)="pony.excite()" (mouseleave)="pony.reset()")
+
+				.form-group
+					p Your reward tier: #[b {{supporterTitle}}]
+					p Your rewards include:
+					ul
+						li(*ngFor="let r of supporterRewards")
+							| {{r}}
+
+				p(*ngIf="supporter > 0")
+					| Use <code>/ss hello</code> command to use supporter chat color.
+
+				p(*ngIf="supporter > 1")
+					| Use <code>/s1 hello</code> and <code>/s2 hello</code> commands to use lower tier supporter chat colors.
+
+			.clearfix(*ngIf="showSupporterInfo")
+				.form-group
+					h3 Supporter info
+
+				supporter-pony.float-right(#pony (mouseenter)="pony.excite()" (mouseleave)="pony.reset()")
+
+				.form-group.text-muted
+					p.
+						You've successfully connected your Patreon account to Pony Town.
+						If you support Pony Town on Patreon your supporter info will show up here.
+					p.
+						It should take no longer than 10 minutes to register your Patreon pledges.
+
+		div(style="margin-bottom: 100px;")
+			.form-group
+				.float-right
+					span.text-muted Page: {{page + 1}}
+					button.btn.btn-sm.btn-outline-secondary.ml-2((click)="page = page - 1; pageChanged()" [disabled]="!hides || page === 0")
+						| Previous page
+					button.btn.btn-sm.btn-outline-secondary.ml-1((click)="page = page + 1; pageChanged()" [disabled]="!hides || hides.length < hidesPerPage")
+						| Next page
+				h3 Hidden players
+
+			div(*ngIf="!hides")
+				.text-muted.text-center.p-4 loading...
+
+			ul.list-unstyled(*ngIf="hides")
+				.text-muted.text-center.p-4(*ngIf="!hides.length") no hidden players
+				li.item-connected-account.d-flex.align-items-center(*ngFor="let h of hides")
+					b.flex-grow-1 {{h.name}}
+					span.text-muted.mr-2 hidden {{h.date}}
+					button.btn.btn-sm.btn-danger((click)="unhidePlayer(h)")
+						| unhide player

@@ -1,0 +1,34 @@
+.form-inline.p-1
+	.form-group
+		a.btn.btn-default(routerLink="/")
+			fa-icon([icon]="homeIcon")
+
+	.form-group
+		label.ml-2 map
+		.btn-group.dropdown.ml-1(dropdown)
+			button.btn.btn-default.dropdown-toggle(dropdownToggle) {{selectedMap || 'main'}}
+			.dropdown-menu(*dropdownMenu)
+				button.dropdown-item(*ngFor="let m of maps" (click)="selectMap(m)") {{m || 'main'}}
+
+	.form-group
+		label.ml-2 type
+		.btn-group.dropdown.ml-1(dropdown)
+			button.btn.btn-default.dropdown-toggle(dropdownToggle) {{type}}
+			.dropdown-menu(*dropdownMenu)
+				button.dropdown-item((click)="setType('regular')") regular
+				button.dropdown-item((click)="setType('minimap')") minimap
+
+	.form-group
+		label.ml-2 scale
+		scale-picker.ml-1([(scale)]="scale" (scaleChange)="redraw()" [maxScale]="8")
+
+	.form-group
+		button.btn.btn-default.ml-2((click)="fetch()") Reload
+
+	.form-group
+		button.btn.btn-default.ml-2((click)="png()") PNG
+
+	.form-group
+		custom-checkbox.ml-2([(checked)]="grid" (checkedChange)="redraw()") Grid
+
+canvas(#canvas)

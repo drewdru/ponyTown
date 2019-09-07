@@ -1,0 +1,20 @@
+ng-template(#popover)
+	.notification-popover
+		p([innerHTML]="notification.message")
+		.small.text-muted.mb-1(*ngIf="notification.note")
+			| {{notification.note}}
+	div
+		button.btn.btn-xs.btn-outline-danger.float-right(
+			*ngIf="ignoreButton" (click)="ignore()" tooltip="Ignore this player")
+			fa-icon([icon]="banIcon")
+		.notification-buttons
+			button.btn.btn-xs.btn-success(*ngIf="okButton" (click)="accept()") ok
+			button.btn.btn-xs.btn-success(*ngIf="yesButton" (click)="accept()") yes
+			button.btn.btn-xs.btn-success(*ngIf="acceptButton" (click)="accept()") accept
+			button.btn.btn-xs.btn-danger(*ngIf="noButton" (click)="reject()") no
+			button.btn.btn-xs.btn-danger(*ngIf="rejectButton" (click)="reject()") reject
+
+.notification.cursor-pointer(
+	[popover]="popover" [isOpen]="isOpen" (contextmenu)="reject(); $event.preventDefault()"
+	placement="left" containerClass="popover-notification")
+	portrait-box([pony]="paletteInfo" [flip]="true" size="small")

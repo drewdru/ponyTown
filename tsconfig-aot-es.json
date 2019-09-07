@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig-aot.json",
+	"compilerOptions": {
+		"target": "es2017",
+    "paths": {
+			"core-js/es6": ["src/fixes/empty.js"],
+			"lodash": ["src/ts/lodash.ts"]
+    }
+	}
+}

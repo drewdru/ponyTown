@@ -1,0 +1,62 @@
+﻿nav.navbar.navbar-expand.justify-content-end(role="navigation")
+	.d-none.d-md-block
+		a.pixelart.logo(*ngIf="logo" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }")
+			img.pixelart.logo-large(revSrc="images/logo-large.png" alt="Pony Town" width="287" height="65")
+			img.pixelart.logo-small(revSrc="images/logo-small.png" alt="Pony Town" width="37" height="43")
+
+	.navbar-collapse.text-right
+		.navbar-nav.ml-auto
+			ng-content
+			.dropdown(*ngIf="account" #dropdown="ag-dropdown" dropdown autoClose="outsideClick")
+				button.btn.cursor-pointer.dropdown-toggle(dropdownToggle [attr.aria-label]="'Signed-in as ' + account.name")
+					fa-icon.mr-1(
+						*ngIf="hasSupporterIcon" [icon]="starIcon" [ngClass]="supporterClass"
+						[title]="supporterTitle" [attr.aria-label]="supporterTitle" aria-hidden="true")
+					.d-none.d-sm-inline(aria-hidden="true") {{account.name}}
+					fa-icon.d-inline-block.d-sm-none(
+						[icon]="userIcon" [title]="account.name" [fixedWidth]="true" size="lg" aria-hidden="true")
+					fa-icon.text-danger.account-alert-icon(
+						*ngIf="showAccountAlert" [icon]="alertIcon" [fixedWidth]="true" size="sm" aria-hidden="true")
+
+				.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+					.dropdown-item.d-flex.align-items-center
+						.flex-grow-1.mr-3 Status:
+						.dropdown(dropdown style="width: 65px;")
+							button.online-offline.no-highlight.p-0.dropdown-toggle.no-arrow(dropdownToggle)
+								span.text-success(*ngIf="!hidden") online
+								span.text-muted(*ngIf="hidden") offline
+								fa-icon.ml-2([icon]="cogIcon")
+							.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+								button.dropdown-item((click)="setStatus('online')")
+									fa-icon.mr-2.text-success([icon]="statusIcon" size="xs" [fixedWidth]="true")
+									| Online
+								button.dropdown-item((click)="setStatus('invisible')")
+									fa-icon.mr-2.text-muted([icon]="statusIcon" size="xs" [fixedWidth]="true")
+									| Show as Offline
+					a.dropdown-item(routerLink="/account" (click)="dropdown.close()" tabindex)
+						| Account settings
+						fa-icon.text-danger.ml-1(*ngIf="showAccountAlert" [icon]="alertIcon" aria-hidden="true")
+					.dropdown-divider
+					button.dropdown-item((click)="signOut.emit(); dropdown.close()")
+						| Sign out
+
+		.text-muted(*ngIf="loading" style="font-size: 20px; padding: 10px 20px;")
+			fa-icon([icon]="spinnerIcon" [fixedWidth]="true" [spin]="true")
+
+		form.navbar-form.ml-2(*ngIf="!loading && !account")
+			.button-group.dropdown(dropdown)
+				button.btn.btn-default.dropdown-toggle(dropdownToggle [disabled]="!!loadingError")
+					| Sign in
+				.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+					.dropdown-header(*ngIf="signUpProviders.length")
+						| Sign in or sign up
+					button.dropdown-item(
+						*ngFor="let p of signUpProviders" (click)="signInTo(p)" title="Sign in using {{p.name}}")
+						fa-icon.mr-1([icon]="icon(p.id)" [fixedWidth]="true")
+						| {{p.name}}
+					.dropdown-header(*ngIf="signInProviders.length")
+						| Sign in only
+					button.dropdown-item.sign-in-only(
+						*ngFor="let p of signInProviders" (click)="signInTo(p)" title="Sign in using {{p.name}}")
+						fa-icon.mr-1([icon]="icon(p.id)" [fixedWidth]="true")
+						| {{p.name}}

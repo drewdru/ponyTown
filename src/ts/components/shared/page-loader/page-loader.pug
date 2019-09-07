@@ -1,0 +1,18 @@
+.page-loader.text-muted.text-center.text-large(*ngIf="loading || updating")
+	fa-icon([icon]="spinnerIcon" [fixedWidth]="true" [spin]="true")
+
+	div(*ngIf="updating")
+		p.page-updating.text-muted Updating...
+		p.text-unsafe(*ngIf="updatingTakesLongTime") 
+			| Updating is taking longer than expected, #[button.btn.btn-outline-danger((click)="reload()") restart]
+
+	div(*ngIf="loadingError && !updating")
+		div([ngSwitch]="loadingError")
+			p.text-unsafe(*ngSwitchCase="'request-limit'") 
+				| Server is under heavy load, please wait...
+			p.text-unsafe(*ngSwitchCase="'cannot-connect'") 
+				| Cannot connect to the server, retrying...
+			p.text-unsafe(*ngSwitchCase="'cloudflare-error'") 
+				| Cloudflare protection error, #[button.btn.btn-outline-danger((click)="reload()") reload] to continue.
+			p.text-unsafe(*ngSwitchDefault) 
+				| Unexpected error occurred, #[button.btn.btn-outline-danger((click)="reload()") reload] to continue.

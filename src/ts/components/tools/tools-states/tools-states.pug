@@ -1,0 +1,25 @@
+.p-1(style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden;")
+	.mb-3
+		a.btn.btn-default(routerLink="/")
+			fa-icon([icon]="homeIcon")
+		button.btn.btn-default.ml-1((click)="logPositions()")
+			| log positions
+
+	.state-item-container
+		.state-item(*ngFor="let s of states" [style.left.px]="s.x" [style.top.px]="s.y" (agDrag)="drag(s, $event)")
+			div([style.background]="s.color")
+				div
+					div {{s.name}}
+					div(*ngIf="s.variants") (+{{s.variants}})
+
+		svg.pointer-none(width="1500" height="1500")
+			defs
+				marker(*ngFor="let c of arrowColors" [attr.id]="'head-' + c" orient="auto" markerWidth="5" markerHeight="6"
+				       refX="0.1" refY="3")
+					path(d="M0,0 V6 L5,3 Z" [attr.fill]="c")
+			path(*ngFor="let a of arrows" [attr.marker-end]="'url(#head-' + a.color + ')'" stroke-width="2"
+			     [attr.stroke]="a.color" fill="none" [attr.d]="a.path")
+
+		.state-item-time(*ngFor="let t of times" [style.left.px]="t.x" [style.top.px]="t.y" [title]="t.title || ''")
+			div([style.background]="t.color")
+				span {{t.text}}

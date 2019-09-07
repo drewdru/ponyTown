@@ -1,0 +1,12 @@
+export const WEBGL_CREATION_ERROR = 'Failed to create WebGL context';
+export const ACCESS_ERROR = 'Access denied';
+export const ACCOUNT_ERROR = 'Invalid account';
+export const NOT_FOUND_ERROR = 'Not found';
+export const OFFLINE_ERROR = 'Server is offline';
+export const PROTECTION_ERROR = 'DDOS protection error, reload the page to continue';
+export const VERSION_ERROR = 'Invalid version';
+export const BROWSER_NOT_SUPPORTED_ERROR = 'Your browser is not supported';
+export const NAME_ERROR = 'Invalid name';
+export const CHARACTER_SAVING_ERROR = 'Error saving character';
+export const CHARACTER_LIMIT_ERROR = 'Character limit reached';
+export const NOT_AUTHENTICATED_ERROR = 'Not authenticated';

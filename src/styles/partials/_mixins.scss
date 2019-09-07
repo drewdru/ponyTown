@@ -1,0 +1,91 @@
+@mixin nipple($right) {
+	&:before {
+		content: '';
+		display: inline-block;
+		border-left: 9px solid transparent;
+		border-right: 9px solid transparent;
+		border-bottom: 7px solid #ccc;
+		border-bottom-color: rgba(0, 0, 0, 0.2);
+		position: absolute;
+		top: -7px;
+		right: $right - 1px;
+	}
+
+	&:after {
+		content: '';
+		display: inline-block;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-bottom: 6px solid #ffffff;
+		position: absolute;
+		top: -6px;
+		right: $right;
+	}
+}
+
+@mixin nippleLeft($left) {
+	&:before {
+		content: '';
+		display: inline-block;
+		border-left: 9px solid transparent;
+		border-right: 9px solid transparent;
+		border-bottom: 7px solid #ccc;
+		border-bottom-color: rgba(0, 0, 0, 0.2);
+		position: absolute;
+		top: -7px;
+		left: $left - 1px;
+	}
+
+	&:after {
+		content: '';
+		display: inline-block;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-bottom: 6px solid #ffffff;
+		position: absolute;
+		top: -6px;
+		left: $left;
+	}
+}
+
+@mixin nippleLeftFlip() {
+	&:before {
+		border-bottom: none;
+		border-top: 7px solid #ccc;
+		border-top-color: rgba(0, 0, 0, 0.2);
+		top: auto;
+		bottom: -7px;
+	}
+
+	&:after {
+		border-bottom: none;
+		border-top: 6px solid #ffffff;
+		top: auto;
+		bottom: -6px;
+	}
+}
+
+@mixin nippleOnLeft($top) {
+	&:before {
+		content: '';
+		display: inline-block;
+		border-top: 9px solid transparent;
+		border-bottom: 9px solid transparent;
+		border-right: 7px solid #ccc;
+		border-right-color: rgba(0, 0, 0, 0.2);
+		position: absolute;
+		top: $top - 1px;
+		left: -7px;
+	}
+
+	&:after {
+		content: '';
+		display: inline-block;
+		border-top: 8px solid transparent;
+		border-bottom: 8px solid transparent;
+		border-right: 6px solid #ffffff;
+		position: absolute;
+		top: $top;
+		left: -6px;
+	}
+}

@@ -1,0 +1,17 @@
+@import 'partials/variables';
+
+.spoiler-text {
+	background: $body-color;
+	border-radius: 3px;
+	cursor: default;
+
+	&:hover {
+		background: none;
+	}
+}
+
+.long-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

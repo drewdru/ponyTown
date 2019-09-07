@@ -1,0 +1,45 @@
+@import '../../../../styles/partials/variables';
+
+:host {
+	display: block;
+}
+
+.btn {
+	position: relative;
+	
+	@media (max-width: 320px) {
+		white-space: normal;
+	}
+}
+
+.patreon-logo {
+	position: absolute;
+	left: 8px;
+	top: 5px;
+	width: 30px;
+	height: 30px;
+	
+	@media (max-width: 320px) {
+		display: none;
+	}
+}
+
+.supporter-pony {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height: 70px;
+	width: 100px;
+	overflow: hidden;
+	border-radius: $border-radius-lg - 2px;
+	
+	> supporter-pony {
+		position: absolute;
+		bottom: -95px;
+		left: -20px;
+	}
+	
+	@media (max-width: 380px) {
+		display: none;
+	}
+}

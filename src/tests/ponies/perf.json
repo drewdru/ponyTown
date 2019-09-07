@@ -1,0 +1,844 @@
+{
+	"nose": {
+		"type": 0,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"9d906a",
+			"800000",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"ffdf83",
+			"5a0000",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"ears": {
+		"type": 3,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"9d906a",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"6e623f",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"horn": {
+		"type": 3,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"9d906a",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"6e623f",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"wings": {
+		"type": 2,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"9d906a",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"6e623f",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"frontHooves": {
+		"type": 1,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ffa500",
+			"ffff00",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"b37400",
+			"b3b300",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"backHooves": {
+		"type": 1,
+		"pattern": 0,
+		"lockFills": [
+			true,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ffa500",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"b37400",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"mane": {
+		"type": 1,
+		"pattern": 2,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ffd700",
+			"1e90ff",
+			"1e90ff",
+			"1e90ff",
+			"1e90ff",
+			"1e90ff"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"outlines": [
+			"b39700",
+			"005ab3",
+			"005ab3",
+			"005ab3",
+			"ffffff",
+			"005ab3"
+		]
+	},
+	"backMane": {
+		"type": 2,
+		"pattern": 1,
+		"lockFills": [
+			true,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ffd700",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"b39700",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"tail": {
+		"type": 1,
+		"pattern": 1,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ffd700",
+			"1e90ff",
+			"32cd32",
+			"32cd32",
+			"32cd32",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			true
+		],
+		"outlines": [
+			"b39700",
+			"005ab3",
+			"029002",
+			"029002",
+			"029002",
+			"3eb38b"
+		]
+	},
+	"facialHair": {
+		"type": 4,
+		"pattern": 1,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ffd700",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"b39700",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"head": {
+		"fills": [
+			"8b0000",
+			"800000",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"lockOutlines": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"610000",
+			"5a0000",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		],
+		"pattern": 1,
+		"type": 0
+	},
+	"headAccessory": {
+		"type": 2,
+		"pattern": 1,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da9f70",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			true,
+			true
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"996338",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"earAccessory": {
+		"type": 6,
+		"pattern": 1,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"808080",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			true
+		],
+		"outlines": [
+			"5a5a5a",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"faceAccessory": {
+		"type": 5,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"000000",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"000000",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"neckAccessory": {
+		"type": 2,
+		"pattern": 2,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			true,
+			true
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"frontLegAccessory": {
+		"type": 1,
+		"pattern": 1,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"backLegAccessory": {
+		"type": 1,
+		"pattern": 1,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"lockBackLegAccessory": false,
+	"backAccessory": {
+		"type": 2,
+		"pattern": 2,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		]
+	},
+	"waistAccessory": {
+		"type": 2,
+		"pattern": 0,
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"fills": [
+			"95856f",
+			"674b43",
+			"4f4f4f",
+			"525252",
+			"c37850",
+			"8a3d34"
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			true,
+			true
+		],
+		"outlines": [
+			"685a46",
+			"482f27",
+			"373737",
+			"393939",
+			"884420",
+			"611b12"
+		]
+	},
+	"coatFill": "9d906a",
+	"coatOutline": "890000",
+	"lockCoatOutline": false,
+	"eyelashes": 0,
+	"eyeColorLeft": "423f37",
+	"eyeColorRight": "daa520",
+	"eyeWhites": "a06f6f",
+	"eyeWhitesLeft": "a06f6f",
+	"eyeOpennessLeft": 4,
+	"eyeOpennessRight": 2,
+	"eyeshadow": true,
+	"eyeshadowColor": "00ff00",
+	"lockEyes": false,
+	"lockEyeColor": false,
+	"unlockEyeWhites": false,
+	"fangs": 1,
+	"muzzle": 5,
+	"freckles": 0,
+	"frecklesColor": "8b0000",
+	"freeOutlines": false,
+	"cm": [
+		"ffa500",
+		"a68343",
+		"5a4724",
+		"362b17",
+		"8ee032",
+		"23211d",
+		"78b534",
+		"4a6f20",
+		"415927",
+		"627052",
+		"32cbe0",
+		"39aebd",
+		"206e79",
+		"5e8085",
+		"9aacaf",
+		"9c9aaf",
+		"453e95",
+		"7a72db",
+		"1d1763",
+		"5e5c7a",
+		"7a5c7a",
+		"db3fda",
+		"dd73dd",
+		"f3c1f3",
+		"7d177d"
+	],
+	"cmFlip": true,
+	"customOutlines": true,
+	"chestAccessory": {
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"lockOutlines": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		],
+		"pattern": 0,
+		"type": 0
+	},
+	"sleeveAccessory": {
+		"fills": [
+			"ee82ee",
+			"1e90ff",
+			"32cd32",
+			"da70d6",
+			"dc143c",
+			"7fffd4"
+		],
+		"lockFills": [
+			true,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"lockOutlines": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"outlines": [
+			"a744a7",
+			"005ab3",
+			"029002",
+			"993895",
+			"9a001f",
+			"3eb38b"
+		],
+		"pattern": 0,
+		"type": 0
+	},
+	"extraAccessory": {
+		"fills": [
+			"9cc7d9",
+			"ffd700",
+			"ffd700",
+			"ffd700",
+			"daa520",
+			"ffd700"
+		],
+		"lockFills": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			false
+		],
+		"lockOutlines": [
+			false,
+			false,
+			false,
+			false,
+			false,
+			true
+		],
+		"outlines": [
+			"608898",
+			"ffd700",
+			"ffd700",
+			"ffd700",
+			"daa520",
+			"b39700"
+		],
+		"pattern": 0,
+		"type": 0
+	}
+}

@@ -1,0 +1,55 @@
+@import '../../../../styles/partials/variables';
+@import '../../../../styles/partials/mixins';
+
+.sign-in-box {
+	max-width: 400px;
+	margin-top: 50px;
+
+	.lead {
+		margin-bottom: 40px;
+	}
+}
+
+.sign-in-heading {
+	color: lighten($text-muted, 10%);
+	margin-bottom: 20px;
+	border-bottom: solid 1px darken($text-muted, 20%);
+	text-transform: uppercase;
+	text-align: center;
+	line-height: 0;
+
+	> span {
+		background: $body-bg;
+		padding: 0 15px;
+
+		> i {
+			color: darken($text-muted, 10%);
+			margin: 0 5px;
+			text-transform: lowercase;
+		}
+	}
+}
+
+.sign-in-box-providers {
+	max-width: 350px;
+	margin: auto;
+	margin-bottom: 40px;
+
+	> .btn-dark {
+		border: none;
+		border-bottom: solid 5px #666;
+		margin-right: 5px;
+		margin-bottom: 5px;
+		min-width: 80px;
+
+		&.disabled {
+			border-bottom-color: #666 !important;
+		}
+	}
+}
+
+.sign-in-only {
+	button {
+		opacity: 0.5;
+	}
+}

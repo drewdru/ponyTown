@@ -1,0 +1,5 @@
+﻿.slider-bar(#bar [class.disabled]="disabled" (agDrag)="drag($event)" agDragRelative="self")
+	.slider-bar-fill([style.width.%]="width")
+	.slider-bar-line
+		.slider-bar-base([style.left.%]="width")
+			.slider-bar-control

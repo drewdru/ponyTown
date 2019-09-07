@@ -1,0 +1,26 @@
+@import '../../../../styles/partials/variables';
+
+.btn-group.d-flex {
+	display: flex;
+	
+	> .btn.flex-grow {
+		flex-grow: 1;
+	}
+}
+
+.dropdown-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.server-alert {
+	display: flex;
+	align-items: center;
+	font-size: 13px;	
+}
+
+.alert .btn {
+	vertical-align: baseline;
+	font-weight: bold;
+}

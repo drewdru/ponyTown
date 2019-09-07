@@ -1,0 +1,5 @@
+.collision-area(
+	(agDrag)="drag($event)" agDragRelative="self" (contextmenu)="false"
+	style="position: relative; width: 1200px; height: 900px; margin: 20px; background: #222;")
+	canvas(#canvas width="1200" height="900")
+.text-danger.ml-4(*ngIf="collided") collided

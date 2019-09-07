@@ -1,0 +1,179 @@
+﻿ng-template(#notePopover)
+	textarea.form-control.note-editor(
+		cols="20" rows="15" agAutoFocus [(ngModel)]="note" (keydown.escape)="blur()" (blur)="blur()")
+
+ng-template(#accountTooltip)
+	account-tooltip([account]="account" [extendedAuths]="extendedAuths")
+
+ng-template(#noteTooltip)
+	small.text-muted
+		from-now([time]="account.noteUpdated")
+	div {{account.note}}
+
+ng-template(#alertTooltip)
+	.text-left
+		small.text-muted
+			| expires in
+			from-now.ml-1([time]="alert.expires")
+		div {{alert.message}}
+
+ng-template(#supporterTooltip)
+	div {{supporterTitle}}
+	.text-muted(*ngIf="account.supporterDeclinedSince as declined")
+		| declined: #[from-now([time]="declined")] ago | {{declined | date:'MMM d'}}
+
+ng-template(#flagsTooltip)
+	.text-left
+		div(*ngFor="let c of counters")
+			span.text-muted.mr-1 {{c.label}}:
+			span {{getCounter(c.name)}}
+		br(*ngIf="account.flags || account.supporter")
+		div(*ngFor="let f of flags")
+			span(*ngIf="hasFlag(f.value)")
+				fa-icon.mr-1([icon]="checkIcon")
+				| {{f.label}}
+		div(*ngFor="let f of supporterFlags")
+			span(*ngIf="hasSupporterFlag(f.value)")
+				fa-icon.mr-1([icon]="checkIcon")
+				| {{f.label}}
+
+ng-template(#alertModal)
+	.modal-header.d-none.d-sm-block
+		h4.modal-title(labelledBy=".modal")
+			| Account Alert
+	.modal-body.modal-checkboxes
+		.form-group
+			label Predefined: 
+			.btn-group.ml-2
+				button.btn.btn-sm.btn-default(*ngFor="let a of predefinedAlerts" (click)="alertMessage = a.message")
+					| {{a.name}}
+		.form-group
+			textarea.form-control([(ngModel)]="alertMessage" autofocus rows="4")
+		.form-group
+			label Expire in
+			.btn-group.ml-2(btnRadioGroup [(ngModel)]="alertExpire")
+				button.btn.btn-sm.btn-default(*ngFor="let e of alertExpires" [btnRadio]="e" [btnHighlight]="alertExpire === e")
+					| {{e.name}}
+	.modal-footer.d-flex
+		.flex-grow-1
+		button.btn.btn-outline-secondary((click)="cancelAlert()")
+			| Cancel
+		button.btn.btn-outline-secondary.ml-2((click)="confirmAlert()")
+			| Set
+
+//- component
+
+.account-info(*ngIf="account" [class.outdated]="isInactive")
+	span.badge.badge-admin.badge-duplicates.mr-1(
+		*ngIf="showDuplicates && duplicates" title="Duplicates" [class.none]="duplicates.count === 0")
+		| {{duplicates.count}}
+		fa-icon.ml-1(*ngIf="duplicates.browserId" [icon]="duplicateBrowserIdIcon")
+		fa-icon.ml-1(*ngIf="duplicates.emails" [icon]="duplicateEmailIcon")
+		fa-icon.ml-1(*ngIf="duplicates.name" [icon]="duplicateNameIcon")
+		fa-icon.ml-1(*ngIf="duplicates.perma" [icon]="duplicatePermaIcon")
+
+	a.account-info-name.mr-1(
+		[routerLink]="['/accounts', account._id]"
+		[tooltip]="accountTooltip"
+		[placement]="popoverPlacement || 'top'"
+		containerClass="tooltip-pre tooltip-account")
+		| {{account.name || '[none]'}} [{{account._id | slice:-3}}]
+
+	span.badge.badge-admin.badge-none(*ngFor="let r of roles" title="role")
+		| {{r}}
+
+	//-span.badge.badge-admin.badge-primary([title]="account.birthdate | date:'yyyy-MM-dd'")
+		| {{age}}
+
+	span.badge.badge-admin.badge-supporter(
+		*ngIf="isPatreonOrSupporter"
+		[ngClass]="supporterClass"
+		[class.declined]="account.supporterDeclinedSince && supporterLevel"
+		[tooltip]="supporterTooltip")
+		fa-icon([icon]="supporterIcon" [fixedWidth]="true")
+		| {{supporterLevelString}}
+
+	span.badge.badge-admin.badge-supporter.badge-success(*ngIf="account.totalPledged" title="lifetime support")
+		| ${{account.totalPledged}}
+
+	span.badge.badge-admin.badge-danger(*ngIf="account.ignoresCount" title="ignored by")
+		| {{account.ignoresCount}}
+
+	fa-icon.text-warning(*ngIf="isNew" [icon]="newIcon" [fixedWidth]="true" title="new account")
+
+	a.icon-button.cursor-pointer(
+		[class.pointer-none]="isNoteOpen"
+		[popover]="notePopover"
+		[isOpen]="isNoteOpen"
+		[placement]="popoverPlacement || 'right'"
+		(onShown)="isNoteOpen = true"
+		(onHidden)="isNoteOpen = false"
+		containerClass="popover-notes")
+		fa-icon.text-muted(
+			[icon]="noteIcon"
+			[fixedWidth]="true"
+			[class.text-present]="account.note"
+			[tooltip]="isNoteOpen ? null : noteTooltip"
+			[isDisabled]="!account.note || isNoteOpen"
+			[placement]="popoverPlacement || 'top'"
+			containerClass="tooltip-notes")
+		span.account-info-note-indicator.pointer-none(*ngIf="hasDuplicateNote") d
+
+	span.dropdown(dropdown autoClose="outsideClick")
+		a.icon-button.cursor-pointer.dropdown-toggle.no-arrow(dropdownToggle [tooltip]="flagsTooltip")
+			fa-icon([icon]="flagIcon" [fixedWidth]="true" [ngClass]="flagClass")
+		.dropdown-menu(*dropdownMenu [class.dropdown-menu-right]="!popoverPlacement")
+			a.dropdown-item(*ngFor="let f of flags" (click)="toggleFlag(f.value)")
+				fa-icon.mr-1([icon]="checkIcon" [fixedWidth]="true" [class.invisible]="!hasFlag(f.value)")
+				| {{f.label}}
+			.dropdown-divider
+			a.dropdown-item(*ngFor="let f of supporterFlags" (click)="toggleSupporterFlag(f.value)")
+				fa-icon.mr-1([icon]="checkIcon" [fixedWidth]="true" [class.invisible]="!hasSupporterFlag(f.value)")
+				| {{f.label}}
+			.dropdown-item
+				.d-flex.justify-content-between
+					div
+						fa-icon.mr-1([icon]="checkIcon" [fixedWidth]="true" [class.invisible]="!hasAnySupporter")
+						| supporter
+					.btn-group.supporter-buttons
+						button.btn.btn-xs.btn-info([class.active]="isSupporter(0)" (click)="setSupporter(0)") none
+						button.btn.btn-xs.btn-info([class.active]="isSupporter(1)" (click)="setSupporter(1)") 1
+						button.btn.btn-xs.btn-info([class.active]="isSupporter(2)" (click)="setSupporter(2)") 2
+						button.btn.btn-xs.btn-info([class.active]="isSupporter(3)" (click)="setSupporter(3)") 3
+			.dropdown-item
+				.d-flex.justify-content-between
+					div
+						fa-icon.mr-1([icon]="checkIcon" [fixedWidth]="true" [class.invisible]="!hasPastSupporter")
+						| past supporter
+					.btn-group.supporter-buttons
+						button.btn.btn-xs.btn-info([class.active]="isForcePastSupporter" (click)="toggleForcePastSupporter()") force
+						button.btn.btn-xs.btn-info([class.active]="isIgnorePastSupporter" (click)="toggleIgnorePastSupporter()") ignore
+			.dropdown-divider
+			.dropdown-item.counter-item(*ngFor="let c of counters")
+				span.text-muted {{c.label}}:
+				span.counter-value {{getCounter(c.name)}}
+				button.btn.btn-xs.btn-info((click)="decrementCounter(c.name)")
+					fa-icon([icon]="minusIcon" [fixedWidth]="true")
+				button.btn.btn-xs.btn-info((click)="incrementCounter(c.name)")
+					fa-icon([icon]="plusIcon" [fixedWidth]="true")
+
+	span.dropdown(dropdown)
+		a.icon-button.cursor-pointer.dropdown-toggle.no-arrow(dropdownToggle [tooltip]="alert ? alertTooltip : undefined")
+			fa-icon.text-muted([icon]="cogIcon" [fixedWidth]="true" [class.text-present]="alert")
+		.dropdown-menu.dropdown-menu-right(*dropdownMenu)
+			a.dropdown-item((click)="kick()")
+				| kick
+			a.dropdown-item((click)="report()")
+				| report
+			.dropdown-divider
+			a.dropdown-item((click)="removeAlert()")
+				| remove alert
+			a.dropdown-item((click)="setAlert()")
+				| set alert
+
+	a.icon-button.cursor-pointer(title="Teleport to" (click)="teleportTo()")
+		fa-icon.text-muted([icon]="teleportIcon" [fixedWidth]="true")
+
+	ban-icon((toggle)="toggleBan('mute', $event)" [value]="account.mute" type="mute")
+	ban-icon.ml-ban((toggle)="toggleBan('shadow', $event)" [value]="account.shadow" type="shadow")
+	ban-icon.ml-ban((toggle)="toggleBan('ban', $event)" [value]="account.ban" type="ban")
