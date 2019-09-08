@@ -3,3 +3,4 @@ build/
 build-copy/
 node_modules/
 logs/
+settings/
