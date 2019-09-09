@@ -1,6 +1,8 @@
-config.json
 build/
 build-copy/
 node_modules/
 logs/
 settings/
+
+package-lock.json
+config.json
